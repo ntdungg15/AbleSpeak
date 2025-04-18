@@ -1,12 +1,13 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-const index = () => {
+
+const Profile = () => {
   return (
     <SafeAreaView>
-      <Text>New Lesson</Text>
+      <Text>Hello Test</Text>
     </SafeAreaView>
   );
 };
 
-export default index;
+export default Profile;
