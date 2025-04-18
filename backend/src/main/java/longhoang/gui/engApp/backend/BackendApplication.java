@@ -1,13 +1,13 @@
-package longhoang.uet.mobile.engapp;
+package longhoang.gui.engApp.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EngAppApplication {
+public class BackendApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(EngAppApplication.class, args);
+        SpringApplication.run(BackendApplication.class, args);
     }
 
 }

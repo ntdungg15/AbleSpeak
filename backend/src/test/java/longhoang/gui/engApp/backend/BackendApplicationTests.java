@@ -1,10 +1,10 @@
-package longhoang.uet.mobile.engapp;
+package longhoang.gui.engApp.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EngAppApplicationTests {
+class BackendApplicationTests {
 
     @Test
     void contextLoads() {
