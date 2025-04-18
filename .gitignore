@@ -1,0 +1,58 @@
+# === Java / Spring Boot ===
+**/target/
+**/logs/
+**/*.log
+**/*.class
+**/*.jar
+**/*.war
+**/*.iml
+**/.classpath
+**/.project
+**/.settings/
+**/.idea/
+**/.vscode/
+
+# Maven
+**/.mvn/
+**/pom.xml.tag
+**/pom.xml.releaseBackup
+**/pom.xml.versionsBackup
+**/pom.xml.next
+**/release.properties
+!**/.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+**/.gradle/
+**/build/
+!**/gradle/wrapper/gradle-wrapper.jar
+**/gradle-app.setting
+
+# === Node.js / React Native / Expo ===
+**/node_modules/
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+
+# React Native / Expo
+**/.expo/
+**/.expo-shared/
+**/*.expo
+
+# Metro bundler cache
+**/metro-cache/
+**/tmp/
+
+# iOS (nếu eject)
+**/ios/Pods/
+**/ios/build/
+
+# Android (nếu eject)
+**/android/.gradle/
+**/android/app/build/
+**/android/build/
+
+
+# Environment files
+**/.env
+**/.env.*
+
