@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import User from '@/redux/reducers/User' 
+import User from "@/redux/reducer/User";
 import {persistReducer, persistStore} from "redux-persist"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 const configuration = {

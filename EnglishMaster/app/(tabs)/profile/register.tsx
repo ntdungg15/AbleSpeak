@@ -62,7 +62,7 @@ const Register = () => {
           <View className="flex-1 items-center" style={{ padding: 20 }}>
             <View style={{ marginTop: 100 }}>
               <Text style={{ fontSize: 30, textAlign: "center" }}>
-                Welcome to Closm!
+                Welcome to EnglisMaster!
               </Text>
             </View>
 
