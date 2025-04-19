@@ -8,8 +8,6 @@ import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 
 export default function TabLayout() {
- 
-
   return (
     <Stack>
       <Stack.Screen
@@ -17,13 +15,6 @@ export default function TabLayout() {
         options={{
           headerShown: false, // Tắt tiêu đề
           //   tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Stack.Screen
-        name="explore"
-        options={{
-          headerShown: false, // Tắt tiêu đề
-          //   tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
     </Stack>

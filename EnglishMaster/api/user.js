@@ -1,4 +1,4 @@
-export const getUserInfo = async (token) => {
+export const getUserInfo = (email, token) => {
     // Đây là đoạn fetch thật (hiện đang comment lại để dùng dummy)
     // const response = await fetch('https://api.example.com/user', {
     //     method: 'GET',
@@ -14,12 +14,15 @@ export const getUserInfo = async (token) => {
     // return data;
 
     // Dummy data
-    if (token === "1234567890") {
+    console.log("email :" + email);
+    console.log("token :" + token);
+    if (email === "test@gmail.com" && token === "1234567890") {
         return {
             id: 1,
             name: "John Doe",
             email: "test@gmail.com",
             phone: "123456789",
+            token: token
         };
     }
 
