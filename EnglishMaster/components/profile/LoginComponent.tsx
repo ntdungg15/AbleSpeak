@@ -17,9 +17,6 @@ const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  // useEffect(() => {
-  //   dispatch(logout());
-  // }, []);
   return (
     <View className="flex-1 items-center">
       <View>
@@ -76,10 +73,10 @@ const LoginScreen = () => {
               }}
               onPress={async () => {
                 console.log("login");
-                const response = await login(email, password);
+                const response = login(email, password);
                 if (response.token) {
                   console.log("Login successful:", response.token);
-                  const userInfo = await getUserInfo(email);
+                  const userInfo = getUserInfo(email, response.token);
                   if (userInfo) {
                     console.log("User info:", userInfo);
                     dispatch(
@@ -89,11 +86,7 @@ const LoginScreen = () => {
                       })
                     );
                   }
-                  // dispatch(
-                  //   loginSuccess({
-                  //     token: response.token,
-                  //   })
-                  // );
+
                   router.replace("/(tabs)");
                 } else {
                   setError(repsonse.message);
