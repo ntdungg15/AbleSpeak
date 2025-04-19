@@ -1,3 +1,6 @@
+import { useSelector } from "react-redux";
+
+const user = useSelector
 export const getUserInfo = (email, token) => {
     // Đây là đoạn fetch thật (hiện đang comment lại để dùng dummy)
     // const response = await fetch('https://api.example.com/user', {
@@ -30,3 +33,42 @@ export const getUserInfo = (email, token) => {
         error: "Invalid token"
     };
 };
+export const getRelationship = (email) => {
+    // Dummy data
+    console.log("email:", email);
+    return {
+      email: "test@gmail.com",
+      phone: "123456789",
+      relationship: {
+        Following: [
+          {
+            id: 1,
+            name: "Hoang",
+            email: "hoang@gmail.com",
+            avtLink: "https://randomuser.me/api/portraits/men/1.jpg",  // Link ảnh avatar thật
+          },
+          {
+            id: 2,
+            name: "Nam",
+            email: "nam@gmail.com",
+            avtLink: "https://randomuser.me/api/portraits/men/2.jpg",  // Link ảnh avatar thật
+          },
+        ],
+        Followers: [
+          {
+            id: 3,
+            name: "Linh",
+            email: "linh@gmail.com",
+            avtLink: "https://randomuser.me/api/portraits/women/3.jpg",  // Link ảnh avatar thật
+          },
+          {
+            id: 4,
+            name: "Tuan",
+            email: "tuan@gmail.com",
+            avtLink: "https://randomuser.me/api/portraits/men/4.jpg",  // Link ảnh avatar thật
+          },
+        ],
+      },
+    };
+  };
+  
