@@ -5,9 +5,13 @@ type Props = {
   relationship: Relationship;
 };
 type Relationship = {
-  Following: any[];
-  Followers: any[];
+  Following: FriendOverview[];
+  Followers: FriendOverview[];
 };
+type FriendOverview = {
+  avtLink: string;
+  name: string;
+}
 
 const FriendComponent = ({ relationship }: Props) => {
   const [activeTab, setActiveTab] = useState("Following");

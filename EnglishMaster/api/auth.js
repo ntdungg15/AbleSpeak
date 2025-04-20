@@ -35,7 +35,7 @@ export const login = (email, password) => {
 
 export const register = async (name, email, password, phone) => {
     // Dummy check: nếu email đã tồn tại thì coi như thất bại
-    if (email === "test1@gmail.com") {
+    if (email !== "test@gmail.com") {
         return {
             error: "Email already exists",
         };
