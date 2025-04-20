@@ -1,10 +1,15 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Text } from "react-native";
+import { StyleSheet, SafeAreaView, ScrollView, View } from "react-native";
+import NewLesson from "@/components/newlesson/NewLesson";
 const index = () => {
   return (
     <SafeAreaView>
-      <Text>New Lesson</Text>
+      <ScrollView >
+
+          <NewLesson />
+
+      </ScrollView>
     </SafeAreaView>
   );
 };
