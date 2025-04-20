@@ -10,12 +10,6 @@ export default function TabLayout() {
           headerShown: false, // Tắt tiêu đề
         }}
       />
-      <Stack.Screen
-        name="explore"
-        options={{
-          headerShown: false, // Tắt tiêu đề
-        }}
-      />
     </Stack>
   );
 }

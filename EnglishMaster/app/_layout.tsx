@@ -38,11 +38,14 @@ export default function RootLayout() {
     <Provider store={store}>
       <PersistGate persistor={persistor} loading={null}>
         <ThemeProvider
-          theme={
-            // Use the dark theme if the device is in dark mode
-            // @ts-ignore
-            useColorScheme() === "dark" ? DarkTheme : DefaultTheme
-          }
+          theme={{
+            ...DefaultTheme,
+            colors: {
+              ...DefaultTheme.colors,
+              background: "#fff",
+              text: "#000",
+            },
+          }}  
         >
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
