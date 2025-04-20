@@ -10,14 +10,14 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useSelector } from "react-redux";
-import { FontAwesome, MaterialIcons, Ionicons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import LoginScreen from "./login";
 import { useDispatch } from "react-redux";
 import { logout } from "@/redux/reducer/User";
 import WeeklyXPChart from "@/components/profile/WeeklyStreak";
 import FriendComponent from "@/components/profile/FriendComponent";
 import { getRelationship } from "@/api/user";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import StatistifcsComponent from "@/components/profile/StatistifcsComponent";
 export default function ProfileScreen() {
   const user = useSelector((state) => state.user);
   const [relationship, setRelationship] = React.useState([]);
@@ -58,7 +58,6 @@ export default function ProfileScreen() {
                 }}
               >
                 <Text style={styles.joindate}>Join from Mar 2023</Text>
-                <Text style={styles.friends}>3 friends</Text>
               </View>
               <View style={styles.nationality}>
                 <Image
@@ -78,31 +77,7 @@ export default function ProfileScreen() {
             <FontAwesome name="cog" size={24} color="black" />
           </Pressable>
         </View>
-
-        {/* Statistics */}
-        <Text style={styles.sectionTitle}>Statistics</Text>
-        <View style={styles.statisticsContainer}>
-          <View style={styles.statItem}>
-            <Ionicons name="flame" size={24} color="#FF5722" />
-            <Text style={styles.statNumber}>1</Text>
-            <Text style={styles.statLabel}>Day streak</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Ionicons name="flash" size={24} color="#FFEB3B" />
-            <Text style={styles.statNumber}>1771</Text>
-            <Text style={styles.statLabel}>Total XP</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Ionicons name="shield-checkmark" size={24} color="#FFD700" />
-            <Text style={styles.statNumber}>Gold</Text>
-            <Text style={styles.statLabel}>League</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Ionicons name="medal" size={24} color="#FFC107" />
-            <Text style={styles.statNumber}>1</Text>
-            <Text style={styles.statLabel}>Top 3 finishes</Text>
-          </View>
-        </View>
+        <StatistifcsComponent />
         <WeeklyXPChart />
         {/* Practice Section */}
         <Text style={styles.sectionTitle}>Quick Practice</Text>
@@ -216,7 +191,6 @@ const styles = StyleSheet.create({
   },
   wordText: { fontSize: 16, fontWeight: "500", color: "#4a148c" },
   joindate: { fontSize: 14, color: "#555", marginTop: 4 },
-  friends: { fontSize: 16, color: "blue", marginTop: 4 },
   statisticsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
