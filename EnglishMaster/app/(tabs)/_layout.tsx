@@ -33,6 +33,13 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="NewLesson"
+        options={{
+          href: null, 
+          headerShown: false,
+        }}
+      />
     </Tabs>
   );
 }
