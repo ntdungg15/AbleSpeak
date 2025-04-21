@@ -21,11 +21,11 @@ const ExaminationScreen = () => {
         </View>
 
         <View style={styles.imageContainer}>
-          {/* <Image 
-            source={require('../../../assets/images/examination-illustration.png')}
-            style={styles.image}
+          <Image 
+            source={require('../../../assets/images/Frame-279398.png')}
+            style={[styles.image]}
             resizeMode="contain"
-          /> */}
+          />
         </View>
 
         <View style={styles.infoContainer}>
@@ -77,18 +77,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    maxHeight: '40%',
+    // maxHeight: '40%',
   },
   image: {
-    width: '80%',
-    height: '80%',
+    width: 450,
+    height: 450,
   },
   infoContainer: {
     width: '100%',
     backgroundColor: '#f8f9fa',
     borderRadius: 12,
     padding: 20,
-    marginBottom: 20,
+    marginBottom: 40,
   },
   infoText: {
     fontSize: 16,
