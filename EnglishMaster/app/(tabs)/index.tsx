@@ -1,7 +1,7 @@
 import React from "react";
 import { Text } from "react-native";
 import { StyleSheet, SafeAreaView, ScrollView, View } from "react-native";
-import NewLesson from "@/components/newlesson/NewLesson";
+import NewLesson from "@/app/(tabs)/NewLesson/NewLesson";
 const index = () => {
   return (
     <SafeAreaView>
