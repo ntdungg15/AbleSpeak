@@ -1,37 +1,29 @@
 
-
-
-
-export const login = (email, password) => {
-    // const response = await fetch('https://api.example.com/login', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({ email, password }),
-    // });
-
-    // if (!response.ok) {
-    //     throw new Error('Login failed!');
-    // }
-    if (email === "test@gmail.com" && password === "123456") {
-        return {
-            token: "1234567890",
-            userInfo: {
-                id: 1,
-                name: "John Doe",
-                email: "test@gmail.com",
-                phone: "123456789",
-            }
-        };
+const hostUrl = process.env.EXPO_PUBLIC_HOST_URL;
+console.log("hostUrl:", hostUrl);
+export const login = async (username, password) => {
+    try {
+      const response = await fetch(`${hostUrl}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Login failed!');
+      }
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return { error: error.message };
     }
-    return {
-        error : "Invalid credentials"
-    }
+  };
+  
 
-    // const data = await response.json();
-    // return data;
-}
 
 export const register = async (name, email, password, phone) => {
     // Dummy check: nếu email đã tồn tại thì coi như thất bại

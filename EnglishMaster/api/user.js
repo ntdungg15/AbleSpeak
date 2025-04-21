@@ -1,38 +1,33 @@
-import { useSelector } from "react-redux";
 
-const user = useSelector
-export const getUserInfo = (email, token) => {
-    // Đây là đoạn fetch thật (hiện đang comment lại để dùng dummy)
-    // const response = await fetch('https://api.example.com/user', {
-    //     method: 'GET',
-    //     headers: {
-    //         'Authorization': `Bearer ${token}`,
-    //         'Content-Type': 'application/json',
-    //     },
-    // });
-    // if (!response.ok) {
-    //     throw new Error('Failed to fetch user info');
-    // }
-    // const data = await response.json();
-    // return data;
+const hostUrl = process.env.EXPO_PUBLIC_HOST_URL;
 
-    // Dummy data
-    console.log("email :" + email);
-    console.log("token :" + token);
-    if (email === "test@gmail.com" && token === "1234567890") {
-        return {
-            id: 1,
-            name: "John Doe",
-            email: "test@gmail.com",
-            phone: "123456789",
-            token: token
-        };
+export const getUserInfo = async (name, token) => {
+  try {
+    const response = await fetch(`${hostUrl}/user/userInfo?username=${name}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    // Kiểm tra mã trạng thái của response
+    if (!response.ok) {
+      const errorText = await response.text();  // Đọc phản hồi dạng văn bản nếu không phải JSON
+      console.error("Error response:", errorText);
+      throw new Error('Failed to fetch user info');
     }
 
-    return {
-        error: "Invalid token"
-    };
+    // Nếu response hợp lệ, parse JSON
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("getUserInfo error:", error);
+    return { error: error.message };  // Trả về thông báo lỗi
+  }
 };
+
+
 export const getRelationship = (email) => {
     // Dummy data
     console.log("email:", email);

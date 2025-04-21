@@ -8,13 +8,13 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { login } from "@/api/auth";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loginSuccess } from "@/redux/reducer/User";
 import { getUserInfo } from "@/api/user";
 const LoginScreen = () => {
   const dispatch = useDispatch();
 
-  const [email, setEmail] = useState("");
+  const [name, setname] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   return (
@@ -24,11 +24,11 @@ const LoginScreen = () => {
           <Text style={{ fontSize: 45 }}>Welcome back</Text>
         </View>
         <View style={{ marginTop: 80, gap: 10, paddingLeft: 20 }}>
-          <Text>Email</Text>
+          <Text>name</Text>
           <TextInput
-            placeholder="Enter your email"
-            value={email}
-            onChangeText={(value) => setEmail(value)}
+            placeholder="Enter your name"
+            value={name}
+            onChangeText={(value) => setname(value)}
             style={{
               width: 250,
               height: 40,
@@ -73,23 +73,37 @@ const LoginScreen = () => {
               }}
               onPress={async () => {
                 console.log("login");
-                const response = login(email, password);
-                if (response.token) {
-                  console.log("Login successful:", response.token);
-                  const userInfo = getUserInfo(email, response.token);
-                  if (userInfo) {
-                    console.log("User info:", userInfo);
-                    dispatch(
-                      loginSuccess({
-                        token: response.token,
-                        userInfo: userInfo,
-                      })
-                    );
+                try {
+                  const response = await login(name, password);
+
+                  if (typeof response === "string") {
+                    // Trường hợp trả về lỗi dạng text (ví dụ: "Bad credentials")
+                    setError(response);
+                    return;
                   }
 
-                  router.replace("/(tabs)");
-                } else {
-                  setError(repsonse.message);
+                  if (response.token) {
+                    console.log("Login successful:", response.token);
+                    const userInfo = await getUserInfo(name, response.token);
+
+                    if (userInfo) {
+                      console.log("User info:", userInfo);
+                      dispatch(
+                        loginSuccess({
+                          token: response.token,
+                          userInfo: userInfo,
+                        })
+                      );
+                      router.replace("/(tabs)");
+                    } else {
+                      setError("Không thể lấy thông tin người dùng");
+                    }
+                  } else {
+                    setError(response.message || "Đăng nhập thất bại");
+                  }
+                } catch (err) {
+                  console.error("Login error:", err);
+                  setError("Đã xảy ra lỗi khi đăng nhập");
                 }
               }}
             >
