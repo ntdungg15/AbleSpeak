@@ -75,17 +75,17 @@ const LoginScreen = () => {
                 console.log("login");
                 try {
                   const response = await login(name, password);
-
-                  if (typeof response === "string") {
+              
+                  if (typeof response === 'string') {
                     // Trường hợp trả về lỗi dạng text (ví dụ: "Bad credentials")
                     setError(response);
                     return;
                   }
-
+              
                   if (response.token) {
                     console.log("Login successful:", response.token);
                     const userInfo = await getUserInfo(name, response.token);
-
+              
                     if (userInfo) {
                       console.log("User info:", userInfo);
                       dispatch(
@@ -106,6 +106,7 @@ const LoginScreen = () => {
                   setError("Đã xảy ra lỗi khi đăng nhập");
                 }
               }}
+    
             >
               <Text>Login</Text>
             </Pressable>
