@@ -37,7 +37,7 @@ public class AuthenticationController {
             return ResponseEntity.ok(new LoginResponse(token));
         } catch (BadCredentialsException e) {
             Map<String, String> error = new HashMap<>();
-            error.put("message", e.getMessage());
+            error.put("message", e  .getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
         }
     }
