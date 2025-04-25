@@ -35,8 +35,7 @@ export  const styles = StyleSheet.create({
     
         backgroundColor: "#f8f8f8",
         
-        justifyContent: "flex-start",
-        alignItems: "flex-end",
+        
     },
 
     inputContainer: {
