@@ -1,30 +1,56 @@
 import React from "react";
-import { View, Text, SafeAreaView, StatusBar, Platform, TextInput } from "react-native";
+import { View, Text, SafeAreaView, StatusBar, Platform, TextInput, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import { styles } from "@/constants/chatbot/ChatRoom";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Feather from '@expo/vector-icons/Feather';
 
-
+import { getGroqResponse } from "@/service/gropService"
+type Message = {
+  text: String;
+  isUser: boolean;
+};
 
 
 const ChatRoom = () => {
   const router = useRouter();
-  const [messList, setMessList] = useState<string[]>([]);
+  const [messList, setMessList] = useState<Message[]>([]);
   const [message, setMessage] = useState("");
+  
 
   const handleBackPress = () => {
     router.back();
   };
 
-  const handleSendChat = () => {
-    setMessList([...messList, message]);
+  const handleSendChat = async () => {
+    if (message.trim() === "") return;
+    setMessList(prev => [...prev, { text: message, isUser: true }]);
+
+    const response = await getGroqResponse(message);
+
+    const responseText = response || "No response";
+    
+    setMessList(prev => [...prev, { text: responseText, isUser: false }]);
+    
+
+
     setMessage("");
   }
+
+  useEffect(() => {
+    const handleResponeAnswer = () => {
+      if (messList.length > 0) {
+        const responseAns = "Hey";
+        
+      }
+    }
+
+    handleResponeAnswer();
+  }, [messList]);
   return (
     <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0 }}>
       <StatusBar barStyle="dark-content" backgroundColor="#f8f8f8" />
@@ -62,33 +88,64 @@ const ChatRoom = () => {
 
         </View>
         {/* MainChat */}
-        <View style={styles.chatContainer}>
+        <ScrollView 
+          style={styles.chatContainer}
+          contentContainerStyle={{
+            justifyContent: "flex-start",
+            alignItems: "flex-end",
+          }}
+        >
           {messList.map((mess, index) => (
-            <>
-              <View
-                key={index}
-                style={{
-                  marginLeft: 50,
-                  marginTop: 10,
-
-                  width: "70%",
-                  minHeight: "8%",
-                  
-                  
-                  backgroundColor: "white",
-
-                  justifyContent: "center",
-                }}
-              >
-                <Text
+            mess.isUser ? (
+              <>
+                <View
+                  key={index + "user"}
                   style={{
-                    padding: 10,
+                    marginRight: 10,
+                    marginTop: 10,
+
+                    width: "70%",
+                    minHeight: 20,                  
+                    
+                    backgroundColor: "white",
+
+                    justifyContent: "center",
                   }}
-                >{mess}</Text>
-              </View>
-            </>
+                >
+                  <Text
+                    style={{
+                      padding: 10,
+                    }}
+                  >{mess.text.trim()}</Text>
+                </View>
+              </>
+            ) : (
+              <>
+                <View
+                  key={index + "bot"}
+                  style={{
+                    marginLeft: 10,
+                    marginTop: 10,
+
+                    width: "70%",
+                    minHeight: 20,                  
+                    
+                    backgroundColor: "lightblue",
+
+                    alignSelf: "flex-start",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      padding: 10,
+                    }}
+                  >{mess.text.trim()}</Text>
+                </View>
+              </>
+            )
           ))}
-        </View>
+        </ScrollView>
         {/* Inputfield */}
         <View style={styles.inputContainer}>
           <FontAwesome name="microphone" size={18} color="black" style={{ margin: 20, }}/>
@@ -96,7 +153,7 @@ const ChatRoom = () => {
             width: "70%",
             height: "70%",
             
-            backgroundColor: "gray",
+            backgroundColor: "#f8f8f8",
             borderRadius: 20,
 
             justifyContent: "center",
@@ -104,7 +161,7 @@ const ChatRoom = () => {
 
           }}>
             <TextInput 
-              placeholder="..." 
+              placeholder="Nhan tin" 
               style={{
                 minWidth: "90%",
                 minHeight: "80%",
