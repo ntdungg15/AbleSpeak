@@ -1,4 +1,3 @@
-import { Link, router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -12,8 +11,13 @@ import {
   Platform,
   Modal,
   Button,
+  Dimensions,
+  StyleSheet,
 } from "react-native";
+import { Link, router } from "expo-router";
 import { register } from "@/api/auth";
+
+const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -62,185 +66,123 @@ const Register = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1, backgroundColor: "white" }}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+      style={styles.container}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-            justifyContent: "center",
-            paddingBottom: 100,
-          }}
-          keyboardShouldPersistTaps="handled"
-        >
-          <View style={{ flex: 1, alignItems: "center", padding: 20 }}>
-            <View style={{ marginTop: 80 }}>
-              <Text
-                style={{
-                  fontSize: 30,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                  color: "#1f2937",
-                }}
-              >
-                Welcome to EnglishMaster!
-              </Text>
-            </View>
-            <View
-              style={{
-                width: "95%",
-                marginTop: 20,
-                backgroundColor: "lightgray",
-                padding: 30,
-                borderRadius: 10,
-              }}
-            >
-              <View style={{ marginTop: 40, width: "100%" }}>
-                <Text style={styles.label}>Full name</Text>
-                <TextInput
-                  placeholder="Enter your full name"
-                  style={styles.input}
-                  value={fullName}
-                  onChangeText={setFullName}
-                />
-
-                <Text style={styles.label}>Phone</Text>
-                <TextInput
-                  placeholder="Enter your phone number"
-                  keyboardType="phone-pad"
-                  style={styles.input}
-                  value={phone}
-                  onChangeText={setPhone}
-                />
-
-                <Text style={styles.label}>Email</Text>
-                <TextInput
-                  placeholder="Enter your email"
-                  keyboardType="email-address"
-                  style={styles.input}
-                  value={email}
-                  onChangeText={setEmail}
-                />
-
-                <Text style={styles.label}>Password</Text>
-                <TextInput
-                  placeholder="*******"
-                  secureTextEntry
-                  style={styles.input}
-                  value={password}
-                  onChangeText={setPassword}
-                />
-
-                <Text style={styles.label}>Repeat password</Text>
-                <TextInput
-                  placeholder="*******"
-                  secureTextEntry
-                  style={styles.input}
-                  value={repeatPassword}
-                  onChangeText={setRepeatPassword}
-                />
-
-                <Text style={styles.label}>Age</Text>
-                <TextInput
-                  placeholder="Enter your age"
-                  keyboardType="number-pad"
-                  style={styles.input}
-                  value={age}
-                  onChangeText={setAge}
-                />
+        <View style={styles.innerContainer}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.headerText}>Welcome to EnglishMaster!</Text>
+          </View>
+          <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            keyboardShouldPersistTaps="handled"
+          >
+            <View style={styles.contentContainer}>
+              <View style={styles.formContainer}>
+                {[
+                  {
+                    label: "Full name",
+                    value: fullName,
+                    setter: setFullName,
+                    placeholder: "Enter your full name",
+                  },
+                  {
+                    label: "Phone",
+                    value: phone,
+                    setter: setPhone,
+                    placeholder: "Enter your phone number",
+                    keyboardType: "phone-pad",
+                  },
+                  {
+                    label: "Email",
+                    value: email,
+                    setter: setEmail,
+                    placeholder: "Enter your email",
+                    keyboardType: "email-address",
+                  },
+                  {
+                    label: "Password",
+                    value: password,
+                    setter: setPassword,
+                    placeholder: "*******",
+                    secureTextEntry: true,
+                  },
+                  {
+                    label: "Repeat password",
+                    value: repeatPassword,
+                    setter: setRepeatPassword,
+                    placeholder: "*******",
+                    secureTextEntry: true,
+                  },
+                  {
+                    label: "Age",
+                    value: age,
+                    setter: setAge,
+                    placeholder: "Enter your age",
+                    keyboardType: "number-pad",
+                  },
+                ].map((field, index) => (
+                  <View key={index}>
+                    <Text style={styles.label}>{field.label}</Text>
+                    <TextInput
+                      placeholder={field.placeholder}
+                      style={styles.input}
+                      value={field.value}
+                      onChangeText={field.setter}
+                      keyboardType={field.keyboardType}
+                      secureTextEntry={field.secureTextEntry}
+                    />
+                  </View>
+                ))}
 
                 <Pressable
                   onPress={() => setShowPrivacyModal(true)}
-                  style={{ marginTop: 10 }}
+                  style={styles.privacyLink}
                 >
-                  <Text
-                    style={{
-                      color: "#3b82f6",
-                      textDecorationLine: "underline",
-                    }}
-                  >
+                  <Text style={styles.privacyText}>
                     View and agree to privacy policy
                   </Text>
                 </Pressable>
 
                 {agreed && (
-                  <Text style={{ color: "green", marginTop: 5 }}>
+                  <Text style={styles.agreedText}>
                     ✓ You have agreed to the policy
                   </Text>
                 )}
 
-                {invalidMessage !== "" && (
-                  <Text style={{ color: "red", marginTop: 5 }}>
-                    {invalidMessage}
-                  </Text>
-                )}
-                {errorMessage !== "" && (
-                  <Text style={{ color: "red", marginTop: 5 }}>
-                    {errorMessage}
-                  </Text>
-                )}
-                {successMessage !== "" && (
-                  <Text style={{ color: "green", marginTop: 5 }}>
-                    {successMessage}
-                  </Text>
+                {[invalidMessage, errorMessage, successMessage].map(
+                  (msg, idx) =>
+                    msg ? (
+                      <Text
+                        key={idx}
+                        style={[
+                          styles.messageText,
+                          { color: idx === 2 ? "green" : "red" },
+                        ]}
+                      >
+                        {msg}
+                      </Text>
+                    ) : null
                 )}
 
                 <Pressable
                   disabled={!readyToRegister}
-                  style={{
-                    backgroundColor: readyToRegister ? "#f59e0b" : "#d1d5db",
-                    width: "100%",
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRadius: 12,
-                    marginTop: 16,
-                    shadowColor: "#000",
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowOpacity: 0.1,
-                    shadowRadius: 4,
-                    elevation: 2,
-                  }}
+                  style={[
+                    styles.signUpButton,
+                    {
+                      backgroundColor: readyToRegister ? "#f59e0b" : "#d1d5db",
+                    },
+                  ]}
                   onPress={async () => {
-                    const parsedAge = parseInt(age);
-                    if (isNaN(parsedAge) || parsedAge < 13) {
-                      setErrorMessage("You must be at least 13 years old.");
-                      return;
-                    }
-
-                    if (!isValidEmail(email)) {
-                      setErrorMessage("Email không hợp lệ.");
-                      return;
-                    }
-
-                    if (!isValidPhone(phone)) {
-                      setErrorMessage("Số điện thoại không hợp lệ.");
-                      return;
-                    }
-
-                    if (password !== repeatPassword) {
-                      setErrorMessage("Mật khẩu và lặp lại không khớp.");
-                      return;
-                    }
-
-                    if (!agreed) {
-                      setErrorMessage("Bạn cần đồng ý với chính sách bảo mật.");
-                      setShowPrivacyModal(true);
-                      return;
-                    }
-
                     const userCreator = await register(
                       fullName,
                       email,
                       password,
                       phone
                     );
-
                     if (userCreator.error) {
                       setErrorMessage(userCreator.error);
                     } else {
-                      console.log(userCreator);
                       setSuccessMessage(
                         "Đăng ký thành công! Chuyển hướng sau 2 giây..."
                       );
@@ -250,87 +192,104 @@ const Register = () => {
                     }
                   }}
                 >
-                  <Text
-                    style={{ color: "white", fontWeight: "bold", fontSize: 16 }}
-                  >
-                    Sign up
-                  </Text>
+                  <Text style={styles.signUpButtonText}>Sign up</Text>
                 </Pressable>
 
-                <View style={{ marginTop: 20, alignItems: "center" }}>
-                  <Link href={"/(tabs)/profile/login"}>
-                    <Text style={{ color: "#3b82f6", fontSize: 16 }}>
+                <View style={styles.loginLinkContainer}>
+                  <Link href="/(tabs)/profile/login">
+                    <Text style={styles.loginLinkText}>
                       Already have an account? Log in
                     </Text>
                   </Link>
                 </View>
               </View>
             </View>
-          </View>
 
-          {/* Privacy Modal */}
-          <Modal visible={showPrivacyModal} transparent animationType="slide">
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: "rgba(0,0,0,0.6)",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <View
-                style={{
-                  backgroundColor: "white",
-                  padding: 20,
-                  borderRadius: 10,
-                  width: "90%",
-                }}
-              >
-                <Text
-                  style={{ fontWeight: "bold", fontSize: 18, marginBottom: 10 }}
-                >
-                  Privacy Policy
-                </Text>
-                <ScrollView style={{ maxHeight: 200 }}>
-                  <Text>
-                    Please read and accept our privacy policy to continue using
-                    the app...
-                    {"\n\n"}[Mô tả chính sách bảo mật ở đây...]
-                  </Text>
-                </ScrollView>
-                <View
-                  style={{
-                    marginTop: 15,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Button
-                    title="Agree"
-                    onPress={() => {
-                      setAgreed(true);
-                      setShowPrivacyModal(false);
-                    }}
-                  />
-                  <Button
-                    title="Cancel"
-                    onPress={() => {
-                      setAgreed(false);
-                      setShowPrivacyModal(false);
-                    }}
-                    color="red"
-                  />
+            <Modal visible={showPrivacyModal} transparent animationType="slide">
+              <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                  <Text style={styles.modalTitle}>Privacy Policy</Text>
+                  <ScrollView style={styles.modalScroll}>
+                    <Text>
+                      Please read and accept our privacy policy to continue
+                      using the app...
+                      {"\n\n"}[Mô tả chính sách bảo mật ở đây...]
+                    </Text>
+                  </ScrollView>
+                  <View style={styles.modalButtons}>
+                    <Button
+                      title="Agree"
+                      onPress={() => {
+                        setAgreed(true);
+                        setShowPrivacyModal(false);
+                      }}
+                    />
+                    <Button
+                      title="Cancel"
+                      onPress={() => {
+                        setAgreed(false);
+                        setShowPrivacyModal(false);
+                      }}
+                      color="red"
+                    />
+                  </View>
                 </View>
               </View>
-            </View>
-          </Modal>
-        </ScrollView>
+            </Modal>
+          </ScrollView>
+        </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 };
 
-const styles = {
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#007AFF",
+  },
+  innerContainer: {
+    flex: 1,
+  },
+  headerContainer: {
+    marginBottom: 20,
+  },
+  scrollContainer: {
+    paddingTop: 50,
+    paddingBottom: 100,
+    flexGrow: 1,
+    justifyContent: "center",
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: "center",
+    paddingHorizontal: 20,
+  },
+  headerText: {
+    marginTop: 50,
+    fontSize: 30,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#1f2937",
+  },
+  formContainer: {
+    width: "100%",
+    marginTop: 20,
+    backgroundColor: "white",
+    padding: 30,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "500",
+    marginTop: 10,
+    color: "#374151",
+  },
   input: {
     width: "100%",
     height: 48,
@@ -342,12 +301,66 @@ const styles = {
     backgroundColor: "#f9fafb",
     fontSize: 16,
   },
-  label: {
-    fontSize: 16,
-    fontWeight: "500",
+  privacyLink: {
     marginTop: 10,
-    color: "#374151",
   },
-};
+  privacyText: {
+    color: "#3b82f6",
+    textDecorationLine: "underline",
+  },
+  agreedText: {
+    color: "green",
+    marginTop: 5,
+  },
+  messageText: {
+    marginTop: 5,
+  },
+  signUpButton: {
+    width: "100%",
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 12,
+    marginTop: 16,
+  },
+  signUpButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  loginLinkContainer: {
+    marginTop: 20,
+    alignItems: "center",
+  },
+  loginLinkText: {
+    color: "#3b82f6",
+    fontSize: 16,
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    width: "80%",
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  modalScroll: {
+    maxHeight: 300,
+  },
+  modalButtons: {
+    marginTop: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+});
 
 export default Register;
