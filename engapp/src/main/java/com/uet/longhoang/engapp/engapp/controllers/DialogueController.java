@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/list")
+@RequestMapping("/dialogue")
 public class DialogueController {
     @Autowired
     DialogueService dialogueService;
-    @GetMapping("/dialogue")
-    public List<Dialogue> getDialogues() {
+    @GetMapping("/list/all")
+    public List<Dialogue> getAllDialogues() {
         return dialogueService.getAllDialogues();
     }
 }
