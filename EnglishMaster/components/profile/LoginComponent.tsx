@@ -1,91 +1,90 @@
 import { Link, router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   TextInput,
   Pressable,
   KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
 } from "react-native";
 import { login } from "@/api/auth";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "@/redux/reducer/User";
 import { getUserInfo } from "@/api/user";
+
+import Svg, { Path } from "react-native-svg";
+
 const LoginScreen = () => {
   const dispatch = useDispatch();
 
-  const [name, setname] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
   return (
-    <View className="flex-1 items-center">
-      <View>
-        <View style={{ marginTop: 120 }}>
-          <Text style={{ fontSize: 45 }}>Welcome back</Text>
-        </View>
-        <View style={{ marginTop: 80, gap: 10, paddingLeft: 20 }}>
-          <Text>name</Text>
+    <View style={styles.container}>
+      {/* HEADER */}
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Welcome Back</Text>
+      </View>
+
+      {/* WAVE */}
+      <View style={styles.waveContainer}>
+        <Svg width="100%" height="320" viewBox="0 0 1440 320">
+          <Path
+            fill="#007AFF"
+            fillOpacity="1"
+            d="M0,256L48,213.3C96,190,192,85,288,74.7C384,20,500,120,576,176C672,224,768,256,864,266.7C960,277,1056,267,1152,234.7C1248,203,1344,149,1392,122.7L1440,96L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"
+          />
+        </Svg>
+      </View>
+
+      {/* FORM */}
+      <ScrollView contentContainerStyle={styles.formContainer}>
+        <View style={styles.formInner}>
+          <Text>Name</Text>
           <TextInput
             placeholder="Enter your name"
             value={name}
-            onChangeText={(value) => setname(value)}
-            style={{
-              width: 250,
-              height: 40,
-              borderColor: "black",
-              borderWidth: 1,
-              borderRadius: 30,
-              paddingLeft: 15,
-            }}
-          ></TextInput>
+            onChangeText={setName}
+            style={styles.input}
+          />
+
           <Text>Password</Text>
-          <KeyboardAvoidingView behavior="padding">
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+          >
             <TextInput
               placeholder="*******"
               value={password}
-              onChangeText={(value) => setPassword(value)}
-              secureTextEntry={true}
-              style={{
-                width: 250,
-                height: 40,
-                borderColor: "black",
-                borderWidth: 1,
-                borderRadius: 30,
-                paddingLeft: 15,
-              }}
-            ></TextInput>
+              onChangeText={setPassword}
+              secureTextEntry
+              style={[styles.input, { marginBottom: 10 }]}
+            />
           </KeyboardAvoidingView>
-          {error !== "" && (
-            <View>
-              <Text>{error}</Text>
-            </View>
-          )}
-          <View style={{ flexDirection: "row", gap: 10 }}>
+
+          {error !== "" && <Text style={styles.errorText}>{error}</Text>}
+
+          <View style={styles.buttonContainer}>
             <Pressable
-              style={{
-                gap: 10,
-                backgroundColor: "orange",
-                width: 100,
-                height: 50,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 20,
-              }}
+              style={styles.loginButton}
               onPress={async () => {
                 console.log("login");
                 try {
                   const response = await login(name, password);
-              
-                  if (typeof response === 'string') {
-                    // Trường hợp trả về lỗi dạng text (ví dụ: "Bad credentials")
+
+                  if (typeof response === "string") {
                     setError(response);
                     return;
                   }
-              
+
                   if (response.token) {
                     console.log("Login successful:", response.token);
                     const userInfo = await getUserInfo(name, response.token);
-              
+
                     if (userInfo) {
                       console.log("User info:", userInfo);
                       dispatch(
@@ -106,26 +105,88 @@ const LoginScreen = () => {
                   setError("Đã xảy ra lỗi khi đăng nhập");
                 }
               }}
-    
             >
-              <Text>Login</Text>
+              <Text style={styles.loginButtonText}>Login</Text>
             </Pressable>
-            <View style={{ backgroundColor: "lightgray", borderRadius: 10 }}>
-              <Link
-                href={"/(tabs)/profile/register"}
-                style={{
-                  width: "100%",
-                  padding: 13,
-                }}
-              >
-                Don't have an account?
-              </Link>
-            </View>
+
+            <Link href={"/(tabs)/profile/register"}>
+              <Text style={styles.registerLink}>Don't have an account?</Text>
+            </Link>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };
 
 export default LoginScreen;
+
+// Styles
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  header: {
+    backgroundColor: "#007AFF",
+    height: 250,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  headerText: {
+    fontSize: 45,
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  waveContainer: {
+    position: "absolute",
+    top: 120,
+    width: "100%",
+  },
+  formContainer: {
+    paddingTop: 180,
+    alignItems: "center",
+  },
+  formInner: {
+    gap: 10,
+    width: "80%",
+  },
+  input: {
+    width: "100%",
+    height: 45,
+    borderColor: "black",
+    borderWidth: 1,
+    borderRadius: 30,
+    paddingLeft: 15,
+  },
+  errorText: {
+    color: "red",
+    textAlign: "center",
+    marginTop: 5,
+  },
+  buttonContainer: {
+    alignItems: "center",
+    marginTop: 20,
+    gap: 10,
+  },
+  loginButton: {
+    backgroundColor: "orange",
+    width: 150,
+    height: 55,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 30,
+  },
+  loginButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 18,
+    letterSpacing: 1,
+  },
+  registerLink: {
+    color: "#007AFF",
+    fontSize: 16,
+    textDecorationLine: "underline",
+    textAlign: "center",
+  },
+});

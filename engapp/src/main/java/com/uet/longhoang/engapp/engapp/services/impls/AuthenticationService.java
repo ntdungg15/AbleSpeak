@@ -7,6 +7,7 @@ import com.uet.longhoang.engapp.engapp.exceptions.EmailAlreadyExistsException;
 import com.uet.longhoang.engapp.engapp.exceptions.NameAlreadyExistsException;
 import com.uet.longhoang.engapp.engapp.repositories.UserRepository;
 import com.uet.longhoang.engapp.engapp.services.interfaces.IAuthenticationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class AuthenticationService implements IAuthenticationService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -36,10 +38,13 @@ public class AuthenticationService implements IAuthenticationService {
 
     @Override
     public User register(RegisterInput registerInput) throws EmailAlreadyExistsException, NameAlreadyExistsException {
+        log.info("Registering new user");
         if (userRepository.findByName(registerInput.getName()).isPresent()) {
+            log.info("User already exists");
             throw new NameAlreadyExistsException("Name already exists");
         }
         if (userRepository.findByEmail(registerInput.getEmail()).isPresent()) {
+            log.info("User already exists");
             throw new EmailAlreadyExistsException("Email already exists");
         }
         User user = new User();
@@ -47,6 +52,7 @@ public class AuthenticationService implements IAuthenticationService {
         user.setEmail(registerInput.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(registerInput.getPassword()));
         userRepository.save(user);
+        log.info("Registered new user");
         return user;
     }
 }
