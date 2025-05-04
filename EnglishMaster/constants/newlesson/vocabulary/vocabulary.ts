@@ -226,4 +226,9 @@ export const styles = StyleSheet.create({
     color: '#757575',
     textAlign: 'center',
   },
+  offlineIndicator: {
+    marginLeft: 10,
+    fontSize: 12,
+    color: '#FF9800',
+  }
 });

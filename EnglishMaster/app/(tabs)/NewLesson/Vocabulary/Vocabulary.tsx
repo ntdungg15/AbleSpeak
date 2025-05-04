@@ -3,12 +3,12 @@ import {
   View,
   Text,
   SafeAreaView,
+  FlatList,
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
   TextInput,
   Image,
-  Alert,
 } from 'react-native';
 import { Audio } from 'expo-av';
 import { getVocabulary, getTranslation } from '@/api/NewLesson/newlesson';
@@ -23,7 +23,6 @@ type Phonetic = {
 
 type Definition = {
   definition: string;
-  translation?: string; 
 };
 
 type Meaning = {
@@ -45,6 +44,7 @@ type LessonItem = {
   totalWords: number;
 };
 
+// Định nghĩa các bài học cố định
 const lessons: LessonItem[] = [
   {
     id: 'self-introduction',
@@ -123,68 +123,49 @@ const Vocabulary = () => {
   const [searchWord, setSearchWord] = useState('');
   const [searchResults, setSearchResults] = useState<VocabularyItem[]>([]);
   const [loading, setLoading] = useState(false);
-  const [translating, setTranslating] = useState(false);
   const [lessonData, setLessonData] = useState<LessonItem[]>(lessons);
-  const [showTranslation, setShowTranslation] = useState(true); 
+  const [translationMap, setTranslationMap] = useState<{ [key: string]: string }>({});
+  const MAX_DEFS_PER_MEANING = 2;
+
   const handleSearch = async () => {
-    if (searchWord.trim() !== '') {
-      try {
-        setLoading(true);
-        const data = await getVocabulary(searchWord.trim());
-        setSearchResults(data);
-
-        if (showTranslation && data.length > 0) {
-          await translateDefinitions(data);
-        }
-      } catch (error) {
-        console.error('Error searching vocabulary:', error);
-        setSearchResults([]);
-        Alert.alert('Error', 'Failed to search for the word. Please try again.');
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
-
-  const translateDefinitions = async (vocabularyItems: VocabularyItem[]) => {
+    if (!searchWord.trim()) return;
+  
+    setLoading(true);
     try {
-      setTranslating(true);
-      const updatedItems = [...vocabularyItems];
-
-      for (let itemIndex = 0; itemIndex < updatedItems.length; itemIndex++) {
-        const item = updatedItems[itemIndex];
-
-        for (let meaningIndex = 0; meaningIndex < item.meanings.length; meaningIndex++) {
-          const meaning = item.meanings[meaningIndex];
-
-          for (let defIndex = 0; defIndex < meaning.definitions.length; defIndex++) {
-            const def = meaning.definitions[defIndex];
-            const translatedText = await getTranslation(def.definition);
-            if (translatedText) {
-              meaning.definitions[defIndex] = {
-                ...def,
-                translation: translatedText
-              };
-            }
-          }
+      const data = await getVocabulary(searchWord.trim());
+      setSearchResults(data);
+  
+      const textsToTranslate = new Set<string>();
+      data.forEach(item => {
+        item.meanings.forEach(meaning => {
+          textsToTranslate.add(meaning.partOfSpeech);
+          meaning.definitions.forEach(def => {
+            if (def.definition) textsToTranslate.add(def.definition);
+          });
+        });
+      });
+  
+      // 2. Dịch tuần tự từng chuỗi
+      const map: { [key: string]: string } = {};
+      for (const txt of textsToTranslate) {
+        try {
+          const tr = await getTranslation(txt);
+          map[txt] = tr;
+        } catch {
+          map[txt] = ""; // hoặc giữ nguyên txt
         }
       }
-
-      setSearchResults(updatedItems);
-    } catch (error) {
-      console.error('Error translating definitions:', error);
-      Alert.alert('Translation Error', 'Failed to translate definitions. Check your connection.');
+  
+      // 3. Lưu vào state
+      setTranslationMap(map);
+    } catch (err) {
+      console.error("Error searching or translating:", err);
+      setSearchResults([]);
     } finally {
-      setTranslating(false);
+      setLoading(false);
     }
   };
-
-  const toggleTranslation = () => {
-    setShowTranslation(!showTranslation);
-    if (!showTranslation && searchResults.length > 0) {
-      translateDefinitions(searchResults);
-    }
-  };
+  
 
   const playAudio = async (audioUrl: string | undefined) => {
     if (!audioUrl) return;
@@ -193,7 +174,6 @@ const Vocabulary = () => {
       await sound.playAsync();
     } catch (error) {
       console.error('Error playing audio:', error);
-      Alert.alert('Audio Error', 'Could not play pronunciation audio.');
     }
   };
 
@@ -207,27 +187,27 @@ const Vocabulary = () => {
   const renderSearchResults = ({ item }: { item: VocabularyItem }) => (
     <View style={styles.searchResultItem}>
       <Text style={styles.word}>{item.word}</Text>
-      {item.phonetics.map((phonetic, index) => (
-        <View key={index} style={styles.phoneticContainer}>
-          {phonetic.text && <Text style={styles.phoneticText}>{phonetic.text}</Text>}
-          {phonetic.audio && (
-            <TouchableOpacity onPress={() => playAudio(phonetic.audio)}>
-              <Text style={styles.audioButton}>🔊</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      ))}
-      {item.meanings.map((meaning, index) => (
-        <View key={index} style={styles.meaningContainer}>
+      {/* phonetics... */}
+  
+      {item.meanings.map((meaning, mi) => (
+        <View key={mi} style={styles.meaningContainer}>
+          {/* English */}
           <Text style={styles.partOfSpeech}>{meaning.partOfSpeech}</Text>
-          {meaning.definitions.map((definition, defIndex) => (
-            <View key={defIndex} style={styles.definitionContainer}>
-              <Text style={styles.definition}>
-                - {definition.definition}
-              </Text>
-              {showTranslation && definition.translation && (
+          {/* Việt */}
+          {translationMap[meaning.partOfSpeech] != null && (
+            <Text style={styles.translationText}>
+              → {translationMap[meaning.partOfSpeech]}
+            </Text>
+          )}
+  
+          {meaning.definitions.map((def, di) => (
+            <View key={di} style={{ marginVertical: 4 }}>
+              {/* English */}
+              <Text style={styles.definition}>- {def.definition}</Text>
+              {/* Việt */}
+              {translationMap[def.definition] != null && (
                 <Text style={styles.translationText}>
-                  {definition.translation}
+                  → {translationMap[def.definition]}
                 </Text>
               )}
             </View>
@@ -236,6 +216,7 @@ const Vocabulary = () => {
       ))}
     </View>
   );
+  
 
   const renderLessonItem = ({ item }: { item: LessonItem }) => (
     <TouchableOpacity
@@ -263,7 +244,8 @@ const Vocabulary = () => {
       <TouchableOpacity
         style={styles.downloadButton}
         onPress={(e) => {
-          e.stopPropagation(); 
+          e.stopPropagation(); // Ngăn sự kiện click từ lan sang parent
+          // Thêm logic tải xuống nếu cần
         }}
       >
         <Text style={styles.downloadIcon}>⬇️</Text>
@@ -284,43 +266,22 @@ const Vocabulary = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Search Bar and Translation Toggle */}
+      {/* Search Bar */}
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.searchInput}
           placeholder="Enter a word to search"
           value={searchWord}
           onChangeText={setSearchWord}
-          onSubmitEditing={handleSearch}
         />
         <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
           <Text style={styles.searchButtonText}>Search</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Translation Toggle Button */}
-      <View style={styles.translationToggleContainer}>
-        <TouchableOpacity
-          style={[
-            styles.translationToggleButton,
-            showTranslation ? styles.translationActive : styles.translationInactive
-          ]}
-          onPress={toggleTranslation}
-        >
-          <Text style={styles.translationToggleText}>
-            {showTranslation ? "Ẩn bản dịch" : "Hiện bản dịch"}
-          </Text>
-        </TouchableOpacity>
-      </View>
-
       {/* Main Scrollable Content */}
-      {(loading || translating) ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#007BFF" />
-          <Text style={styles.loadingText}>
-            {loading ? "Đang tìm kiếm..." : "Đang dịch..."}
-          </Text>
-        </View>
+      {loading ? (
+        <ActivityIndicator size="large" color="#007BFF" />
       ) : (
         <ScrollView style={styles.contentContainer}>
           {/* Search Results */}
@@ -334,18 +295,8 @@ const Vocabulary = () => {
             </View>
           )}
 
-          {/* No Results Message */}
-          {searchWord.trim() !== '' && searchResults.length === 0 && !loading && (
-            <View style={styles.noResultsContainer}>
-              <Text style={styles.noResultsText}>
-                Không tìm thấy từ "{searchWord}". Vui lòng thử lại.
-              </Text>
-            </View>
-          )}
-
           {/* Lessons */}
           <View style={styles.lessonsContainer}>
-            <Text style={styles.sectionTitle}>Các bài học từ vựng</Text>
             {lessonData.map((item) => (
               <View key={item.id}>
                 {renderLessonItem({ item })}
