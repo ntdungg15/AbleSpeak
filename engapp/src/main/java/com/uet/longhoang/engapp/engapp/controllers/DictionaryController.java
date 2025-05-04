@@ -1,6 +1,7 @@
 package com.uet.longhoang.engapp.engapp.controllers;
 
 import com.uet.longhoang.engapp.engapp.dtos.TranslationRequest;
+import com.uet.longhoang.engapp.engapp.entities.DictionaryEntry;
 import com.uet.longhoang.engapp.engapp.services.impls.DictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,4 +27,8 @@ public class DictionaryController {
             throw new RuntimeException(e);
         }
     }
+    @GetMapping("/word/{word}")
+     public DictionaryEntry[] getWordDefinition(@PathVariable String word) {
+         return dictionaryService.getDefinition(word);
+     }
 }

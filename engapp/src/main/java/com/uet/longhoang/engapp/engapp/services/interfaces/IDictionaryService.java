@@ -1,7 +1,10 @@
 package com.uet.longhoang.engapp.engapp.services.interfaces;
+import com.uet.longhoang.engapp.engapp.entities.DictionaryEntry;
 
 import java.io.IOException;
 
 public interface IDictionaryService {
-    public String translate(String from, String to,String text) throws IOException;
+    String translate(String from, String to, String text) throws IOException;
+    DictionaryEntry[] getDefinition(String word);
 }
+
