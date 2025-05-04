@@ -7,6 +7,8 @@ import {
   ScrollView,
   Pressable,
   StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useSelector } from "react-redux";
@@ -18,6 +20,7 @@ import WeeklyXPChart from "@/components/profile/WeeklyStreak";
 import FriendComponent from "@/components/profile/FriendComponent";
 import { getRelationship } from "@/api/user";
 import StatistifcsComponent from "@/components/profile/StatistifcsComponent";
+
 export default function ProfileScreen() {
   const user = useSelector((state) => state.user);
   const [relationship, setRelationship] = React.useState([]);
@@ -36,92 +39,96 @@ export default function ProfileScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Header */}
-        <View style={styles.header}>
-          <Image
-            style={styles.avatar}
-            source={{
-              uri: "https://i.pinimg.com/736x/86/82/12/8682125231a362848c3743c444f1ce98.jpg",
-            }}
-          />
-          <View style={styles.headerInfo}>
-            <Text style={styles.username}>{user.userInfo.name}!</Text>
-            <Text style={styles.level}>Level 3 · Intermediate</Text>
-            <View style={styles.userAppInfo}>
-              <View
-                style={{
-                  position: "relative",
-
-                  padding: 5,
-                }}
-              >
-                <Text style={styles.joindate}>Join from Mar 2023</Text>
-              </View>
-              <View style={styles.nationality}>
-                <Image
-                  source={{
-                    uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/640px-Flag_of_Vietnam.svg.png",
-                  }}
-                  style={{ width: 30, height: 20 }}
-                />
-              </View>
-            </View>
-          </View>
-
-          <Pressable
-            style={styles.settingButon}
-            onPress={() => router.push("/(tabs)/profile")}
-          >
-            <FontAwesome name="cog" size={24} color="black" />
-          </Pressable>
-        </View>
-        <StatistifcsComponent />
-        <WeeklyXPChart />
-        {/* Practice Section */}
-        <Text style={styles.sectionTitle}>Quick Practice</Text>
-        <View style={styles.practiceRow}>
-          <Pressable style={styles.practiceBtn}>
-            <Text>Vocabulary</Text>
-          </Pressable>
-          <Pressable style={styles.practiceBtn}>
-            <Text>Listening</Text>
-          </Pressable>
-          <Pressable style={styles.practiceBtn}>
-            <Text>Speaking</Text>
-          </Pressable>
-        </View>
-        {/* Friend Component */}
-        <FriendComponent relationship={relationship} />
-        {/* Recently Viewed or Reviewed Words */}
-        <Text style={styles.sectionTitle}>Recently Reviewed</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <SafeAreaView style={styles.container}>
         <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.scrollRow}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
         >
-          {["apple", "run", "beautiful", "quickly"].map((word, index) => (
-            <View key={index} style={styles.wordBox}>
-              <Text style={styles.wordText}>{word}</Text>
+          {/* Header */}
+          <View style={styles.header}>
+            <Image
+              style={styles.avatar}
+              source={{
+                uri: "https://i.pinimg.com/736x/86/82/12/8682125231a362848c3743c444f1ce98.jpg",
+              }}
+            />
+            <View style={styles.headerInfo}>
+              <Text style={styles.username}>{user.userInfo.name}!</Text>
+              <Text style={styles.level}>Level 3 · Intermediate</Text>
+              <View style={styles.userAppInfo}>
+                <View
+                  style={{
+                    position: "relative",
+                    padding: 5,
+                  }}
+                >
+                  <Text style={styles.joindate}>Join from Mar 2023</Text>
+                </View>
+                <View style={styles.nationality}>
+                  <Image
+                    source={{
+                      uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/640px-Flag_of_Vietnam.svg.png",
+                    }}
+                    style={{ width: 30, height: 20 }}
+                  />
+                </View>
+              </View>
             </View>
-          ))}
-        </ScrollView>
-        <View style={{ alignItems: "center", marginTop: 20 }}>
-          <Pressable
-            onPress={() => dispatch(logout())}
-            style={{
-              backgroundColor: "#ff5252",
-              paddingVertical: 10,
-              paddingHorizontal: 30,
-              borderRadius: 8,
-            }}
+
+            <Pressable
+              style={styles.settingButon}
+              onPress={() => router.push("/(tabs)/profile")}
+            >
+              <FontAwesome name="cog" size={24} color="black" />
+            </Pressable>
+          </View>
+          <StatistifcsComponent />
+          <WeeklyXPChart />
+          {/* Practice Section */}
+          <Text style={styles.sectionTitle}>Quick Practice</Text>
+          <View style={styles.practiceRow}>
+            <Pressable style={styles.practiceBtn}>
+              <Text>Vocabulary</Text>
+            </Pressable>
+            <Pressable style={styles.practiceBtn}>
+              <Text>Listening</Text>
+            </Pressable>
+            <Pressable style={styles.practiceBtn}>
+              <Text>Speaking</Text>
+            </Pressable>
+          </View>
+          {/* Friend Component */}
+          <FriendComponent relationship={relationship} />
+          {/* Recently Viewed or Reviewed Words */}
+          <Text style={styles.sectionTitle}>Recently Reviewed</Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.scrollRow}
           >
-            <Text style={{ color: "#fff", fontWeight: "bold" }}>Logout</Text>
-          </Pressable>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+            {["apple", "run", "beautiful", "quickly"].map((word, index) => (
+              <View key={index} style={styles.wordBox}>
+                <Text style={styles.wordText}>{word}</Text>
+              </View>
+            ))}
+          </ScrollView>
+          <View style={{ alignItems: "center", marginTop: 20 }}>
+            <Pressable
+              onPress={() => dispatch(logout())}
+              style={{
+                backgroundColor: "#ff5252",
+                paddingVertical: 10,
+                paddingHorizontal: 30,
+                borderRadius: 8,
+              }}
+            >
+              <Text style={{ color: "#fff", fontWeight: "bold" }}>Logout</Text>
+            </Pressable>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 }
 

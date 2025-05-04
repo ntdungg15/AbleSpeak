@@ -9,12 +9,12 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
+  ActivityIndicator,
 } from "react-native";
 import { login } from "@/api/auth";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "@/redux/reducer/User";
 import { getUserInfo } from "@/api/user";
-
 import Svg, { Path } from "react-native-svg";
 
 const LoginScreen = () => {
@@ -23,15 +23,56 @@ const LoginScreen = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async () => {
+    if (!name || !password) {
+      setError("Vui lòng nhập đầy đủ tên và mật khẩu");
+      return;
+    }
+
+    setError("");
+    setLoading(true);
+    try {
+      console.log("Sending login with:", name, password);
+      const response = await login(name, password);
+
+      if (typeof response === "string") {
+        setError(response);
+        setLoading(false);
+        return;
+      }
+
+      if (response.token) {
+        const userInfo = await getUserInfo(name, response.token);
+        if (userInfo) {
+          dispatch(
+            loginSuccess({
+              token: response.token,
+              userInfo: userInfo,
+            })
+          );
+          router.replace("/(tabs)");
+        } else {
+          setError("Không thể lấy thông tin người dùng");
+        }
+      } else {
+        setError(response.message || "Đăng nhập thất bại");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("Đã xảy ra lỗi khi đăng nhập");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
-      {/* HEADER */}
       <View style={styles.header}>
         <Text style={styles.headerText}>Welcome Back</Text>
       </View>
 
-      {/* WAVE */}
       <View style={styles.waveContainer}>
         <Svg width="100%" height="320" viewBox="0 0 1440 320">
           <Path
@@ -42,8 +83,10 @@ const LoginScreen = () => {
         </Svg>
       </View>
 
-      {/* FORM */}
-      <ScrollView contentContainerStyle={styles.formContainer}>
+      <ScrollView
+        contentContainerStyle={styles.formContainer}
+        keyboardShouldPersistTaps="handled"
+      >
         <View style={styles.formInner}>
           <Text>Name</Text>
           <TextInput
@@ -51,62 +94,38 @@ const LoginScreen = () => {
             value={name}
             onChangeText={setName}
             style={styles.input}
+            autoCapitalize="none"
           />
 
           <Text>Password</Text>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-          >
-            <TextInput
-              placeholder="*******"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              style={[styles.input, { marginBottom: 10 }]}
-            />
-          </KeyboardAvoidingView>
+
+          <TextInput
+            placeholder="*******"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            style={[styles.input, { marginBottom: 10 }]}
+            autoCapitalize="none"
+          />
 
           {error !== "" && <Text style={styles.errorText}>{error}</Text>}
 
           <View style={styles.buttonContainer}>
             <Pressable
-              style={styles.loginButton}
-              onPress={async () => {
-                console.log("login");
-                try {
-                  const response = await login(name, password);
-
-                  if (typeof response === "string") {
-                    setError(response);
-                    return;
-                  }
-
-                  if (response.token) {
-                    console.log("Login successful:", response.token);
-                    const userInfo = await getUserInfo(name, response.token);
-
-                    if (userInfo) {
-                      console.log("User info:", userInfo);
-                      dispatch(
-                        loginSuccess({
-                          token: response.token,
-                          userInfo: userInfo,
-                        })
-                      );
-                      router.replace("/(tabs)");
-                    } else {
-                      setError("Không thể lấy thông tin người dùng");
-                    }
-                  } else {
-                    setError(response.message || "Đăng nhập thất bại");
-                  }
-                } catch (err) {
-                  console.error("Login error:", err);
-                  setError("Đã xảy ra lỗi khi đăng nhập");
-                }
+              style={[
+                styles.loginButton,
+                (!name || !password || loading) && { opacity: 0.5 },
+              ]}
+              onPress={() => {
+                handleLogin();
               }}
+              disabled={!name || !password || loading}
             >
-              <Text style={styles.loginButtonText}>Login</Text>
+              {loading ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text style={styles.loginButtonText}>Login</Text>
+              )}
             </Pressable>
 
             <Link href={"/(tabs)/profile/register"}>
@@ -121,7 +140,6 @@ const LoginScreen = () => {
 
 export default LoginScreen;
 
-// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
