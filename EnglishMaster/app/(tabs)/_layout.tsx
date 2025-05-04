@@ -1,45 +1,69 @@
-import { Tabs } from "expo-router";
-import { Platform } from "react-native";
-
-import { HapticTab } from "../../components/HapticTab";
-import { IconSymbol } from "..//../components/ui/IconSymbol";
-import TabBarBackground from "../../components/ui/TabBarBackground";
-import { Colors } from "../../constants/Colors";
+import React from 'react';
+import { Tabs } from 'expo-router';
+import { Image } from 'react-native';
+import HomeIcon from '@/assets/images/icons/home.png';
+import ChatbotIcon from '@/assets/images/icons/bot.png';
+import ProfileIcon from '@/assets/images/icons/profile.png';
+import ExamIcon from '@/assets/images/icons/examination.png';
 
 export default function TabLayout() {
-
-
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: "absolute",
-          },
-          default: {},
-        }),
+        tabBarActiveTintColor: '#007AFF',
+        tabBarInactiveTintColor: '#8E8E93',
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+          title: 'Home',
+          tabBarIcon: ({ color, size }) => (
+            <Image source={HomeIcon} style={{ width: size, height: size, }} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="chatbot"
+        options={{
+          title: 'Chatbot',
+          tabBarIcon: ({ color, size }) => (
+            <Image source={ChatbotIcon} style={{ width: size, height: size, }} />
           ),
         }}
       />
       <Tabs.Screen
-        name="NewLesson"
+        name="examination"
         options={{
-          href: null, 
-          headerShown: false,
+          title: 'Exams',
+          tabBarIcon: ({ color, size }) => (
+            <Image source={ExamIcon} style={{ width: size, height: size, }} />
+          ),
         }}
       />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, size }) => (
+            <Image source={ProfileIcon} style={{ width: size, height: size, }} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name='NewLesson'
+        options={{
+          href: null,
+          headerShown: false,
+        }} />
+      <Tabs.Screen
+        name='home'
+        options={{
+          href: null,
+          headerShown: false,
+        }} />
     </Tabs>
   );
 }
