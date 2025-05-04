@@ -1,10 +1,10 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
 import { Image } from 'react-native';
-import HomeIcon    from '@/assets/images/icons/home.png';
+import HomeIcon from '@/assets/images/icons/home.png';
 import ChatbotIcon from '@/assets/images/icons/bot.png';
 import ProfileIcon from '@/assets/images/icons/profile.png';
-import ExamIcon    from '@/assets/images/icons/examination.png';
+import ExamIcon from '@/assets/images/icons/examination.png';
 
 export default function TabLayout() {
   return (
@@ -20,7 +20,7 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color, size }) => (
-            <Image source={HomeIcon} style={{ width: size, height: size,  }} />
+            <Image source={HomeIcon} style={{ width: size, height: size, }} />
           ),
         }}
       />
@@ -30,7 +30,7 @@ export default function TabLayout() {
         options={{
           title: 'Chatbot',
           tabBarIcon: ({ color, size }) => (
-            <Image source={ChatbotIcon} style={{ width: size, height: size,  }} />
+            <Image source={ChatbotIcon} style={{ width: size, height: size, }} />
           ),
         }}
       />
@@ -39,7 +39,7 @@ export default function TabLayout() {
         options={{
           title: 'Exams',
           tabBarIcon: ({ color, size }) => (
-            <Image source={ExamIcon} style={{ width: size, height: size,  }} />
+            <Image source={ExamIcon} style={{ width: size, height: size, }} />
           ),
         }}
       />
@@ -48,7 +48,7 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, size }) => (
-            <Image source={ProfileIcon} style={{ width: size, height: size,  }} />
+            <Image source={ProfileIcon} style={{ width: size, height: size, }} />
           ),
         }}
       />
@@ -57,7 +57,13 @@ export default function TabLayout() {
         options={{
           href: null,
           headerShown: false,
-        }}/>
+        }} />
+      <Tabs.Screen
+        name='home'
+        options={{
+          href: null,
+          headerShown: false,
+        }} />
     </Tabs>
   );
 }
