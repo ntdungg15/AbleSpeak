@@ -10,6 +10,7 @@ import com.uet.longhoang.engapp.engapp.exceptions.NameAlreadyExistsException;
 import com.uet.longhoang.engapp.engapp.services.impls.AuthenticationService;
 import com.uet.longhoang.engapp.engapp.services.impls.JwtService;
 import com.uet.longhoang.engapp.engapp.services.impls.UserDetailsImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
+@Slf4j
 public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
@@ -38,6 +40,7 @@ public class AuthenticationController {
         } catch (BadCredentialsException e) {
             Map<String, String> error = new HashMap<>();
             error.put("message", e  .getMessage());
+            log.error(error.toString());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
         }
     }
