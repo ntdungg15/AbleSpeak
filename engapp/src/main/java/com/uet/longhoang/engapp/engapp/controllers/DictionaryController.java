@@ -18,7 +18,7 @@ public class DictionaryController {
     @Autowired
     private DictionaryService dictionaryService;
 
-    @GetMapping("/translate")
+    @PostMapping("/translate")
     public ResponseEntity<?> getWordDefinition(@RequestBody TranslationRequest request) {
         try {
             String res =  dictionaryService.translate(request.getFrom(), request.getTo(), request.getText());

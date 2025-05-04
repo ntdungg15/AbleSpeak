@@ -3,15 +3,15 @@ import {
   View,
   Text,
   SafeAreaView,
-  FlatList,
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
   TextInput,
   Image,
+  Alert,
 } from 'react-native';
 import { Audio } from 'expo-av';
-import { getVocabulary,  } from '@/api/NewLesson/newlesson';
+import { getVocabulary, getTranslation } from '@/api/NewLesson/newlesson';
 import { styles } from '@/constants/newlesson/vocabulary/vocabulary';
 import { ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
@@ -23,6 +23,7 @@ type Phonetic = {
 
 type Definition = {
   definition: string;
+  translation?: string; 
 };
 
 type Meaning = {
@@ -39,82 +40,81 @@ type VocabularyItem = {
 type LessonItem = {
   id: string;
   title: string;
-  image: any; 
+  image: any;
   progress: number;
   totalWords: number;
 };
 
-// Định nghĩa các bài học cố định
 const lessons: LessonItem[] = [
-  { 
-    id: 'self-introduction', 
-    title: 'Bài 1: Giới thiệu bản thân', 
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279147/mau-gioi-thieu-ban-than-bang-tieng-viet_pprnkv.png' }, 
-    progress: 0, 
-    totalWords: 20 
+  {
+    id: 'self-introduction',
+    title: 'Bài 1: Giới thiệu bản thân',
+    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279147/mau-gioi-thieu-ban-than-bang-tieng-viet_pprnkv.png' },
+    progress: 0,
+    totalWords: 20
   },
-  { 
-    id: 'family', 
-    title: 'Bài 2: Gia đình', 
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279146/family_cpdt0s.jpg' }, 
-    progress: 0, 
-    totalWords: 20 
+  {
+    id: 'family',
+    title: 'Bài 2: Gia đình',
+    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279146/family_cpdt0s.jpg' },
+    progress: 0,
+    totalWords: 20
   },
-  { 
-    id: 'appearance-description', 
-    title: 'Bài 3: Miêu tả ngoại hình', 
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279146/ngo%E1%BA%A1i_h%C3%ACnh_nb4bh0.png' }, 
-    progress: 0, 
-    totalWords: 20 
+  {
+    id: 'appearance-description',
+    title: 'Bài 3: Miêu tả ngoại hình',
+    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279146/ngo%E1%BA%A1i_h%C3%ACnh_nb4bh0.png' },
+    progress: 0,
+    totalWords: 20
   },
-  { 
-    id: 'jobs', 
-    title: 'Bài 4: Nghề nghiệp', 
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279148/ngh%E1%BB%81_nghi%E1%BB%87p_e8fc2p.png' }, 
-    progress: 0, 
-    totalWords: 20 
+  {
+    id: 'jobs',
+    title: 'Bài 4: Nghề nghiệp',
+    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279148/ngh%E1%BB%81_nghi%E1%BB%87p_e8fc2p.png' },
+    progress: 0,
+    totalWords: 20
   },
-  { 
-    id: 'character', 
-    title: 'Bài 5: Tính cách con người', 
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279146/t%C3%ADnh_c%C3%A1ch_dypbdt.jpg' }, 
-    progress: 0, 
-    totalWords: 20 
+  {
+    id: 'character',
+    title: 'Bài 5: Tính cách con người',
+    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279146/t%C3%ADnh_c%C3%A1ch_dypbdt.jpg' },
+    progress: 0,
+    totalWords: 20
   },
-  { 
-    id: 'transportation', 
-    title: 'Bài 6: Giao thông', 
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279150/giao_th%C3%B4ng_zeg8zo.jpg' }, 
-    progress: 0, 
-    totalWords: 20 
+  {
+    id: 'transportation',
+    title: 'Bài 6: Giao thông',
+    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279150/giao_th%C3%B4ng_zeg8zo.jpg' },
+    progress: 0,
+    totalWords: 20
   },
-  { 
-    id: 'food', 
-    title: 'Bài 7: Đồ ăn', 
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279147/%C4%91%E1%BB%93_%C4%83n_vga6j0.png' }, 
-    progress: 0, 
-    totalWords: 20 
+  {
+    id: 'food',
+    title: 'Bài 7: Đồ ăn',
+    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279147/%C4%91%E1%BB%93_%C4%83n_vga6j0.png' },
+    progress: 0,
+    totalWords: 20
   },
-  { 
-    id: 'hobbies', 
-    title: 'Bài 8: Sở thích', 
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279147/s%E1%BB%9F_th%C3%ADch_brbty8.jpg' }, 
-    progress: 0, 
-    totalWords: 20 
+  {
+    id: 'hobbies',
+    title: 'Bài 8: Sở thích',
+    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279147/s%E1%BB%9F_th%C3%ADch_brbty8.jpg' },
+    progress: 0,
+    totalWords: 20
   },
-  { 
-    id: 'weather', 
-    title: 'Bài 9: Thời tiết', 
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279147/th%E1%BB%9Di_ti%E1%BA%BFt_qbzdxu.jpg' }, 
-    progress: 0, 
-    totalWords: 20 
+  {
+    id: 'weather',
+    title: 'Bài 9: Thời tiết',
+    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279147/th%E1%BB%9Di_ti%E1%BA%BFt_qbzdxu.jpg' },
+    progress: 0,
+    totalWords: 20
   },
-  { 
-    id: 'colors', 
-    title: 'Bài 10: Màu sắc', 
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279146/m%C3%A0u_s%E1%BA%AFc_spcu2b.jpg' }, 
-    progress: 0, 
-    totalWords: 20 
+  {
+    id: 'colors',
+    title: 'Bài 10: Màu sắc',
+    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279146/m%C3%A0u_s%E1%BA%AFc_spcu2b.jpg' },
+    progress: 0,
+    totalWords: 20
   }
 ];
 
@@ -123,34 +123,66 @@ const Vocabulary = () => {
   const [searchWord, setSearchWord] = useState('');
   const [searchResults, setSearchResults] = useState<VocabularyItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [translating, setTranslating] = useState(false);
   const [lessonData, setLessonData] = useState<LessonItem[]>(lessons);
-
-  useEffect(() => {
-    const fetchLessonProgress = async () => {
-      try {
-        // Gọi API để lấy tiến độ học từ backend nếu cần
-        // Ví dụ: const progressData = await getLessonProgress();
-        // Sau đó cập nhật state lessonData với dữ liệu tiến độ
-      } catch (error) {
-        console.error('Error fetching lesson progress:', error);
-      }
-    };
-
-    fetchLessonProgress();
-  }, []);
-
+  const [showTranslation, setShowTranslation] = useState(true); 
   const handleSearch = async () => {
     if (searchWord.trim() !== '') {
       try {
         setLoading(true);
         const data = await getVocabulary(searchWord.trim());
         setSearchResults(data);
+
+        if (showTranslation && data.length > 0) {
+          await translateDefinitions(data);
+        }
       } catch (error) {
         console.error('Error searching vocabulary:', error);
         setSearchResults([]);
+        Alert.alert('Error', 'Failed to search for the word. Please try again.');
       } finally {
         setLoading(false);
       }
+    }
+  };
+
+  const translateDefinitions = async (vocabularyItems: VocabularyItem[]) => {
+    try {
+      setTranslating(true);
+      const updatedItems = [...vocabularyItems];
+
+      for (let itemIndex = 0; itemIndex < updatedItems.length; itemIndex++) {
+        const item = updatedItems[itemIndex];
+
+        for (let meaningIndex = 0; meaningIndex < item.meanings.length; meaningIndex++) {
+          const meaning = item.meanings[meaningIndex];
+
+          for (let defIndex = 0; defIndex < meaning.definitions.length; defIndex++) {
+            const def = meaning.definitions[defIndex];
+            const translatedText = await getTranslation(def.definition);
+            if (translatedText) {
+              meaning.definitions[defIndex] = {
+                ...def,
+                translation: translatedText
+              };
+            }
+          }
+        }
+      }
+
+      setSearchResults(updatedItems);
+    } catch (error) {
+      console.error('Error translating definitions:', error);
+      Alert.alert('Translation Error', 'Failed to translate definitions. Check your connection.');
+    } finally {
+      setTranslating(false);
+    }
+  };
+
+  const toggleTranslation = () => {
+    setShowTranslation(!showTranslation);
+    if (!showTranslation && searchResults.length > 0) {
+      translateDefinitions(searchResults);
     }
   };
 
@@ -161,6 +193,7 @@ const Vocabulary = () => {
       await sound.playAsync();
     } catch (error) {
       console.error('Error playing audio:', error);
+      Alert.alert('Audio Error', 'Could not play pronunciation audio.');
     }
   };
 
@@ -174,41 +207,38 @@ const Vocabulary = () => {
   const renderSearchResults = ({ item }: { item: VocabularyItem }) => (
     <View style={styles.searchResultItem}>
       <Text style={styles.word}>{item.word}</Text>
-  
-      {Array.isArray(item.phonetics) && item.phonetics.length > 0 &&
-        item.phonetics.map((phonetic, index) => (
-          <View key={index} style={styles.phoneticContainer}>
-            {phonetic.text && <Text style={styles.phoneticText}>{phonetic.text}</Text>}
-            {phonetic.audio && (
-              <TouchableOpacity onPress={() => playAudio(phonetic.audio)}>
-                <Text style={styles.audioButton}>🔊</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        ))
-      }
-  
-      {Array.isArray(item.meanings) && item.meanings.length > 0 &&
-        item.meanings.map((meaning, index) => (
-          <View key={index} style={styles.meaningContainer}>
-            <Text style={styles.partOfSpeech}>{meaning.partOfSpeech}</Text>
-            {Array.isArray(meaning.definitions) && meaning.definitions.length > 0 &&
-              meaning.definitions.map((definition, defIndex) => (
-                <Text key={defIndex} style={styles.definition}>
-                  - {definition.definition}
+      {item.phonetics.map((phonetic, index) => (
+        <View key={index} style={styles.phoneticContainer}>
+          {phonetic.text && <Text style={styles.phoneticText}>{phonetic.text}</Text>}
+          {phonetic.audio && (
+            <TouchableOpacity onPress={() => playAudio(phonetic.audio)}>
+              <Text style={styles.audioButton}>🔊</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      ))}
+      {item.meanings.map((meaning, index) => (
+        <View key={index} style={styles.meaningContainer}>
+          <Text style={styles.partOfSpeech}>{meaning.partOfSpeech}</Text>
+          {meaning.definitions.map((definition, defIndex) => (
+            <View key={defIndex} style={styles.definitionContainer}>
+              <Text style={styles.definition}>
+                - {definition.definition}
+              </Text>
+              {showTranslation && definition.translation && (
+                <Text style={styles.translationText}>
+                  {definition.translation}
                 </Text>
-              ))
-            }
-          </View>
-        ))
-      }
+              )}
+            </View>
+          ))}
+        </View>
+      ))}
     </View>
   );
-  
-  
 
   const renderLessonItem = ({ item }: { item: LessonItem }) => (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={styles.lessonContainer}
       onPress={() => handleLessonPress(item.id, item.title)}
     >
@@ -230,11 +260,10 @@ const Vocabulary = () => {
           </View>
         </View>
       </View>
-      <TouchableOpacity 
+      <TouchableOpacity
         style={styles.downloadButton}
         onPress={(e) => {
-          e.stopPropagation(); // Ngăn sự kiện click từ lan sang parent
-          // Thêm logic tải xuống nếu cần
+          e.stopPropagation(); 
         }}
       >
         <Text style={styles.downloadIcon}>⬇️</Text>
@@ -254,23 +283,44 @@ const Vocabulary = () => {
           <Text style={styles.searchIcon}>🔍</Text>
         </TouchableOpacity>
       </View>
-  
-      {/* Search Bar */}
+
+      {/* Search Bar and Translation Toggle */}
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.searchInput}
           placeholder="Enter a word to search"
           value={searchWord}
           onChangeText={setSearchWord}
+          onSubmitEditing={handleSearch}
         />
         <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
           <Text style={styles.searchButtonText}>Search</Text>
         </TouchableOpacity>
       </View>
-  
+
+      {/* Translation Toggle Button */}
+      <View style={styles.translationToggleContainer}>
+        <TouchableOpacity
+          style={[
+            styles.translationToggleButton,
+            showTranslation ? styles.translationActive : styles.translationInactive
+          ]}
+          onPress={toggleTranslation}
+        >
+          <Text style={styles.translationToggleText}>
+            {showTranslation ? "Ẩn bản dịch" : "Hiện bản dịch"}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
       {/* Main Scrollable Content */}
-      {loading ? (
-        <ActivityIndicator size="large" color="#007BFF" />
+      {(loading || translating) ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#007BFF" />
+          <Text style={styles.loadingText}>
+            {loading ? "Đang tìm kiếm..." : "Đang dịch..."}
+          </Text>
+        </View>
       ) : (
         <ScrollView style={styles.contentContainer}>
           {/* Search Results */}
@@ -283,9 +333,19 @@ const Vocabulary = () => {
               ))}
             </View>
           )}
-  
+
+          {/* No Results Message */}
+          {searchWord.trim() !== '' && searchResults.length === 0 && !loading && (
+            <View style={styles.noResultsContainer}>
+              <Text style={styles.noResultsText}>
+                Không tìm thấy từ "{searchWord}". Vui lòng thử lại.
+              </Text>
+            </View>
+          )}
+
           {/* Lessons */}
           <View style={styles.lessonsContainer}>
+            <Text style={styles.sectionTitle}>Các bài học từ vựng</Text>
             {lessonData.map((item) => (
               <View key={item.id}>
                 {renderLessonItem({ item })}

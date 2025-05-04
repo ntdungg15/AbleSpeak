@@ -169,5 +169,61 @@ export const styles = StyleSheet.create({
   },
   downloadIcon: {
     fontSize: 20,
-  }
+  },
+
+  translationToggleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 15,
+    marginBottom: 10,
+  },
+  translationToggleButton: {
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 15,
+  },
+  translationActive: {
+    backgroundColor: '#4CAF50',
+  },
+  translationInactive: {
+    backgroundColor: '#9E9E9E',
+  },
+  translationToggleText: {
+    color: 'white',
+    fontWeight: '600',
+  },
+  definitionContainer: {
+    marginBottom: 8,
+  },
+  translationText: {
+    fontStyle: 'italic',
+    color: '#0D47A1',
+    marginLeft: 15,
+    marginTop: 2,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#757575',
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginVertical: 10,
+    paddingHorizontal: 15,
+  },
+  noResultsContainer: {
+    padding: 20,
+    alignItems: 'center',
+  },
+  noResultsText: {
+    fontSize: 16,
+    color: '#757575',
+    textAlign: 'center',
+  },
 });
