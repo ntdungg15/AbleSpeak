@@ -26,6 +26,7 @@ const Dashboard = () => {
   const user = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
   const userName = user.userInfo?.name || "Bạn";
+  const router = useRouter();
 
   if (!user.isLoggedIn) {
     // router.push("/login")
