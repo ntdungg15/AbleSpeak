@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, } from "react";
 import {
   Text,
   StyleSheet,
@@ -16,16 +16,24 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import NewLesson from "../NewLesson/NewLesson";
 import { styles } from "@/constants/home/Dashboard";
-const { width } = Dimensions.get("window");
+import { useSelector, useDispatch } from "react-redux";
+import { useRouter } from "expo-router";
 
 const Dashboard = () => {
-  const [userName, setUserName] = useState("Minh");
+  // const [userName, setUserName] = useState("Minh");
   const [streakDays, setStreakDays] = useState(5);
   const [progress, setProgress] = useState(67);
+  const user = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
+  const userName = user.userInfo?.name || "Bạn";
 
+  if (!user.isLoggedIn) {
+    // router.push("/login")
+    return null;
+  }
   const recentCourses = [
-    { id: 1, title: "Business English", progress: 45, image: { uri: "https://your-cdn.com/images/grammar.png" } },
-    { id: 2, title: "Daily Conversation", progress: 78, image: { uri: "https://your-cdn.com/images/grammar.png" } },
+    { id: 1, title: "Business English", progress: 45, image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746359563/Business_English_nnj356.jpg" } },
+    { id: 2, title: "Daily Conversation", progress: 78, image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746359968/dailay_ly8ghb.jpg" } },
   ];
 
   const dailyActivities = [
@@ -88,12 +96,14 @@ const Dashboard = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView>
         {/* Header Section */}
         <View style={styles.header}>
           <View style={styles.userInfo}>
             <View style={styles.avatarContainer}>
-              <Text style={styles.avatarText}>{userName.charAt(0)}</Text>
+              <Text style={styles.avatarText}>
+                {userName.charAt(0).toUpperCase()}
+              </Text>
             </View>
             <View>
               <Text style={styles.greeting}>Xin chào, {userName}!</Text>
