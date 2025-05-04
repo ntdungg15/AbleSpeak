@@ -125,42 +125,38 @@ const Vocabulary = () => {
   const [loading, setLoading] = useState(false);
   const [lessonData, setLessonData] = useState<LessonItem[]>(lessons);
   const [translationMap, setTranslationMap] = useState<{ [key: string]: string }>({});
-  const MAX_DEFS_PER_MEANING = 2;
+  const [definitionTranslations, setDefinitionTranslations] = useState<Record<string,string>>({});
 
   const handleSearch = async () => {
     if (!searchWord.trim()) return;
-  
     setLoading(true);
     try {
+      // 1) Lấy nguyên dữ liệu nghĩa
       const data = await getVocabulary(searchWord.trim());
       setSearchResults(data);
-  
-      const textsToTranslate = new Set<string>();
-      data.forEach(item => {
-        item.meanings.forEach(meaning => {
-          textsToTranslate.add(meaning.partOfSpeech);
-          meaning.definitions.forEach(def => {
-            if (def.definition) textsToTranslate.add(def.definition);
-          });
-        });
-      });
-  
-      // 2. Dịch tuần tự từng chuỗi
-      const map: { [key: string]: string } = {};
-      for (const txt of textsToTranslate) {
+
+      // 2) Gom hết các câu cần dịch
+      const texts = new Set<string>();
+      data.forEach(item =>
+        item.meanings.forEach(meaning =>
+          meaning.definitions.forEach(def => def.definition && texts.add(def.definition))
+        )
+      );
+
+      // 3) Dịch tuần tự
+      const map: Record<string,string> = {};
+      for (const txt of texts) {
         try {
-          const tr = await getTranslation(txt);
-          map[txt] = tr;
+          map[txt] = await getTranslation(txt);
         } catch {
-          map[txt] = ""; // hoặc giữ nguyên txt
+          map[txt] = ''; // hoặc giữ nguyên txt
         }
       }
-  
-      // 3. Lưu vào state
-      setTranslationMap(map);
+      setDefinitionTranslations(map);
     } catch (err) {
-      console.error("Error searching or translating:", err);
+      console.error('Error searching or translating:', err);
       setSearchResults([]);
+      setDefinitionTranslations({});
     } finally {
       setLoading(false);
     }
@@ -184,30 +180,39 @@ const Vocabulary = () => {
     });
   };
 
+  
+  
+
   const renderSearchResults = ({ item }: { item: VocabularyItem }) => (
     <View style={styles.searchResultItem}>
+      {/* Từ & phát âm */}
       <Text style={styles.word}>{item.word}</Text>
-      {/* phonetics... */}
-  
-      {item.meanings.map((meaning, mi) => (
-        <View key={mi} style={styles.meaningContainer}>
-          {/* English */}
-          <Text style={styles.partOfSpeech}>{meaning.partOfSpeech}</Text>
-          {/* Việt */}
-          {translationMap[meaning.partOfSpeech] != null && (
-            <Text style={styles.translationText}>
-              → {translationMap[meaning.partOfSpeech]}
-            </Text>
+      {item.phonetics.map((p, i) => (
+        <View key={i} style={styles.phoneticContainer}>
+          {p.text && <Text style={styles.phoneticText}>{p.text}</Text>}
+          {p.audio && (
+            <TouchableOpacity onPress={() => playAudio(p.audio)}>
+              <Text style={styles.audioButton}>🔊</Text>
+            </TouchableOpacity>
           )}
-  
-          {meaning.definitions.map((def, di) => (
+        </View>
+      ))}
+
+      {/* Định nghĩa + dịch */}
+      {item.meanings.map((m, mi) => (
+        <View key={mi} style={styles.meaningContainer}>
+          {/* part-of-speech */}
+          <Text style={styles.partOfSpeech}>{m.partOfSpeech}</Text>
+          {/* (nếu cần dịch POS, bỏ khối này) */}
+          
+          {m.definitions.map((def, di) => (
             <View key={di} style={{ marginVertical: 4 }}>
-              {/* English */}
+              {/* Anh */}
               <Text style={styles.definition}>- {def.definition}</Text>
               {/* Việt */}
-              {translationMap[def.definition] != null && (
+              {definitionTranslations[def.definition] !== undefined && (
                 <Text style={styles.translationText}>
-                  → {translationMap[def.definition]}
+                  → {definitionTranslations[def.definition]}
                 </Text>
               )}
             </View>
@@ -216,7 +221,6 @@ const Vocabulary = () => {
       ))}
     </View>
   );
-  
 
   const renderLessonItem = ({ item }: { item: LessonItem }) => (
     <TouchableOpacity
@@ -244,8 +248,7 @@ const Vocabulary = () => {
       <TouchableOpacity
         style={styles.downloadButton}
         onPress={(e) => {
-          e.stopPropagation(); // Ngăn sự kiện click từ lan sang parent
-          // Thêm logic tải xuống nếu cần
+          e.stopPropagation(); 
         }}
       >
         <Text style={styles.downloadIcon}>⬇️</Text>
@@ -253,17 +256,14 @@ const Vocabulary = () => {
     </TouchableOpacity>
   );
 
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity style={styles.menuButton}>
-          <Text style={styles.menuIcon}>≡</Text>
-        </TouchableOpacity>
+        <TouchableOpacity><Text style={styles.menuIcon}>≡</Text></TouchableOpacity>
         <Text style={styles.headerTitle}>Học từ vựng cùng AbleSpeak</Text>
-        <TouchableOpacity style={styles.searchIconButton}>
-          <Text style={styles.searchIcon}>🔍</Text>
-        </TouchableOpacity>
+        <TouchableOpacity><Text style={styles.searchIcon}>🔍</Text></TouchableOpacity>
       </View>
 
       {/* Search Bar */}
@@ -285,15 +285,9 @@ const Vocabulary = () => {
       ) : (
         <ScrollView style={styles.contentContainer}>
           {/* Search Results */}
-          {searchResults.length > 0 && (
-            <View style={styles.searchResultsContainer}>
-              {searchResults.map((item, index) => (
-                <View key={index}>
-                  {renderSearchResults({ item })}
-                </View>
-              ))}
-            </View>
-          )}
+          {searchResults.map((item, idx) => (
+            <View key={idx}>{renderSearchResults({ item })}</View>
+          ))}
 
           {/* Lessons */}
           <View style={styles.lessonsContainer}>

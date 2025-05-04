@@ -11,7 +11,7 @@ export const getVocabulary = async (word: string) => {
     console.log("Definition:", data);
     return data;
   } catch (error) {
-    console.error("Lỗi khi fetch từ điển:", error);
+    console.error("Lỗi khi fetch từ điển:", error);y
     return null;
   }
 };
