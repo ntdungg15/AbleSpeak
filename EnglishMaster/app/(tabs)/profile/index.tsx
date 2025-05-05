@@ -78,7 +78,7 @@ export default function ProfileScreen() {
 
             <Pressable
               style={styles.settingButon}
-              onPress={() => router.push("/(tabs)/profile")}
+              onPress={() => router.push("/(tabs)/profile/setting")}
             >
               <FontAwesome name="cog" size={24} color="black" />
             </Pressable>
