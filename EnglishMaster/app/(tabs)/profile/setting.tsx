@@ -20,7 +20,7 @@ const SettingScreen = () => {
             <Text style={styles.sectionItemText}>Preferences</Text>
             <AntDesign name="right" size={24} color="black" />
           </Pressable>
-          <Pressable style={styles.sectionItem}>
+          <Pressable style={styles.sectionItem} onPress={() => router.push("/profile/updateInfo")}>
             <Text style={styles.sectionItemText}>Profile</Text>
             <AntDesign name="right" size={24} color="black" />
           </Pressable>

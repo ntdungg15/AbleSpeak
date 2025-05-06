@@ -1,6 +1,5 @@
-package com.uet.longhoang.engapp.engapp.configs;
+package com.uet.longhoang.engapp.configs;
 
-import com.uet.longhoang.engapp.engapp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

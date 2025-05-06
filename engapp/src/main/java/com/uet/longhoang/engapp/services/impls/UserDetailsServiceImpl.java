@@ -1,7 +1,7 @@
-package com.uet.longhoang.engapp.engapp.services.impls;
+package com.uet.longhoang.engapp.services.impls;
 
-import com.uet.longhoang.engapp.engapp.entities.User;
-import com.uet.longhoang.engapp.engapp.repositories.UserRepository;
+import com.uet.longhoang.engapp.entities.User;
+import com.uet.longhoang.engapp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

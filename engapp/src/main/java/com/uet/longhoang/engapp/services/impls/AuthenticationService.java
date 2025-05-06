@@ -1,12 +1,12 @@
-package com.uet.longhoang.engapp.engapp.services.impls;
+package com.uet.longhoang.engapp.services.impls;
 
-import com.uet.longhoang.engapp.engapp.dtos.LoginInput;
-import com.uet.longhoang.engapp.engapp.dtos.RegisterInput;
-import com.uet.longhoang.engapp.engapp.entities.User;
-import com.uet.longhoang.engapp.engapp.exceptions.EmailAlreadyExistsException;
-import com.uet.longhoang.engapp.engapp.exceptions.NameAlreadyExistsException;
-import com.uet.longhoang.engapp.engapp.repositories.UserRepository;
-import com.uet.longhoang.engapp.engapp.services.interfaces.IAuthenticationService;
+import com.uet.longhoang.engapp.dtos.LoginInput;
+import com.uet.longhoang.engapp.dtos.RegisterInput;
+import com.uet.longhoang.engapp.entities.User;
+import com.uet.longhoang.engapp.exceptions.EmailAlreadyExistsException;
+import com.uet.longhoang.engapp.exceptions.NameAlreadyExistsException;
+import com.uet.longhoang.engapp.repositories.UserRepository;
+import com.uet.longhoang.engapp.services.interfaces.IAuthenticationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -1,5 +1,5 @@
-package com.uet.longhoang.engapp.engapp.services.interfaces;
-import com.uet.longhoang.engapp.engapp.entities.DictionaryEntry;
+package com.uet.longhoang.engapp.services.interfaces;
+import com.uet.longhoang.engapp.entities.DictionaryEntry;
 
 import java.io.IOException;
 

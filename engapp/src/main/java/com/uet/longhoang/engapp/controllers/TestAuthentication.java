@@ -1,11 +1,11 @@
-package com.uet.longhoang.engapp.engapp.controllers;
+package com.uet.longhoang.engapp.controllers;
 
-import com.uet.longhoang.engapp.engapp.entities.Dialogue;
-import com.uet.longhoang.engapp.engapp.entities.GrammarRule;
-import com.uet.longhoang.engapp.engapp.entities.User;
-import com.uet.longhoang.engapp.engapp.services.impls.DialogueService;
-import com.uet.longhoang.engapp.engapp.services.impls.GrammarRuleService;
-import com.uet.longhoang.engapp.engapp.services.impls.UserService;
+import com.uet.longhoang.engapp.entities.Dialogue;
+import com.uet.longhoang.engapp.entities.GrammarRule;
+import com.uet.longhoang.engapp.entities.User;
+import com.uet.longhoang.engapp.services.impls.DialogueService;
+import com.uet.longhoang.engapp.services.impls.GrammarRuleService;
+import com.uet.longhoang.engapp.services.impls.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;

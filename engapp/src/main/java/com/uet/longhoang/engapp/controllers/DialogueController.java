@@ -1,7 +1,7 @@
-package com.uet.longhoang.engapp.engapp.controllers;
+package com.uet.longhoang.engapp.controllers;
 
-import com.uet.longhoang.engapp.engapp.entities.Dialogue;
-import com.uet.longhoang.engapp.engapp.services.impls.DialogueService;
+import com.uet.longhoang.engapp.entities.Dialogue;
+import com.uet.longhoang.engapp.services.impls.DialogueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

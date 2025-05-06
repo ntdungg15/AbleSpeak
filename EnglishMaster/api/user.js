@@ -66,4 +66,26 @@ export const getRelationship = (email) => {
       },
     };
   };
-  
+  export const updateUserInfo = async (name, email, password) => {
+    try {
+      const response = await fetch(`${hostUrl}/user/update`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();  // Đọc phản hồi dạng văn bản nếu không phải JSON
+        console.error("Error response:", errorText);
+        throw new Error('Failed to update user info');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("updateUserInfo error:", error);
+      return { error: error.message };  // Trả về thông báo lỗi
+    }
+  }

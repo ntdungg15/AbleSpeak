@@ -1,4 +1,4 @@
-package com.uet.longhoang.engapp.engapp.dtos;
+package com.uet.longhoang.engapp.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

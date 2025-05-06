@@ -1,13 +1,11 @@
-package com.uet.longhoang.engapp.engapp.controllers;
+package com.uet.longhoang.engapp.controllers;
 
-import com.uet.longhoang.engapp.engapp.dtos.UpdateUserDTO;
-import com.uet.longhoang.engapp.engapp.dtos.UserInfo;
-import com.uet.longhoang.engapp.engapp.entities.User;
-import com.uet.longhoang.engapp.engapp.services.impls.UserService;
+import com.uet.longhoang.engapp.dtos.UpdateUserDTO;
+import com.uet.longhoang.engapp.entities.User;
+import com.uet.longhoang.engapp.services.impls.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController

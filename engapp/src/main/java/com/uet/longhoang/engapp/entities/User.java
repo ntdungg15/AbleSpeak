@@ -1,4 +1,4 @@
-package com.uet.longhoang.engapp.engapp.entities;
+package com.uet.longhoang.engapp.entities;
 
 
 import lombok.AllArgsConstructor;
