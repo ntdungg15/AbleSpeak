@@ -91,7 +91,7 @@ export const styles = StyleSheet.create({
   subsectionTitle: {
     fontSize: 20,
     fontWeight: '600',
-    marginTop: 20,
+    marginTop: 2,
     color: '#4A90E2',
   },
   subsectionText: {
@@ -104,7 +104,7 @@ export const styles = StyleSheet.create({
   examplesTitle: {
     fontSize: 20,
     fontWeight: '600',
-    marginTop: 20,
+    marginTop: 2,
     color: '#4A90E2',
   },
   example: {
@@ -192,6 +192,7 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     marginVertical: 8,
+    paddingHorizontal: 12,
   },
   resultItem: {
     padding: 12,

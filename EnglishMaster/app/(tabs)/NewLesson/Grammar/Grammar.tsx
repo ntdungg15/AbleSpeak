@@ -1,5 +1,6 @@
 // Grammar.tsx
 import React, { useState, useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import {
     View,
     Text,
@@ -49,6 +50,7 @@ const Grammar = () => {
     const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
     const [score, setScore] = useState(0);
     const [results, setResults] = useState<ExerciseResult[]>([]);
+    const [showAnimation, setShowAnimation] = useState(true);
 
     useEffect(() => {
         const loadGrammarData = async () => {
@@ -72,7 +74,7 @@ const Grammar = () => {
             question: selectedRule.exercises[currentExerciseIndex].question,
             selectedIndex: answerIndex,
             correctIndex
-        }] );
+        }]);
         // update score
         if (answerIndex === correctIndex) {
             setScore(prev => prev + 1);
@@ -103,15 +105,25 @@ const Grammar = () => {
         setResults([]);
     };
 
+    useFocusEffect(
+        React.useCallback(() => {
+            setShowAnimation(true); // Hiển thị animation
+            const timer = setTimeout(() => setShowAnimation(false), 600); // Tắt animation sau 600ms
+            return () => clearTimeout(timer); // Dọn dẹp timer khi rời khỏi trang
+        }, [])
+    );
+
     const renderRuleCard = (rule: GrammarRule) => (
         <Animatable.View
             key={rule.id}
-            animation="fadeInUp"
+            animation={showAnimation ? "fadeInUp" : undefined} // Chỉ chạy animation nếu showAnimation = true
             duration={500}
             style={styles.ruleCard}
         >
             <TouchableOpacity onPress={() => setSelectedRule(rule)} style={styles.ruleTouch}>
-                <Animatable.Text animation="fadeIn" delay={300} style={styles.ruleTitle}>{rule.title}</Animatable.Text>
+                <Animatable.Text animation={showAnimation ? "fadeIn" : undefined} delay={300} style={styles.ruleTitle}>
+                    {rule.title}
+                </Animatable.Text>
                 <Ionicons name="chevron-forward" size={24} color="#007AFF" />
             </TouchableOpacity>
         </Animatable.View>
@@ -119,7 +131,7 @@ const Grammar = () => {
 
     if (loading) {
         return (
-            <SafeAreaView style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>  
+            <SafeAreaView style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
                 <ActivityIndicator size="large" color="#007AFF" />
                 <Text style={{ marginTop: 10 }}>Loading grammar rules...</Text>
             </SafeAreaView>
@@ -129,7 +141,11 @@ const Grammar = () => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
-                <Animatable.View animation="fadeInDown" duration={600} style={styles.header}>
+                <Animatable.View
+                    animation={showAnimation ? "fadeInDown" : undefined}
+                    duration={600}
+                    style={styles.header}
+                >
                     <Text style={styles.headerTitle}>Grammar Rules</Text>
                     <Text style={styles.headerSubtitle}>Master English Grammar</Text>
                 </Animatable.View>
@@ -160,28 +176,42 @@ const Grammar = () => {
 
                     {!showResults && !showExercise && (
                         <ScrollView style={styles.modalContent}>
-                            <Text style={styles.explanationTitle}>Explanation</Text>
-                            <Text style={styles.explanation}>{selectedRule?.explanation}</Text>
+                            {/* Explanation Section */}
+                            <Animatable.View animation="fadeIn" delay={200} style={styles.sectionBox}>
+                                <Text style={styles.examplesTitle}>Explanation</Text>
+                                <Text style={styles.explanation}>{selectedRule?.explanation}</Text>
+                            </Animatable.View>
 
-                            <Text style={styles.subsectionTitle}>Formula</Text>
-                            <Text style={styles.subsectionText}>• Positive: {selectedRule?.formula.positive}</Text>
-                            <Text style={styles.subsectionText}>• Negative: {selectedRule?.formula.negative}</Text>
-                            <Text style={styles.subsectionText}>• Question: {selectedRule?.formula.question}</Text>
+                            {/* Formula Section */}
+                            <Animatable.View animation="fadeIn" delay={300} style={styles.sectionBox}>
+                                <Text style={styles.subsectionTitle}>Formula</Text>
+                                <Text style={styles.subsectionText}>• Positive: {selectedRule?.formula.positive}</Text>
+                                <Text style={styles.subsectionText}>• Negative: {selectedRule?.formula.negative}</Text>
+                                <Text style={styles.subsectionText}>• Question: {selectedRule?.formula.question}</Text>
+                            </Animatable.View>
 
-                            <Text style={styles.subsectionTitle}>Grammar</Text>
-                            <Text style={styles.subsectionText}>{selectedRule?.grammar}</Text>
+                            {/* Grammar Section */}
+                            <Animatable.View animation="fadeIn" delay={400} style={styles.sectionBox}>
+                                <Text style={styles.subsectionTitle}>Grammar</Text>
+                                <Text style={styles.subsectionText}>{selectedRule?.grammar}</Text>
+                            </Animatable.View>
 
-                            <Text style={styles.examplesTitle}>Examples</Text>
-                            {selectedRule?.examples.map((example, index) => (
-                                <Text key={index} style={styles.example}>• {example}</Text>
-                            ))}
+                            {/* Examples Section */}
+                            <Animatable.View animation="fadeIn" delay={500} style={styles.sectionBox}>
+                                <Text style={styles.examplesTitle}>Examples</Text>
+                                {selectedRule?.examples.map((example, index) => (
+                                    <Text key={index} style={styles.example}>• {example}</Text>
+                                ))}
+                            </Animatable.View>
 
+                            {/* Practice Button */}
                             <TouchableOpacity onPress={handleStartExercise} style={styles.practiceWrap}>
-                                <Animatable.View animation="pulse" iterationCount="infinite" delay={300} style={styles.practiceButton}>
+                                <Animatable.View animation="pulse" iterationCount="infinite" delay={600} style={styles.practiceButton}>
                                     <Text style={styles.practiceButtonText}>Practice Now</Text>
                                 </Animatable.View>
                             </TouchableOpacity>
                         </ScrollView>
+
                     )}
 
                     {showExercise && !showResults && (
@@ -215,7 +245,7 @@ const Grammar = () => {
                                     )}
                                 </View>
                             ))}
-                            <TouchableOpacity onPress={handleCloseResults} style={[styles.practiceButton, {marginTop:20}]}>
+                            <TouchableOpacity onPress={handleCloseResults} style={[styles.practiceButton, { marginTop: 20 }]}>
                                 <Text style={styles.practiceButtonText}>Close</Text>
                             </TouchableOpacity>
                         </ScrollView>
