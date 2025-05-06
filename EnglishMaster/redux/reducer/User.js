@@ -1,4 +1,4 @@
-import {createSlice, createAsyncThunk} from "@reduxjs/toolkit"
+import {createSlice} from "@reduxjs/toolkit"
 
 const initialState = {
     isLoggedIn: false,
@@ -14,6 +14,7 @@ export const User = createSlice({
           state.isLoggedIn = true;
           state.token = action.payload.token;
         state.userInfo = action.payload.userInfo;
+            state.password = action.payload.password; // Lưu mật khẩu vào state
         },
         logout: () => {
             console.log("Logout")

@@ -50,6 +50,7 @@ const LoginScreen = () => {
             loginSuccess({
               token: response.token,
               userInfo: userInfo,
+              password: password,
             })
           );
           router.replace("/(tabs)");

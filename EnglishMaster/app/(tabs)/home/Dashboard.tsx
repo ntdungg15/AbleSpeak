@@ -33,7 +33,7 @@ const Dashboard = () => {
     if (user.isLoggedIn) {
       setUserName(user.userInfo?.name || "Bạn");
     }
-  }, [user.isLoggedIn, user.userInfo?.name]);
+  }, [user]);
   if (!user.isLoggedIn) {
     return <LoginScreen />; // Redirect to login screen if not logged in
   }
