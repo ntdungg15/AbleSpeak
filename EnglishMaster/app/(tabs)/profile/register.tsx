@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -10,9 +10,16 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useRouter } from "expo-router";
+import { useSelector } from "react-redux";
 
 export default function RegisterScreen() {
   const router = useRouter();
+  const user = useSelector((state) => state.user);
+  useEffect(() => {
+    if (user.isLoggedIn) {
+      router.push("/(tabs)/profile");
+    }
+  }, [user.isLoggedIn]);
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
