@@ -1,15 +1,15 @@
-package com.uet.longhoang.engapp.engapp.controllers;
+package com.uet.longhoang.engapp.controllers;
 
-import com.uet.longhoang.engapp.engapp.dtos.LoginInput;
-import com.uet.longhoang.engapp.engapp.dtos.LoginResponse;
-import com.uet.longhoang.engapp.engapp.dtos.RegisterInput;
-import com.uet.longhoang.engapp.engapp.dtos.RegisterResponse;
-import com.uet.longhoang.engapp.engapp.entities.User;
-import com.uet.longhoang.engapp.engapp.exceptions.EmailAlreadyExistsException;
-import com.uet.longhoang.engapp.engapp.exceptions.NameAlreadyExistsException;
-import com.uet.longhoang.engapp.engapp.services.impls.AuthenticationService;
-import com.uet.longhoang.engapp.engapp.services.impls.JwtService;
-import com.uet.longhoang.engapp.engapp.services.impls.UserDetailsImpl;
+import com.uet.longhoang.engapp.dtos.LoginInput;
+import com.uet.longhoang.engapp.dtos.LoginResponse;
+import com.uet.longhoang.engapp.dtos.RegisterInput;
+import com.uet.longhoang.engapp.dtos.RegisterResponse;
+import com.uet.longhoang.engapp.entities.User;
+import com.uet.longhoang.engapp.exceptions.EmailAlreadyExistsException;
+import com.uet.longhoang.engapp.exceptions.NameAlreadyExistsException;
+import com.uet.longhoang.engapp.services.impls.AuthenticationService;
+import com.uet.longhoang.engapp.services.impls.JwtService;
+import com.uet.longhoang.engapp.services.impls.UserDetailsImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

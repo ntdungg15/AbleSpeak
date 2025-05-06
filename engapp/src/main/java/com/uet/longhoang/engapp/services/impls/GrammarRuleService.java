@@ -1,8 +1,8 @@
-package com.uet.longhoang.engapp.engapp.services.impls;
+package com.uet.longhoang.engapp.services.impls;
 
-import com.uet.longhoang.engapp.engapp.entities.GrammarRule;
-import com.uet.longhoang.engapp.engapp.repositories.GrammarRuleRepository;
-import com.uet.longhoang.engapp.engapp.services.interfaces.IGrammarRuleService;
+import com.uet.longhoang.engapp.entities.GrammarRule;
+import com.uet.longhoang.engapp.repositories.GrammarRuleRepository;
+import com.uet.longhoang.engapp.services.interfaces.IGrammarRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

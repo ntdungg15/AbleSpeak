@@ -1,6 +1,6 @@
-package com.uet.longhoang.engapp.engapp.repositories;
+package com.uet.longhoang.engapp.repositories;
 
-import com.uet.longhoang.engapp.engapp.entities.GrammarRule;
+import com.uet.longhoang.engapp.entities.GrammarRule;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

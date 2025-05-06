@@ -1,8 +1,7 @@
-package com.uet.longhoang.engapp.engapp.configs;
+package com.uet.longhoang.engapp.configs;
 
-import com.uet.longhoang.engapp.engapp.services.impls.JwtService;
-import com.uet.longhoang.engapp.engapp.services.impls.UserDetailsImpl;
-import com.uet.longhoang.engapp.engapp.services.impls.UserDetailsServiceImpl;
+import com.uet.longhoang.engapp.services.impls.JwtService;
+import com.uet.longhoang.engapp.services.impls.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,6 +1,6 @@
-package com.uet.longhoang.engapp.engapp.services.interfaces;
+package com.uet.longhoang.engapp.services.interfaces;
 
-import com.uet.longhoang.engapp.engapp.entities.GrammarRule;
+import com.uet.longhoang.engapp.entities.GrammarRule;
 
 import java.util.List;
 

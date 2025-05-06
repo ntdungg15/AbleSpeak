@@ -1,8 +1,8 @@
-package com.uet.longhoang.engapp.engapp.services.impls;
+package com.uet.longhoang.engapp.services.impls;
 
-import com.uet.longhoang.engapp.engapp.TranslationUtil;
-import com.uet.longhoang.engapp.engapp.entities.DictionaryEntry;
-import com.uet.longhoang.engapp.engapp.services.interfaces.IDictionaryService;
+import com.uet.longhoang.engapp.TranslationUtil;
+import com.uet.longhoang.engapp.entities.DictionaryEntry;
+import com.uet.longhoang.engapp.services.interfaces.IDictionaryService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

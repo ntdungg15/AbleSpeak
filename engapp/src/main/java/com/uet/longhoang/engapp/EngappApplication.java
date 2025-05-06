@@ -1,11 +1,11 @@
-package com.uet.longhoang.engapp.engapp;
+package com.uet.longhoang.engapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @SpringBootApplication
-@EnableMongoRepositories("com.uet.longhoang.engapp.engapp.repositories")
+@EnableMongoRepositories("com.uet.longhoang.engapp.repositories")
 public class EngappApplication {
 
     public static void main(String[] args) {

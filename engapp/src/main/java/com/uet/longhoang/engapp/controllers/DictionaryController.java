@@ -1,8 +1,8 @@
-package com.uet.longhoang.engapp.engapp.controllers;
+package com.uet.longhoang.engapp.controllers;
 
-import com.uet.longhoang.engapp.engapp.dtos.TranslationRequest;
-import com.uet.longhoang.engapp.engapp.entities.DictionaryEntry;
-import com.uet.longhoang.engapp.engapp.services.impls.DictionaryService;
+import com.uet.longhoang.engapp.dtos.TranslationRequest;
+import com.uet.longhoang.engapp.entities.DictionaryEntry;
+import com.uet.longhoang.engapp.services.impls.DictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

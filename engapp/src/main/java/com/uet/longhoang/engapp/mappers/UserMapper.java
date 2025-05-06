@@ -1,9 +1,7 @@
-package com.uet.longhoang.engapp.engapp.mappers;
+package com.uet.longhoang.engapp.mappers;
 
-import com.uet.longhoang.engapp.engapp.dtos.UserInfo;
-import com.uet.longhoang.engapp.engapp.entities.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.uet.longhoang.engapp.dtos.UserInfo;
+import com.uet.longhoang.engapp.entities.User;
 
 public class UserMapper {
     public static UserInfo mapUserToUserInfo(User u) {

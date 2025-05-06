@@ -1,4 +1,4 @@
-package com.uet.longhoang.engapp.engapp.configs;
+package com.uet.longhoang.engapp.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

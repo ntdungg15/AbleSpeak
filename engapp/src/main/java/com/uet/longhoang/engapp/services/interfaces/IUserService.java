@@ -1,9 +1,9 @@
-package com.uet.longhoang.engapp.engapp.services.interfaces;
+package com.uet.longhoang.engapp.services.interfaces;
 
 
-import com.uet.longhoang.engapp.engapp.dtos.UpdateUserDTO;
-import com.uet.longhoang.engapp.engapp.dtos.UserInfo;
-import com.uet.longhoang.engapp.engapp.entities.User;
+import com.uet.longhoang.engapp.dtos.UpdateUserDTO;
+import com.uet.longhoang.engapp.dtos.UserInfo;
+import com.uet.longhoang.engapp.entities.User;
 
 import java.util.Optional;
 

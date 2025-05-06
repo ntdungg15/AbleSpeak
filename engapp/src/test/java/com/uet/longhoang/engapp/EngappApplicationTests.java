@@ -1,5 +1,5 @@
 
-package com.uet.longhoang.engapp.engapp;
+package com.uet.longhoang.engapp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

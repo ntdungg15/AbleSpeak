@@ -1,8 +1,8 @@
-package com.uet.longhoang.engapp.engapp.services.impls;
+package com.uet.longhoang.engapp.services.impls;
 
-import com.uet.longhoang.engapp.engapp.entities.Dialogue;
-import com.uet.longhoang.engapp.engapp.repositories.DialogueRepository;
-import com.uet.longhoang.engapp.engapp.services.interfaces.IDialogueService;
+import com.uet.longhoang.engapp.entities.Dialogue;
+import com.uet.longhoang.engapp.repositories.DialogueRepository;
+import com.uet.longhoang.engapp.services.interfaces.IDialogueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

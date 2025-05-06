@@ -1,6 +1,6 @@
-package com.uet.longhoang.engapp.engapp.services.impls;
+package com.uet.longhoang.engapp.services.impls;
 
-import com.uet.longhoang.engapp.engapp.entities.User;
+import com.uet.longhoang.engapp.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;

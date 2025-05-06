@@ -1,4 +1,4 @@
-package com.uet.longhoang.engapp.engapp.dtos;
+package com.uet.longhoang.engapp.dtos;
 
 public class TranslationRequest {
     private String from;

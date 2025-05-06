@@ -1,19 +1,20 @@
-package com.uet.longhoang.engapp.engapp.services.impls;
+package com.uet.longhoang.engapp.services.impls;
 
-import com.uet.longhoang.engapp.engapp.dtos.UpdateUserDTO;
-import com.uet.longhoang.engapp.engapp.dtos.UserInfo;
-import com.uet.longhoang.engapp.engapp.entities.User;
-import com.uet.longhoang.engapp.engapp.mappers.UserMapper;
-import com.uet.longhoang.engapp.engapp.repositories.UserRepository;
-import com.uet.longhoang.engapp.engapp.services.interfaces.IUserService;
+import com.uet.longhoang.engapp.dtos.UpdateUserDTO;
+import com.uet.longhoang.engapp.dtos.UserInfo;
+import com.uet.longhoang.engapp.entities.User;
+import com.uet.longhoang.engapp.mappers.UserMapper;
+import com.uet.longhoang.engapp.repositories.UserRepository;
+import com.uet.longhoang.engapp.services.interfaces.IUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.ParameterResolutionDelegate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class UserService implements IUserService {
     @Autowired
     private UserRepository userRepository;
@@ -38,6 +39,7 @@ public class UserService implements IUserService {
 
     @Override
     public User updateUser(UpdateUserDTO userInfo) throws Exception {
+        log.debug(userInfo.toString());
         Optional<User> userOpt = userRepository.findByEmail(userInfo.getEmail());
         if (userOpt.isPresent()) {
             User user = userOpt.get();
