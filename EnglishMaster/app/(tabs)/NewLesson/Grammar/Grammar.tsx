@@ -20,6 +20,12 @@ interface Formula {
     question: string;
 }
 
+interface ExerciseResult {
+    question: string;
+    selectedIndex: number;
+    correctIndex: number;
+}
+
 interface GrammarRule {
     id: string;
     title: string;
@@ -39,8 +45,10 @@ const Grammar = () => {
     const [loading, setLoading] = useState(true);
     const [selectedRule, setSelectedRule] = useState<GrammarRule | null>(null);
     const [showExercise, setShowExercise] = useState(false);
+    const [showResults, setShowResults] = useState(false);
     const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
     const [score, setScore] = useState(0);
+    const [results, setResults] = useState<ExerciseResult[]>([]);
 
     useEffect(() => {
         const loadGrammarData = async () => {
@@ -57,21 +65,42 @@ const Grammar = () => {
     }, []);
 
     const handleAnswer = (answerIndex: number) => {
-        if (selectedRule && selectedRule.exercises[currentExerciseIndex].correctAnswer === answerIndex) {
+        if (!selectedRule) return;
+        const correctIndex = selectedRule.exercises[currentExerciseIndex].correctAnswer;
+        // record result
+        setResults(prev => [...prev, {
+            question: selectedRule.exercises[currentExerciseIndex].question,
+            selectedIndex: answerIndex,
+            correctIndex
+        }] );
+        // update score
+        if (answerIndex === correctIndex) {
             setScore(prev => prev + 1);
         }
-        if (selectedRule && currentExerciseIndex < selectedRule.exercises.length - 1) {
+        // move next or finish
+        const lastIndex = selectedRule.exercises.length - 1;
+        if (currentExerciseIndex < lastIndex) {
             setCurrentExerciseIndex(prev => prev + 1);
         } else {
+            // show results
             setShowExercise(false);
-            setCurrentExerciseIndex(0);
+            setShowResults(true);
         }
     };
 
     const handleStartExercise = () => {
         setScore(0);
-        setShowExercise(true);
+        setResults([]);
         setCurrentExerciseIndex(0);
+        setShowResults(false);
+        setShowExercise(true);
+    };
+
+    const handleCloseResults = () => {
+        setSelectedRule(null);
+        setShowResults(false);
+        setScore(0);
+        setResults([]);
     };
 
     const renderRuleCard = (rule: GrammarRule) => (
@@ -81,7 +110,7 @@ const Grammar = () => {
             duration={500}
             style={styles.ruleCard}
         >
-            <TouchableOpacity onPress={() => setSelectedRule(rule)} style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <TouchableOpacity onPress={() => setSelectedRule(rule)} style={styles.ruleTouch}>
                 <Animatable.Text animation="fadeIn" delay={300} style={styles.ruleTitle}>{rule.title}</Animatable.Text>
                 <Ionicons name="chevron-forward" size={24} color="#007AFF" />
             </TouchableOpacity>
@@ -115,7 +144,9 @@ const Grammar = () => {
                 onRequestClose={() => {
                     setSelectedRule(null);
                     setShowExercise(false);
+                    setShowResults(false);
                     setScore(0);
+                    setResults([]);
                 }}
             >
                 <Animatable.View animation="slideInUp" duration={500} style={styles.modalContainer}>
@@ -123,35 +154,37 @@ const Grammar = () => {
                         <TouchableOpacity onPress={() => setSelectedRule(null)}>
                             <Ionicons name="close" size={28} color="#007AFF" />
                         </TouchableOpacity>
-                        <Text style={styles.modalTitle}>{selectedRule?.title}</Text>
+                        <Animatable.Text animation="fadeIn" style={styles.modalTitle}>{selectedRule?.title}</Animatable.Text>
                         <View style={{ width: 28 }} />
                     </View>
 
-                    {!showExercise ? (
+                    {!showResults && !showExercise && (
                         <ScrollView style={styles.modalContent}>
-                            <Animatable.Text animation="fadeIn" delay={200} style={styles.explanationTitle}>Explanation</Animatable.Text>
-                            <Animatable.Text animation="fadeIn" delay={300} style={styles.explanation}>{selectedRule?.explanation}</Animatable.Text>
+                            <Text style={styles.explanationTitle}>Explanation</Text>
+                            <Text style={styles.explanation}>{selectedRule?.explanation}</Text>
 
-                            <Animatable.Text animation="fadeIn" delay={400} style={styles.subsectionTitle}>Formula</Animatable.Text>
-                            <Animatable.Text animation="fadeIn" delay={450} style={styles.subsectionText}>• Positive: {selectedRule?.formula.positive}</Animatable.Text>
-                            <Animatable.Text animation="fadeIn" delay={500} style={styles.subsectionText}>• Negative: {selectedRule?.formula.negative}</Animatable.Text>
-                            <Animatable.Text animation="fadeIn" delay={550} style={styles.subsectionText}>• Question: {selectedRule?.formula.question}</Animatable.Text>
+                            <Text style={styles.subsectionTitle}>Formula</Text>
+                            <Text style={styles.subsectionText}>• Positive: {selectedRule?.formula.positive}</Text>
+                            <Text style={styles.subsectionText}>• Negative: {selectedRule?.formula.negative}</Text>
+                            <Text style={styles.subsectionText}>• Question: {selectedRule?.formula.question}</Text>
 
-                            <Animatable.Text animation="fadeIn" delay={600} style={styles.subsectionTitle}>Grammar</Animatable.Text>
-                            <Animatable.Text animation="fadeIn" delay={650} style={styles.subsectionText}>{selectedRule?.grammar}</Animatable.Text>
+                            <Text style={styles.subsectionTitle}>Grammar</Text>
+                            <Text style={styles.subsectionText}>{selectedRule?.grammar}</Text>
 
-                            <Animatable.Text animation="fadeIn" delay={700} style={styles.examplesTitle}>Examples</Animatable.Text>
+                            <Text style={styles.examplesTitle}>Examples</Text>
                             {selectedRule?.examples.map((example, index) => (
-                                <Animatable.Text key={index} animation="fadeIn" delay={750 + index * 50} style={styles.example}>• {example}</Animatable.Text>
+                                <Text key={index} style={styles.example}>• {example}</Text>
                             ))}
 
-                            <TouchableOpacity onPress={handleStartExercise}>
-                                <Animatable.View animation="pulse" iterationCount="infinite" delay={800} style={styles.practiceButton}>
+                            <TouchableOpacity onPress={handleStartExercise} style={styles.practiceWrap}>
+                                <Animatable.View animation="pulse" iterationCount="infinite" delay={300} style={styles.practiceButton}>
                                     <Text style={styles.practiceButtonText}>Practice Now</Text>
                                 </Animatable.View>
                             </TouchableOpacity>
                         </ScrollView>
-                    ) : (
+                    )}
+
+                    {showExercise && !showResults && (
                         <View style={styles.exerciseContainer}>
                             <Text style={styles.exerciseProgress}>Question {currentExerciseIndex + 1} of {selectedRule?.exercises.length}</Text>
                             <Animatable.Text animation="fadeIn" delay={200} style={styles.exerciseQuestion}>{selectedRule?.exercises[currentExerciseIndex].question}</Animatable.Text>
@@ -162,8 +195,30 @@ const Grammar = () => {
                                     </TouchableOpacity>
                                 </Animatable.View>
                             ))}
-                            <Animatable.Text animation="fadeIn" delay={600} style={styles.scoreText}>Score: {score}</Animatable.Text>
                         </View>
+                    )}
+
+                    {showResults && (
+                        <ScrollView style={styles.modalContent}>
+                            <Text style={styles.subsectionTitle}>Your Results</Text>
+                            <Text style={styles.scoreText}>Score: {score} / {results.length}</Text>
+                            {results.map((res, idx) => (
+                                <View key={idx} style={styles.resultItem}>
+                                    <Text style={styles.exerciseQuestion}>{res.question}</Text>
+                                    <Text style={res.selectedIndex === res.correctIndex ? styles.correctText : styles.wrongText}>
+                                        Your answer: {selectedRule?.exercises[idx].options[res.selectedIndex]}
+                                    </Text>
+                                    {res.selectedIndex !== res.correctIndex && (
+                                        <Text style={styles.correctText}>
+                                            Correct answer: {selectedRule?.exercises[idx].options[res.correctIndex]}
+                                        </Text>
+                                    )}
+                                </View>
+                            ))}
+                            <TouchableOpacity onPress={handleCloseResults} style={[styles.practiceButton, {marginTop:20}]}>
+                                <Text style={styles.practiceButtonText}>Close</Text>
+                            </TouchableOpacity>
+                        </ScrollView>
                     )}
                 </Animatable.View>
             </Modal>

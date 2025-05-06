@@ -167,4 +167,48 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#4A90E2',
   },
+  noteContainer: {
+    backgroundColor: '#E8F4FF',
+    borderLeftWidth: 4,
+    borderLeftColor: '#4A90E2',
+    borderRadius: 8,
+    padding: 16,
+    marginVertical: 16,
+  },
+  ruleTouch: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  practiceWrap: {
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  sectionBox: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#4A90E2',
+    borderRadius: 8,
+    padding: 12,
+    marginVertical: 8,
+  },
+  resultItem: {
+    padding: 12,
+    marginVertical: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#DDD',
+    backgroundColor: '#FFF',
+  },
+  correctText: {
+    color: '#4CAF50',        
+    fontWeight: '600',
+    marginTop: 4,
+  },
+  wrongText: {
+    color: '#F44336',        
+    fontWeight: '600',
+    marginTop: 4,
+  },
 });
