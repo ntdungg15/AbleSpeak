@@ -4,404 +4,354 @@ import {
   Text,
   TextInput,
   Pressable,
+  KeyboardAvoidingView,
   ScrollView,
-  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
   Modal,
-  TouchableOpacity,
+  Button,
+  Dimensions,
+  StyleSheet,
 } from "react-native";
-import { useRouter } from "expo-router";
-import { useSelector } from "react-redux";
+import { Link, router } from "expo-router";
+import { register } from "@/api/auth";
 
-export default function RegisterScreen() {
-  const router = useRouter();
-  const user = useSelector((state) => state.user);
-  useEffect(() => {
-    if (user.isLoggedIn) {
-      router.push("/(tabs)/profile");
-    }
-  }, [user.isLoggedIn]);
+const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-  const [fullName, setFullName] = useState("");
-  const [phone, setPhone] = useState("");
+const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
   const [age, setAge] = useState("");
+  const [readyToRegister, setIsReady] = useState(false);
+  const [invalidMessage, setInvalidMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [agreed, setAgreed] = useState(false);
 
-  const [emailError, setEmailError] = useState("");
-  const [phoneError, setPhoneError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [repeatPasswordError, setRepeatPasswordError] = useState("");
-  const [ageError, setAgeError] = useState("");
-  const [agreedError, setAgreedError] = useState("");
+  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const isValidPhone = (phone) => /^(0|\+84)[0-9]{9}$/.test(phone);
 
-  const [successMessage, setSuccessMessage] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const readyToRegister =
-    fullName && phone && email && password && repeatPassword && age && agreed;
-
-  const validateInputs = () => {
-    let isValid = true;
-
-    // Reset errors
-    setEmailError("");
-    setPhoneError("");
-    setPasswordError("");
-    setRepeatPasswordError("");
-    setAgeError("");
-    setAgreedError("");
-
-    // Kiểm tra email
-    if (!email.includes("@")) {
-      setEmailError("Email không đúng định dạng.");
-      isValid = false;
+  useEffect(() => {
+    const parsedAge = parseInt(age);
+    if (!email || !password || !repeatPassword || !fullName || !phone || !age) {
+      setIsReady(false);
+      setInvalidMessage("Haven't filled in all the fields yet!");
+    } else if (!isValidEmail(email)) {
+      setIsReady(false);
+      setInvalidMessage("Invalid email format.");
+    } else if (!isValidPhone(phone)) {
+      setIsReady(false);
+      setInvalidMessage("Invalid phone number format.");
+    } else if (password !== repeatPassword) {
+      setIsReady(false);
+      setInvalidMessage("Password and repeat password do not match!");
+    } else if (isNaN(parsedAge) || parsedAge < 13) {
+      setIsReady(false);
+      setInvalidMessage("You must be at least 13 years old to register.");
+    } else if (!agreed) {
+      setIsReady(false);
+      setInvalidMessage("You must agree to the privacy policy.");
+    } else {
+      setInvalidMessage("");
+      setIsReady(true);
     }
-
-    // Kiểm tra số điện thoại
-    const phoneRegex = /^[0-9]{10,11}$/; // Giới hạn 10-11 chữ số
-    if (!phoneRegex.test(phone)) {
-      setPhoneError("Số điện thoại không đúng định dạng.");
-      isValid = false;
-    }
-
-    // Kiểm tra mật khẩu và lặp lại mật khẩu
-    if (password !== repeatPassword) {
-      setPasswordError("Mật khẩu và lặp lại mật khẩu không khớp.");
-      setRepeatPasswordError("Mật khẩu và lặp lại mật khẩu không khớp.");
-      isValid = false;
-    }
-
-    // Kiểm tra tuổi
-    const ageNum = parseInt(age);
-    if (isNaN(ageNum) || ageNum < 12) {
-      setAgeError("Tuổi phải là số và ít nhất 12 tuổi.");
-      isValid = false;
-    }
-
-    // Kiểm tra đã đồng ý với chính sách
-    if (!agreed) {
-      setAgreedError("Bạn phải đồng ý với điều khoản và chính sách.");
-      isValid = false;
-    }
-
-    return isValid;
-  };
-
-  const register = async (fullName, email, password, phone) => {
-    // Fake API
-    return { success: true };
-  };
+  }, [email, password, repeatPassword, fullName, phone, age, agreed]);
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.scrollContainer}
-      keyboardShouldPersistTaps="handled"
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
     >
-      <View style={styles.contentContainer}>
-        <Text style={styles.title}>Welcome to EnglishMaster!</Text>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Full name</Text>
-          <TextInput
-            placeholder="Enter your full name"
-            style={styles.input}
-            value={fullName}
-            onChangeText={setFullName}
-          />
-        </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Phone</Text>
-          <TextInput
-            placeholder="Enter your phone number"
-            style={styles.input}
-            value={phone}
-            onChangeText={setPhone}
-            keyboardType="phone-pad"
-            onBlur={() => {
-              if (!phone) setPhoneError("Số điện thoại không được để trống.");
-              else validateInputs();
-            }}
-          />
-          {phoneError ? (
-            <Text style={styles.errorText}>{phoneError}</Text>
-          ) : null}
-        </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Email</Text>
-          <TextInput
-            placeholder="Enter your email"
-            style={styles.input}
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            onBlur={() => {
-              if (!email) setEmailError("Email không được để trống.");
-              else validateInputs();
-            }}
-          />
-          {emailError ? (
-            <Text style={styles.errorText}>{emailError}</Text>
-          ) : null}
-        </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Password</Text>
-          <TextInput
-            placeholder="*******"
-            style={styles.input}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            onBlur={() => {
-              if (!password) setPasswordError("Mật khẩu không được để trống.");
-              else validateInputs();
-            }}
-          />
-          {passwordError ? (
-            <Text style={styles.errorText}>{passwordError}</Text>
-          ) : null}
-        </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Repeat password</Text>
-          <TextInput
-            placeholder="*******"
-            style={styles.input}
-            value={repeatPassword}
-            onChangeText={setRepeatPassword}
-            secureTextEntry
-            onBlur={() => {
-              if (!repeatPassword)
-                setRepeatPasswordError("Lặp lại mật khẩu không được để trống.");
-              else validateInputs();
-            }}
-          />
-          {repeatPasswordError ? (
-            <Text style={styles.errorText}>{repeatPasswordError}</Text>
-          ) : null}
-        </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Age</Text>
-          <TextInput
-            placeholder="Enter your age"
-            style={styles.input}
-            value={age}
-            onChangeText={setAge}
-            keyboardType="number-pad"
-            onBlur={() => {
-              if (!age) setAgeError("Tuổi không được để trống.");
-              else validateInputs();
-            }}
-          />
-          {ageError ? <Text style={styles.errorText}>{ageError}</Text> : null}
-        </View>
-
-        <Pressable
-          onPress={() => setModalVisible(true)}
-          style={styles.privacyLink}
-        >
-          <Text style={styles.privacyText}>
-            {agreed ? "✅ " : "⬜ "} View and agree to privacy policy
-          </Text>
-        </Pressable>
-
-        {successMessage ? (
-          <Text style={[styles.messageText, { color: "#16a34a" }]}>
-            {successMessage}
-          </Text>
-        ) : null}
-
-        <Pressable
-          disabled={!readyToRegister}
-          style={[
-            styles.signUpButton,
-            { backgroundColor: readyToRegister ? "#f97316" : "#94a3b8" },
-          ]}
-          onPress={async () => {
-            const isValid = validateInputs();
-            if (isValid) {
-              const userCreator = await register(
-                fullName,
-                email,
-                password,
-                phone
-              );
-              if (userCreator.success) {
-                setSuccessMessage(
-                  "Đăng ký thành công! Chuyển hướng sau 2 giây..."
-                );
-                setTimeout(() => {
-                  router.back();
-                }, 2000);
-              }
-            }
-          }}
-        >
-          <Text style={styles.signUpButtonText}>Sign up</Text>
-        </Pressable>
-
-        <View style={styles.loginLinkContainer}>
-          <Text style={styles.loginLinkText}>Already have an account?</Text>
-          <Pressable
-            style={styles.loginButton}
-            onPress={() => router.push("/(tabs)/profile/login")}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.innerContainer}>
+          <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            keyboardShouldPersistTaps="handled"
           >
-            <Text style={styles.loginButtonText}>Log in</Text>
-          </Pressable>
+            <View style={styles.contentContainer}>
+              <Text style={styles.headerText}>Welcome to EnglishMaster!</Text>
+
+              {[
+                "Full name",
+                "Phone",
+                "Email",
+                "Password",
+                "Repeat password",
+                "Age",
+              ].map((label, index) => (
+                <View key={index} style={styles.inputGroup}>
+                  <Text style={styles.label}>{label}</Text>
+                  <TextInput
+                    placeholder={`Enter your ${label.toLowerCase()}`}
+                    style={styles.input}
+                    value={
+                      label === "Full name"
+                        ? fullName
+                        : label === "Phone"
+                        ? phone
+                        : label === "Email"
+                        ? email
+                        : label === "Password"
+                        ? password
+                        : label === "Repeat password"
+                        ? repeatPassword
+                        : age
+                    }
+                    onChangeText={
+                      label === "Full name"
+                        ? setFullName
+                        : label === "Phone"
+                        ? setPhone
+                        : label === "Email"
+                        ? setEmail
+                        : label === "Password"
+                        ? setPassword
+                        : label === "Repeat password"
+                        ? setRepeatPassword
+                        : setAge
+                    }
+                    keyboardType={
+                      label === "Phone"
+                        ? "phone-pad"
+                        : label === "Email"
+                        ? "email-address"
+                        : label === "Age"
+                        ? "number-pad"
+                        : "default"
+                    }
+                    secureTextEntry={
+                      label === "Password" || label === "Repeat password"
+                    }
+                  />
+                </View>
+              ))}
+
+              <Pressable
+                onPress={() => setShowPrivacyModal(true)}
+                style={styles.privacyLink}
+              >
+                <Text style={styles.privacyText}>
+                  View and agree to privacy policy
+                </Text>
+              </Pressable>
+
+              {agreed && (
+                <Text style={styles.agreedText}>
+                  ✓ You have agreed to the policy
+                </Text>
+              )}
+
+              {[invalidMessage, errorMessage, successMessage].map((msg, idx) =>
+                msg ? (
+                  <Text
+                    key={idx}
+                    style={[
+                      styles.messageText,
+                      { color: idx === 2 ? "#059669" : "#dc2626" },
+                    ]}
+                  >
+                    {msg}
+                  </Text>
+                ) : null
+              )}
+
+              <Pressable
+                disabled={!readyToRegister}
+                style={[
+                  styles.signUpButton,
+                  {
+                    backgroundColor: readyToRegister ? "#2563eb" : "#93c5fd",
+                    shadowColor: "#1e3a8a",
+                  },
+                ]}
+                onPress={async () => {
+                  const userCreator = await register(
+                    fullName,
+                    email,
+                    password,
+                    phone
+                  );
+                  if (userCreator.error) {
+                    setErrorMessage(userCreator.error);
+                  } else {
+                    setSuccessMessage(
+                      "Đăng ký thành công! Chuyển hướng sau 2 giây..."
+                    );
+                    setTimeout(() => {
+                      router.back();
+                    }, 2000);
+                  }
+                }}
+              >
+                <Text style={styles.signUpButtonText}>Sign up</Text>
+              </Pressable>
+
+              <View style={styles.loginLinkContainer}>
+                <Link href="/(tabs)/profile/login">
+                  <Text style={styles.loginLinkText}>
+                    Already have an account? Log in
+                  </Text>
+                </Link>
+              </View>
+            </View>
+
+            <Modal visible={showPrivacyModal} transparent animationType="slide">
+              <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                  <Text style={styles.modalTitle}>Privacy Policy</Text>
+                  <ScrollView style={styles.modalScroll}>
+                    <Text>
+                      Please read and accept our privacy policy to continue
+                      using the app... {"\n\n"}[Mô tả chính sách bảo mật ở
+                      đây...]
+                    </Text>
+                  </ScrollView>
+                  <View style={styles.modalButtons}>
+                    <Button
+                      title="Agree"
+                      onPress={() => {
+                        setAgreed(true);
+                        setShowPrivacyModal(false);
+                      }}
+                      color="#2563eb"
+                    />
+                    <Button
+                      title="Cancel"
+                      onPress={() => {
+                        setAgreed(false);
+                        setShowPrivacyModal(false);
+                      }}
+                      color="#3b82f6"
+                    />
+                  </View>
+                </View>
+              </View>
+            </Modal>
+          </ScrollView>
         </View>
-      </View>
-
-      {/* Modal for Privacy Policy */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalBackground}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Privacy Policy</Text>
-            <Text style={styles.modalText}>
-              Đây là chính sách bảo mật của chúng tôi. Bạn cần đọc và đồng ý
-              trước khi tiếp tục sử dụng dịch vụ.
-            </Text>
-
-            <Pressable
-              style={styles.modalButton}
-              onPress={() => {
-                setAgreed(true);
-                setModalVisible(false);
-              }}
-            >
-              <Text style={styles.modalButtonText}>I Agree</Text>
-            </Pressable>
-
-            <Pressable
-              style={styles.modalButton}
-              onPress={() => setModalVisible(false)}
-            >
-              <Text style={styles.modalButtonText}>Close</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
-    </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
-}
+};
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#eff6ff",
+  },
+  innerContainer: {
+    flex: 1,
+  },
   scrollContainer: {
+    paddingVertical: 40,
+    paddingHorizontal: 20,
     flexGrow: 1,
     justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 20,
-    backgroundColor: "#e0f7fa",
   },
   contentContainer: {
-    width: "90%",
     alignItems: "center",
+    width: "100%",
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
+  headerText: {
+    fontSize: 28,
+    fontWeight: "700",
     textAlign: "center",
+    color: "#1d4ed8",
+    marginBottom: 20,
   },
   inputGroup: {
-    width: "80%",
-    alignItems: "flex-start",
-    marginBottom: 10,
+    marginBottom: 12,
+    width: "100%",
   },
   label: {
-    fontWeight: "bold",
-    marginBottom: 5,
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#1e40af",
+    marginBottom: 4,
   },
   input: {
+    height: 44,
+    borderColor: "#93c5fd",
     borderWidth: 1,
-    borderColor: "#ccc",
     borderRadius: 10,
-    padding: 10,
-    width: "100%",
-    backgroundColor: "#fff",
-  },
-  errorText: {
-    color: "#dc2626",
-    fontSize: 12,
-    marginTop: 5,
+    paddingHorizontal: 12,
+    backgroundColor: "#f0f9ff",
+    fontSize: 15,
   },
   privacyLink: {
-    marginVertical: 10,
+    marginTop: 10,
   },
   privacyText: {
-    color: "#3b82f6",
+    color: "#2563eb",
     textDecorationLine: "underline",
+    fontSize: 14,
+  },
+  agreedText: {
+    color: "#059669",
+    marginTop: 5,
+    fontSize: 14,
   },
   messageText: {
-    marginVertical: 5,
+    marginTop: 8,
     fontSize: 14,
-    textAlign: "center",
   },
   signUpButton: {
-    padding: 12,
+    height: 48,
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 10,
     marginTop: 20,
-    width: "25%",
-    alignItems: "center",
+    width: "100%",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
   signUpButtonText: {
-    color: "#fff",
+    color: "white",
     fontWeight: "bold",
     fontSize: 16,
   },
   loginLinkContainer: {
-    flexDirection: "row",
-    alignItems: "center",
     marginTop: 20,
+    alignItems: "center",
   },
   loginLinkText: {
-    marginRight: 5,
-  },
-  loginButtonText: {
     color: "#3b82f6",
-    textDecorationLine: "underline",
-  },
-  modalBackground: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    fontSize: 15,
   },
   modalContainer: {
-    width: "80%",
-    padding: 20,
-    backgroundColor: "#fff",
-    borderRadius: 10,
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    justifyContent: "center",
     alignItems: "center",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 12,
+    width: "85%",
   },
   modalTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
+    fontSize: 18,
+    fontWeight: "600",
     marginBottom: 10,
+    color: "#1e40af",
   },
-  modalText: {
-    fontSize: 16,
-    marginBottom: 20,
+  modalScroll: {
+    maxHeight: 300,
   },
-  modalButton: {
-    padding: 10,
-    marginVertical: 5,
-    backgroundColor: "#f97316",
-    borderRadius: 10,
-    width: "80%",
-    alignItems: "center",
-  },
-  modalButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
+  modalButtons: {
+    marginTop: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
+
+export default Register;
+   

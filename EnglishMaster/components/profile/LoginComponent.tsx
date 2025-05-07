@@ -123,7 +123,7 @@ const LoginScreen = () => {
               disabled={!name || !password || loading}
             >
               {loading ? (
-                <ActivityIndicator color="#fff" />
+                <ActivityIndicator />
               ) : (
                 <Text style={styles.loginButtonText}>Login</Text>
               )}
@@ -144,7 +144,6 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
   },
   header: {
     backgroundColor: "#007AFF",
