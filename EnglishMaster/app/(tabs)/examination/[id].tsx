@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
-import { grammarQuestions, Question } from '../../../constants/examination/grammarQuestions';
+import { router, useLocalSearchParams } from 'expo-router';
+import {
+  grammarQuestions1,
+  grammarQuestions2,
+  grammarQuestions3,
+  grammarQuestions4,
+  Question
+} from '../../../constants/examination/grammarQuestions';
 import { Ionicons } from '@expo/vector-icons';
 
 interface Answer {
@@ -12,13 +18,21 @@ interface Answer {
 }
 
 const ExaminationScreen = () => {
+  const { id } = useLocalSearchParams();
+
+  // Lấy đúng bộ đề theo id
+  let questions: Question[] = grammarQuestions1;
+  if (id === 'grammar-2') questions = grammarQuestions2;
+  else if (id === 'grammar-3') questions = grammarQuestions3;
+  else if (id === 'grammar-4') questions = grammarQuestions4;
+
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<(string | null)[]>([]);
   const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
   const [startTime] = useState(Date.now());
   const [allAnswers, setAllAnswers] = useState<Answer[]>([]);
 
-  const currentQuestionData = grammarQuestions[currentQuestion];
+  const currentQuestionData = questions[currentQuestion];
 
   React.useEffect(() => {
     // Khôi phục câu trả lời đã lưu nếu có
@@ -41,7 +55,7 @@ const ExaminationScreen = () => {
         setSelectedAnswers([]);
       }
     }
-  }, [currentQuestion]);
+  }, [currentQuestion, currentQuestionData]);
 
   const handleSelectAnswer = (answer: string) => {
     if (currentQuestionData.type === 'fill-in-blank') {
@@ -233,7 +247,7 @@ const ExaminationScreen = () => {
   };
 
   const handleNext = () => {
-    if (currentQuestion < grammarQuestions.length - 1) {
+    if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     }
   };
@@ -246,10 +260,9 @@ const ExaminationScreen = () => {
 
   const calculateScore = () => {
     let score = 0;
-    grammarQuestions.forEach((question, index) => {
+    questions.forEach((question, index) => {
       const answer = allAnswers[index];
       if (!answer) return;
-
       if (question.type === 'multiple-choice') {
         if (answer.selectedChoice === question.correctAnswer) {
           score++;
@@ -267,11 +280,10 @@ const ExaminationScreen = () => {
   };
 
   const handleSubmit = () => {
-    const unansweredQuestions = grammarQuestions.filter((_, index) => {
+    const unansweredQuestions = questions.filter((_, index) => {
       const answer = allAnswers[index];
       if (!answer) return true;
-      
-      if (grammarQuestions[index].type === 'multiple-choice') {
+      if (questions[index].type === 'multiple-choice') {
         return !answer.selectedChoice;
       } else {
         return answer.selectedAnswers?.includes(null);
@@ -296,8 +308,9 @@ const ExaminationScreen = () => {
                 pathname: "/examination/result",
                 params: {
                   score: score.toString(),
-                  totalQuestions: grammarQuestions.length.toString(),
-                  timeSpent: timeSpent.toString()
+                  totalQuestions: questions.length.toString(),
+                  timeSpent: timeSpent.toString(),
+                  id: id?.toString() || ''
                 }
               });
             }
@@ -311,8 +324,9 @@ const ExaminationScreen = () => {
         pathname: "/examination/result",
         params: {
           score: score.toString(),
-          totalQuestions: grammarQuestions.length.toString(),
-          timeSpent: timeSpent.toString()
+          totalQuestions: questions.length.toString(),
+          timeSpent: timeSpent.toString(),
+          id: id?.toString() || ''
         }
       });
     }
@@ -326,13 +340,13 @@ const ExaminationScreen = () => {
 
       <View style={styles.progressContainer}>
         <Text style={styles.questionNumber}>
-          Câu {currentQuestion + 1}/{grammarQuestions.length}
+          Câu {currentQuestion + 1}/{questions.length}
         </Text>
         <View style={styles.progressBar}>
           <View 
             style={[
               styles.progressFill, 
-              { width: `${((currentQuestion + 1) / grammarQuestions.length) * 100}%` }
+              { width: `${((currentQuestion + 1) / questions.length) * 100}%` }
             ]} 
           />
         </View>
@@ -351,7 +365,7 @@ const ExaminationScreen = () => {
           <Text style={styles.navButtonText}>Trước</Text>
         </TouchableOpacity>
 
-        {currentQuestion === grammarQuestions.length - 1 ? (
+        {currentQuestion === questions.length - 1 ? (
           <TouchableOpacity
             style={[styles.navButton, styles.submitButton]}
             onPress={handleSubmit}

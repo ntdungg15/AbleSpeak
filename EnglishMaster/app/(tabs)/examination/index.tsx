@@ -7,26 +7,30 @@ import examImage from '../../../assets/images/Frame-279398.png';
 const examSets = [
   {
     id: 'grammar-1',
-    title: 'Ngữ pháp cơ bản',
-    description: 'Kiểm tra kiến thức ngữ pháp cơ bản',
-    questions: 15,
-    time: 15,
+    title: 'Bộ đề 1: Ngữ pháp & Từ vựng cơ bản',
+    description: 'Kiểm tra tổng hợp ngữ pháp và từ vựng cơ bản.',
+    questions: 10,
     image: examImage,
   },
   {
     id: 'grammar-2',
-    title: 'Ngữ pháp nâng cao',
-    description: 'Kiểm tra kiến thức ngữ pháp nâng cao',
-    questions: 20,
-    time: 20,
+    title: 'Bộ đề 2: Từ vựng & Câu hỏi thực tế',
+    description: 'Kiểm tra từ vựng, ngữ pháp và kiến thức thực tế.',
+    questions: 10,
     image: examImage,
   },
   {
-    id: 'vocabulary-1',
-    title: 'Từ vựng cơ bản',
-    description: 'Kiểm tra vốn từ vựng cơ bản',
-    questions: 15,
-    time: 15,
+    id: 'grammar-3',
+    title: 'Bộ đề 3: Đọc hiểu & Từ vựng mở rộng',
+    description: 'Luyện tập đọc hiểu, từ vựng và kiến thức tổng hợp.',
+    questions: 10,
+    image: examImage,
+  },
+  {
+    id: 'grammar-4',
+    title: 'Bộ đề 4: Chủ đề đa dạng',
+    description: 'Kiểm tra kiến thức tổng hợp nhiều chủ đề khác nhau.',
+    questions: 10,
     image: examImage,
   },
 ];
@@ -65,7 +69,6 @@ const ExaminationScreen = () => {
               <Text style={styles.examDescription}>{exam.description}</Text>
               <View style={styles.examDetails}>
                 <Text style={styles.examDetail}>• {exam.questions} câu hỏi</Text>
-                <Text style={styles.examDetail}>• Thời gian: {exam.time} phút</Text>
               </View>
             </View>
           </TouchableOpacity>
