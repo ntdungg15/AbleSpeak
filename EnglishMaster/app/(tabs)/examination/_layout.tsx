@@ -20,6 +20,7 @@ export default function ExaminationLayout() {
           animation: 'slide_from_right',
         }}
       />
+      <Stack.Screen name="result" options={{ headerShown: false }} />
     </Stack>
   );
 } 

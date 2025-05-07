@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import {
   DarkTheme,
   DefaultTheme,
@@ -21,6 +22,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded] = useFonts({
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
@@ -35,6 +37,7 @@ export default function RootLayout() {
   }
 
   return (
+    // eslint-disable-next-line react/react-in-jsx-scope
     <Provider store={store}>
       <PersistGate persistor={persistor} loading={null}>
         <ThemeProvider
@@ -50,6 +53,7 @@ export default function RootLayout() {
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="chatroom/ChatRoom" options={{ headerShown: false }} />
+
             <Stack.Screen name="+not-found" />
           </Stack>
           <StatusBar style="auto" />

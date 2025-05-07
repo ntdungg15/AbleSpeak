@@ -1,48 +1,79 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from 'expo-router';
+import examImage from '../../../assets/images/Frame-279398.png';
+
+const examSets = [
+  {
+    id: 'grammar-1',
+    title: 'Bộ đề 1: Ngữ pháp & Từ vựng cơ bản',
+    description: 'Kiểm tra tổng hợp ngữ pháp và từ vựng cơ bản.',
+    questions: 10,
+    image: examImage,
+  },
+  {
+    id: 'grammar-2',
+    title: 'Bộ đề 2: Từ vựng & Câu hỏi thực tế',
+    description: 'Kiểm tra từ vựng, ngữ pháp và kiến thức thực tế.',
+    questions: 10,
+    image: examImage,
+  },
+  {
+    id: 'grammar-3',
+    title: 'Bộ đề 3: Đọc hiểu & Từ vựng mở rộng',
+    description: 'Luyện tập đọc hiểu, từ vựng và kiến thức tổng hợp.',
+    questions: 10,
+    image: examImage,
+  },
+  {
+    id: 'grammar-4',
+    title: 'Bộ đề 4: Chủ đề đa dạng',
+    description: 'Kiểm tra kiến thức tổng hợp nhiều chủ đề khác nhau.',
+    questions: 10,
+    image: examImage,
+  },
+];
 
 const ExaminationScreen = () => {
-  const handleStartExamination = () => {
+  const handleStartExamination = (examId: string) => {
     router.push({
-      pathname: "/examination/grammar",
+      pathname: "/examination/[id]",
+      params: { id: examId }
     });
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Kiểm tra kiến thức</Text>
-          <Text style={styles.subtitle}>
-            Hãy sẵn sàng để kiểm tra trình độ tiếng Anh của bạn!
-          </Text>
-        </View>
-
-        <View style={styles.imageContainer}>
-          <Image 
-            source={require('../../../assets/images/Frame-279398.png')}
-            style={[styles.image]}
-            resizeMode="contain"
-          />
-        </View>
-
-        <View style={styles.infoContainer}>
-          <Text style={styles.infoText}>
-            • 15 câu hỏi ngữ pháp{'\n'}
-            • Thời gian: 15 phút{'\n'}
-            • Kiểm tra kiến thức ngữ pháp cơ bản
-          </Text>
-        </View>
-
-        <TouchableOpacity 
-          style={styles.startButton}
-          onPress={handleStartExamination}
-        >
-          <Text style={styles.startButtonText}>Bắt đầu</Text>
-        </TouchableOpacity>
+      <View style={styles.header}>
+        <Text style={styles.title}>Kiểm tra kiến thức</Text>
+        <Text style={styles.subtitle}>
+          Chọn bộ đề để bắt đầu kiểm tra trình độ tiếng Anh của bạn
+        </Text>
       </View>
+
+      <ScrollView style={styles.scrollView}>
+        {examSets.map((exam) => (
+          <TouchableOpacity
+            key={exam.id}
+            style={styles.examCard}
+            onPress={() => handleStartExamination(exam.id)}
+          >
+            <Image 
+              source={exam.image}
+              style={styles.examImage}
+              resizeMode="contain"
+            />
+            <View style={styles.examInfo}>
+              <Text style={styles.examTitle}>{exam.title}</Text>
+              <Text style={styles.examDescription}>{exam.description}</Text>
+              <View style={styles.examDetails}>
+                <Text style={styles.examDetail}>• {exam.questions} câu hỏi</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -52,15 +83,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  content: {
-    flex: 1,
+  header: {
     padding: 20,
     alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  header: {
-    alignItems: 'center',
-    marginTop: 40,
   },
   title: {
     fontSize: 28,
@@ -73,34 +98,15 @@ const styles = StyleSheet.create({
     color: '#7f8c8d',
     textAlign: 'center',
   },
-  imageContainer: {
+  scrollView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    // maxHeight: '40%',
+    padding: 20,
   },
-  image: {
-    width: 450,
-    height: 450,
-  },
-  infoContainer: {
-    width: '100%',
+  examCard: {
     backgroundColor: '#f8f9fa',
     borderRadius: 12,
-    padding: 20,
-    marginBottom: 40,
-  },
-  infoText: {
-    fontSize: 16,
-    color: '#34495e',
-    lineHeight: 24,
-  },
-  startButton: {
-    backgroundColor: '#3498db',
-    paddingVertical: 15,
-    paddingHorizontal: 60,
-    borderRadius: 25,
-    marginBottom: 60,
+    marginBottom: 20,
+    overflow: 'hidden',
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: {
@@ -110,10 +116,31 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
-  startButtonText: {
-    color: '#fff',
+  examImage: {
+    width: '100%',
+    height: 150,
+  },
+  examInfo: {
+    padding: 15,
+  },
+  examTitle: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: '#2c3e50',
+    marginBottom: 5,
+  },
+  examDescription: {
+    fontSize: 14,
+    color: '#7f8c8d',
+    marginBottom: 10,
+  },
+  examDetails: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  examDetail: {
+    fontSize: 14,
+    color: '#34495e',
   },
 });
 

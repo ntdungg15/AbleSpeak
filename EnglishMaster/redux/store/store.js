@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import User from "@/redux/reducer/User";
+import Setting from "@/redux/reducer/Setting";
 import {persistReducer, persistStore} from "redux-persist"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 const configuration = {
@@ -10,6 +11,7 @@ const configuration = {
 
 const rootReducer = combineReducers({
     user : User.reducer,
+    setting : Setting.reducer,
 })
 const persistedReducer = persistReducer(configuration, rootReducer) // boc rootReducer de redux luu state vao asyncstorage
 

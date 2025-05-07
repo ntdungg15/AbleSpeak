@@ -1,26 +1,61 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Pressable } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
-import { grammarQuestions, Question } from '../../../constants/examination/grammarQuestions';
+import { router, useLocalSearchParams } from 'expo-router';
+import {
+  grammarQuestions1,
+  grammarQuestions2,
+  grammarQuestions3,
+  grammarQuestions4,
+  Question
+} from '../../../constants/examination/grammarQuestions';
 import { Ionicons } from '@expo/vector-icons';
 
+interface Answer {
+  type: 'multiple-choice' | 'fill-in-blank';
+  selectedChoice?: string | null;
+  selectedAnswers?: (string | null)[];
+}
+
 const ExaminationScreen = () => {
+  const { id } = useLocalSearchParams();
+
+  // Lấy đúng bộ đề theo id
+  let questions: Question[] = grammarQuestions1;
+  if (id === 'grammar-2') questions = grammarQuestions2;
+  else if (id === 'grammar-3') questions = grammarQuestions3;
+  else if (id === 'grammar-4') questions = grammarQuestions4;
+
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<(string | null)[]>([]);
   const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
+  const [startTime] = useState(Date.now());
+  const [allAnswers, setAllAnswers] = useState<Answer[]>([]);
 
-  const currentQuestionData = grammarQuestions[currentQuestion];
+  const currentQuestionData = questions[currentQuestion];
 
   React.useEffect(() => {
-    if (currentQuestionData.type === 'fill-in-blank') {
-      setSelectedAnswers(new Array(currentQuestionData.blanks.length).fill(null));
-      setSelectedChoice(null);
+    // Khôi phục câu trả lời đã lưu nếu có
+    const savedAnswer = allAnswers[currentQuestion];
+    if (savedAnswer) {
+      if (savedAnswer.type === 'multiple-choice') {
+        setSelectedChoice(savedAnswer.selectedChoice || null);
+        setSelectedAnswers([]);
+      } else {
+        setSelectedAnswers(savedAnswer.selectedAnswers || []);
+        setSelectedChoice(null);
+      }
     } else {
-      setSelectedChoice(null);
-      setSelectedAnswers([]);
+      // Khởi tạo câu trả lời mới
+      if (currentQuestionData.type === 'fill-in-blank') {
+        setSelectedAnswers(new Array(currentQuestionData.blanks.length).fill(null));
+        setSelectedChoice(null);
+      } else {
+        setSelectedChoice(null);
+        setSelectedAnswers([]);
+      }
     }
-  }, [currentQuestion]);
+  }, [currentQuestion, currentQuestionData]);
 
   const handleSelectAnswer = (answer: string) => {
     if (currentQuestionData.type === 'fill-in-blank') {
@@ -29,16 +64,37 @@ const ExaminationScreen = () => {
           ans === answer ? null : ans
         );
         setSelectedAnswers(newAnswers);
+        // Lưu câu trả lời ngay khi chọn
+        const newAllAnswers = [...allAnswers];
+        newAllAnswers[currentQuestion] = {
+          type: 'fill-in-blank',
+          selectedAnswers: newAnswers
+        };
+        setAllAnswers(newAllAnswers);
       } else {
         const emptyIndex = selectedAnswers.findIndex(ans => ans === null);
         if (emptyIndex !== -1) {
           const newAnswers = [...selectedAnswers];
           newAnswers[emptyIndex] = answer;
           setSelectedAnswers(newAnswers);
+          // Lưu câu trả lời ngay khi chọn
+          const newAllAnswers = [...allAnswers];
+          newAllAnswers[currentQuestion] = {
+            type: 'fill-in-blank',
+            selectedAnswers: newAnswers
+          };
+          setAllAnswers(newAllAnswers);
         }
       }
     } else if (currentQuestionData.type === 'multiple-choice') {
       setSelectedChoice(answer);
+      // Lưu câu trả lời ngay khi chọn
+      const newAllAnswers = [...allAnswers];
+      newAllAnswers[currentQuestion] = {
+        type: 'multiple-choice',
+        selectedChoice: answer
+      };
+      setAllAnswers(newAllAnswers);
     }
   };
 
@@ -191,7 +247,7 @@ const ExaminationScreen = () => {
   };
 
   const handleNext = () => {
-    if (currentQuestion < grammarQuestions.length - 1) {
+    if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     }
   };
@@ -202,8 +258,78 @@ const ExaminationScreen = () => {
     }
   };
 
+  const calculateScore = () => {
+    let score = 0;
+    questions.forEach((question, index) => {
+      const answer = allAnswers[index];
+      if (!answer) return;
+      if (question.type === 'multiple-choice') {
+        if (answer.selectedChoice === question.correctAnswer) {
+          score++;
+        }
+      } else if (question.type === 'fill-in-blank') {
+        const isCorrect = answer.selectedAnswers?.every((selectedAnswer, i) => 
+          selectedAnswer === question.correctAnswers[i]
+        );
+        if (isCorrect) {
+          score++;
+        }
+      }
+    });
+    return score;
+  };
+
   const handleSubmit = () => {
-    router.back();
+    const unansweredQuestions = questions.filter((_, index) => {
+      const answer = allAnswers[index];
+      if (!answer) return true;
+      if (questions[index].type === 'multiple-choice') {
+        return !answer.selectedChoice;
+      } else {
+        return answer.selectedAnswers?.includes(null);
+      }
+    }).length;
+
+    if (unansweredQuestions > 0) {
+      Alert.alert(
+        'Xác nhận nộp bài',
+        `Bạn còn ${unansweredQuestions} câu chưa trả lời. Bạn có chắc chắn muốn nộp bài?`,
+        [
+          {
+            text: 'Hủy',
+            style: 'cancel'
+          },
+          {
+            text: 'Nộp bài',
+            onPress: () => {
+              const score = calculateScore();
+              const timeSpent = Math.floor((Date.now() - startTime) / 1000 / 60);
+              router.push({
+                pathname: "/examination/result",
+                params: {
+                  score: score.toString(),
+                  totalQuestions: questions.length.toString(),
+                  timeSpent: timeSpent.toString(),
+                  id: id?.toString() || ''
+                }
+              });
+            }
+          }
+        ]
+      );
+    } else {
+      const score = calculateScore();
+      const timeSpent = Math.floor((Date.now() - startTime) / 1000 / 60);
+      router.push({
+        pathname: "/examination/result",
+        params: {
+          score: score.toString(),
+          totalQuestions: questions.length.toString(),
+          timeSpent: timeSpent.toString(),
+          id: id?.toString() || ''
+        }
+      });
+    }
   };
 
   return (
@@ -214,13 +340,13 @@ const ExaminationScreen = () => {
 
       <View style={styles.progressContainer}>
         <Text style={styles.questionNumber}>
-          Câu {currentQuestion + 1}/{grammarQuestions.length}
+          Câu {currentQuestion + 1}/{questions.length}
         </Text>
         <View style={styles.progressBar}>
           <View 
             style={[
               styles.progressFill, 
-              { width: `${((currentQuestion + 1) / grammarQuestions.length) * 100}%` }
+              { width: `${((currentQuestion + 1) / questions.length) * 100}%` }
             ]} 
           />
         </View>
@@ -239,7 +365,7 @@ const ExaminationScreen = () => {
           <Text style={styles.navButtonText}>Trước</Text>
         </TouchableOpacity>
 
-        {currentQuestion === grammarQuestions.length - 1 ? (
+        {currentQuestion === questions.length - 1 ? (
           <TouchableOpacity
             style={[styles.navButton, styles.submitButton]}
             onPress={handleSubmit}

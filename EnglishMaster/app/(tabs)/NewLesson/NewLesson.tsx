@@ -17,7 +17,7 @@ const NewLesson = () => {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Vocabulary</Text>
             <Image
-              source={{ uri: "https://via.placeholder.com/150" }}
+              source={{ uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746283825/logo_fyatoc.png" }}
               style={styles.image}
             />
           </View>
@@ -30,7 +30,7 @@ const NewLesson = () => {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Grammar</Text>
             <Image
-              source={{ uri: "https://via.placeholder.com/150" }}
+              source={{ uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746330985/grammmar_kb6zzu.jpg" }}
               style={styles.image}
             />
           </View>
@@ -38,19 +38,7 @@ const NewLesson = () => {
       </View>
 
       <View style={styles.row}>
-        <TouchableHighlight style={styles.touchable}
-        onPress={() => router.push("/(tabs)/NewLesson/Dialogue/Dialogue")}
-        underlayColor="#f5f5f5"
->
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Dialogue</Text>
-            <Image
-              source={{ uri: "https://via.placeholder.com/150" }}
-              style={styles.image}
-            />
-          </View>
-        </TouchableHighlight>
-
+        
         <TouchableHighlight style={styles.touchable}
         onPress={() => router.push("/(tabs)/NewLesson/Video/Video_Illustration")}
         underlayColor="#f5f5f5"
@@ -58,7 +46,7 @@ const NewLesson = () => {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Video/Illustration</Text>
             <Image
-              source={{ uri: "https://via.placeholder.com/150" }}
+              source={{ uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746331253/Illustration_ciipuw.jpg" }}
               style={styles.image}
             />
           </View>
