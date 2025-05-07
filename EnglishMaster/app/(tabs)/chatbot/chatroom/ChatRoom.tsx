@@ -110,7 +110,7 @@ const ChatRoom = () => {
         >
           {messList.map((mess, index) => (
             mess.isUser ? (
-              <>
+            
                 <View
                   key={`user-${index}`}
                   style={{
@@ -143,9 +143,9 @@ const ChatRoom = () => {
                     }}
                   >{mess.text.trim()}</Markdown>
                 </View>
-              </>
+              
             ) : (
-              <>
+              
                 <View
                   key={`bot-${index}`}
                   style={{
@@ -178,7 +178,7 @@ const ChatRoom = () => {
                     }}
                   >{mess.text.trim()}</Markdown>
                 </View>
-              </>
+              
             )
           ))}
         </ScrollView>

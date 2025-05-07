@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, Pressable, Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 type Props = {
   relationship: Relationship;
+  onAddFriend: () => void;
 };
 type Relationship = {
   Following: FriendOverview[];
@@ -13,7 +14,7 @@ type FriendOverview = {
   name: string;
 }
 
-const FriendComponent = ({ relationship }: Props) => {
+const FriendComponent = ({ relationship, onAddFriend }: Props) => {
   const [activeTab, setActiveTab] = useState("Following");
   const following = relationship?.Following ?? [];
   const followers = relationship?.Followers ?? [];
@@ -24,6 +25,7 @@ const FriendComponent = ({ relationship }: Props) => {
         <Pressable
           onPress={() => {
             console.log("Add Friends Pressed");
+            onAddFriend();
           }}
           style={{ padding: 10, position: "relative" }}
         >
