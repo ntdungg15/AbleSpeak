@@ -55,7 +55,7 @@ const LessonVocabulary: React.FC = () => {
       const { sound } = await Audio.Sound.createAsync({ uri: audioUrl });
       await sound.playAsync();
       sound.setOnPlaybackStatusUpdate((status) => {
-        if (status.didJustFinish) {
+        if (status.isLoaded && status.didJustFinish) {
           sound.unloadAsync();
         }
       });
@@ -117,7 +117,7 @@ const LessonVocabulary: React.FC = () => {
   const startReview = () => {
     if (vocabularyList.length > 0 && id && title) {
       router.push({
-        pathname: '/vocabulary/review',
+        pathname: '/(tabs)/NewLesson/Vocabulary/VocabularyReview',
         params: { lessonId: id, title },
       });
     } else {

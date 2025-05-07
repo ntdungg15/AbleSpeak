@@ -176,7 +176,7 @@ const Vocabulary = () => {
   const handleLessonPress = (lessonId: string, lessonTitle: string) => {
     router.push({
       pathname: `/(tabs)/NewLesson/Vocabulary/VocabularyDetail`,
-      params: { title: lessonTitle }
+      params: { title: lessonTitle, id: lessonId }
     });
   };
 
