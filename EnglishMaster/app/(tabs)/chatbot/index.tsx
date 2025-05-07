@@ -12,6 +12,7 @@ import {
 // import { useRouter } from 'expo-router'
 import { styles } from '@/constants/chatbot/ChatBot'
 import logoDogImage from '@/assets/images/logo-dog.png';
+import RolePlayCard from '@/components/chatbot/RolePlayCard';
 
 const ChatBot = () => {
   // const router = useRouter();
@@ -44,17 +45,17 @@ const ChatBot = () => {
           </View>
         </View>
 
-        {/* Role-Play        */}
+        {/* Role-Play  */}
         <View style={styles.topicContainer}>
           <Text style={styles.textcardheader}>Role-Play</Text>
-          
+          <RolePlayCard />
         </View>
         
         {/* Read and talk  */}
-        <View style={styles.topicContainer}>
+        {/* <View style={styles.topicContainer}>
           <Text style={styles.textcardheader}>Read and Talk</Text>
           
-        </View>
+        </View> */}
 
 
       </ScrollView>
