@@ -1,71 +1,169 @@
-import React from "react";
-import { View, Text, ScrollView, StyleSheet, Pressable } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  Pressable,
+  Linking,
+  Alert,
+} from "react-native";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
+
+import PrivacyPolicyModal from "@/components/profile/PrivacyPolicyModal";
+import TermsOfServiceModal from "@/components/profile/TermOfSerivicesModal";
+import ThanksModal from "@/components/profile/ThanksModal";
+
 const SettingScreen = () => {
+  const [privacyVisible, setPrivacyVisible] = useState(false);
+  const [termsVisible, setTermsVisible] = useState(false);
+  const [thanksVisible, setThanksVisible] = useState(false);
+
+  const handleOpenURL = async (url: string) => {
+    try {
+      const supported = await Linking.canOpenURL(url);
+      if (supported) {
+        await Linking.openURL(url);
+      } else {
+        Alert.alert("Error", "Can't open this URL: " + url);
+      }
+    } catch (error) {
+      console.error("Failed to open URL:", error);
+    }
+  };
+
   return (
-    <ScrollView>
-      <View style={{ padding: 20 }}>
-        <Text style={{ marginTop: 10, fontSize: 20, fontWeight: "bold" }}>
-          Manage your settings here.
-        </Text>
-      </View>
-      <View style={{ padding: 20 }}>
-        <Text style={styles.sectionHeader}>Account Settings</Text>
-        <View style={styles.sectionContainer}>
+    <>
+      <ScrollView contentContainerStyle={{ paddingBottom: 30 }}>
+        <LinearGradient
+          colors={["#4facfe", "#00f2fe"]}
+          style={styles.headerContainer}
+        >
+          <Ionicons name="settings-outline" size={28} color="#fff" />
+          <Text style={styles.headerText}>Settings</Text>
+        </LinearGradient>
+
+        <View style={{ padding: 20 }}>
+          <Text style={styles.introText}>Manage your settings here.</Text>
+        </View>
+
+        <View style={{ padding: 20 }}>
+          <Text style={styles.sectionHeader}>Account Settings</Text>
+          <View style={styles.sectionContainer}>
+            <Pressable
+              style={styles.sectionItem}
+              android_ripple={{ color: "#d0d0d0" }}
+              onPress={() => router.push("/profile/preferences")}
+            >
+              <Text style={styles.sectionItemText}>Preferences</Text>
+              <AntDesign name="right" size={24} color="#4facfe" />
+            </Pressable>
+            <Pressable
+              style={styles.sectionItem}
+              android_ripple={{ color: "#d0d0d0" }}
+              onPress={() => router.push("/profile/updateInfo")}
+            >
+              <Text style={styles.sectionItemText}>Profile</Text>
+              <AntDesign name="right" size={24} color="#4facfe" />
+            </Pressable>
+            <Pressable
+              style={styles.sectionItem}
+              android_ripple={{ color: "#d0d0d0" }}
+            >
+              <Text style={styles.sectionItemText}>Notification</Text>
+              <AntDesign name="right" size={24} color="#4facfe" />
+            </Pressable>
+          </View>
+        </View>
+
+        <View style={{ padding: 20 }}>
+          <Text style={styles.sectionHeader}>Support</Text>
+          <View style={styles.sectionContainer}>
+            <Pressable
+              style={styles.sectionItem}
+              android_ripple={{ color: "#d0d0d0" }}
+              onPress={() => handleOpenURL("https://www.duolingo.com")}
+            >
+              <Text style={styles.sectionItemText}>Support center</Text>
+              <AntDesign name="right" size={24} color="#4facfe" />
+            </Pressable>
+            <Pressable
+              style={styles.sectionItem}
+              android_ripple={{ color: "#d0d0d0" }}
+              onPress={() => handleOpenURL("https://www.duolingo.com")}
+            >
+              <Text style={styles.sectionItemText}>Feedback</Text>
+              <AntDesign name="right" size={24} color="#4facfe" />
+            </Pressable>
+          </View>
+        </View>
+
+        <View style={styles.infoContainer}>
           <Pressable
-            style={styles.sectionItem}
-            onPress={() => router.push("/profile/preferences")}
+            android_ripple={{ color: "#d0d0d0" }}
+            onPress={() => setPrivacyVisible(true)}
           >
-            <Text style={styles.sectionItemText}>Preferences</Text>
-            <AntDesign name="right" size={24} color="black" />
+            <Text style={styles.infoText}>Privacy Policy</Text>
           </Pressable>
-          <Pressable style={styles.sectionItem} onPress={() => router.push("/profile/updateInfo")}>
-            <Text style={styles.sectionItemText}>Profile</Text>
-            <AntDesign name="right" size={24} color="black" />
+          <Pressable
+            android_ripple={{ color: "#d0d0d0" }}
+            onPress={() => setTermsVisible(true)}
+          >
+            <Text style={styles.infoText}>Terms of Service</Text>
           </Pressable>
-          <Pressable style={styles.sectionItem}>
-            <Text style={styles.sectionItemText}>Notification</Text>
-            <AntDesign name="right" size={24} color="black" />
-          </Pressable>
-        </View>
-        {/* Add your account settings options here */}
-      </View>
-      <View style={{ padding: 20 }}>
-        <Text style={styles.sectionHeader}>Support</Text>
-        <View style={styles.sectionContainer}>
-          <Pressable style={styles.sectionItem}>
-            <Text style={styles.sectionItemText}>Support center</Text>
-            <AntDesign name="right" size={24} color="black" />
-          </Pressable>
-          <Pressable style={styles.sectionItem}>
-            <Text style={styles.sectionItemText}>Feedback</Text>
-            <AntDesign name="right" size={24} color="black" />
+          <Pressable
+            android_ripple={{ color: "#d0d0d0" }}
+            onPress={() => setThanksVisible(true)}
+          >
+            <Text style={styles.infoText}>Thanks</Text>
           </Pressable>
         </View>
-        {/* Add your account settings options here */}
-      </View>
-      <View style={styles.infoContainer}>
-        <Pressable onPress={() => console.log("Privacy Policy")}>
-          <Text style={styles.infoText}>Privacy Policy</Text>
-        </Pressable>
-        <Pressable onPress={() => console.log("Terms of Service")}>
-          <Text style={styles.infoText}>Terms of Service</Text>
-        </Pressable>
-        <Pressable onPress={() => console.log("Thanks")}>
-          <Text style={styles.infoText}>Thanks</Text>
-        </Pressable>
-      </View>
-    </ScrollView>
+      </ScrollView>
+
+      <PrivacyPolicyModal
+        visible={privacyVisible}
+        onClose={() => setPrivacyVisible(false)}
+      />
+      <TermsOfServiceModal
+        visible={termsVisible}
+        onClose={() => setTermsVisible(false)}
+      />
+      <ThanksModal
+        visible={thanksVisible}
+        onClose={() => setThanksVisible(false)}
+      />
+    </>
   );
 };
+
 const styles = StyleSheet.create({
+  headerContainer: {
+    padding: 20,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  headerText: {
+    marginLeft: 10,
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  introText: {
+    marginTop: 10,
+    fontSize: 20,
+    fontWeight: "bold",
+  },
   sectionContainer: {
     marginTop: 10,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#ffffff",
     borderRadius: 10,
-    borderColor: "gray",
-    borderWidth: 1,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
     overflow: "hidden",
   },
   sectionHeader: {
@@ -75,13 +173,13 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   sectionItem: {
-    padding: 10,
-    backgroundColor: "#gray", // cùng màu container
+    padding: 15,
     borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    display: "flex",
+    borderBottomColor: "#eee",
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#f9f9f9",
   },
   sectionItemText: {
     fontSize: 16,
@@ -91,8 +189,11 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   infoText: {
-    fontSize: 20,
-    color: "blue",
+    fontSize: 18,
+    color: "#4facfe",
+    marginVertical: 5,
+    textAlign: "center",
   },
 });
+
 export default SettingScreen;
