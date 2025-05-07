@@ -11,6 +11,8 @@ import {
   Keyboard,
   Platform,
   KeyboardAvoidingView,
+  Modal,
+  TouchableOpacity,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useSelector, useDispatch } from "react-redux";
@@ -23,10 +25,14 @@ import { getRelationship } from "@/api/user";
 import StatistifcsComponent from "@/components/profile/StatistifcsComponent";
 import * as Progress from "react-native-progress";
 import { LinearGradient } from "expo-linear-gradient";
-
+import InviteLinkModal from "@/components/profile/InviteLink";
+import AddFriendModal from "@/components/profile/AddFriendModal";
 export default function ProfileScreen() {
   const user = useSelector((state) => state.user);
   const [relationship, setRelationship] = React.useState([]);
+  const [inviteModalVisible, setInviteModalVisible] = React.useState(false);
+  const [addFriendModalVisible, setAddFriendModalVisible] =
+    React.useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -62,7 +68,6 @@ export default function ProfileScreen() {
               contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
             >
               <View style={{ flex: 1 }}>
-                {/* Header */}
                 <View style={styles.header}>
                   <Image
                     style={styles.avatar}
@@ -95,7 +100,6 @@ export default function ProfileScreen() {
                   </Pressable>
                 </View>
 
-                {/* Progress Bar */}
                 <Progress.Bar
                   progress={0.6}
                   width={null}
@@ -106,10 +110,18 @@ export default function ProfileScreen() {
                   60% to next level
                 </Text>
 
+                <Text style={[styles.sectionTitle, { marginTop: 20 }]}>
+                  Motivational Quote
+                </Text>
+                <View style={styles.quoteBox}>
+                  <Text style={styles.quoteMark}>“</Text>
+                  <Text style={styles.quoteText}>{randomQuote}</Text>
+                  <Text style={styles.quoteMark}>”</Text>
+                </View>
+
                 <StatistifcsComponent />
                 <WeeklyXPChart />
 
-                {/* Achievements */}
                 <Text style={styles.sectionTitle}>Achievements</Text>
                 <ScrollView
                   horizontal
@@ -129,17 +141,12 @@ export default function ProfileScreen() {
                   )}
                 </ScrollView>
 
-                {/* Daily Goal */}
                 <Text style={styles.sectionTitle}>Today's Goal</Text>
                 <View style={styles.dailyGoal}>
                   <Text>🎯 Complete 3 practices</Text>
                   <Text>🎯 Learn 5 new words</Text>
                 </View>
 
-                {/* Motivational Quote */}
-                <Text style={styles.quoteText}>{randomQuote}</Text>
-
-                {/* Practice Section */}
                 <Text style={styles.sectionTitle}>Quick Practice</Text>
                 <View style={styles.practiceRow}>
                   <Pressable style={styles.practiceBtn}>
@@ -153,10 +160,13 @@ export default function ProfileScreen() {
                   </Pressable>
                 </View>
 
-                {/* Friend Component */}
-                <FriendComponent relationship={relationship} />
+                <FriendComponent
+                  relationship={relationship}
+                  onAddFriend={() =>
+                    setAddFriendModalVisible(!addFriendModalVisible)
+                  }
+                />
 
-                {/* Recently Reviewed Words */}
                 <Text style={styles.sectionTitle}>Recently Reviewed</Text>
                 <ScrollView
                   horizontal
@@ -172,9 +182,9 @@ export default function ProfileScreen() {
                   )}
                 </ScrollView>
 
-                {/* Invite Friends Button */}
                 <View style={{ alignItems: "center", marginTop: 10 }}>
                   <Pressable
+                    onPress={() => setInviteModalVisible(true)}
                     style={{
                       backgroundColor: "#2196f3",
                       paddingVertical: 10,
@@ -189,7 +199,6 @@ export default function ProfileScreen() {
                   </Pressable>
                 </View>
 
-                {/* Logout Button */}
                 <View style={{ alignItems: "center", marginTop: 10 }}>
                   <Pressable
                     onPress={() => dispatch(logout())}
@@ -206,6 +215,30 @@ export default function ProfileScreen() {
                   </Pressable>
                 </View>
               </View>
+
+              <Modal
+                transparent
+                visible={inviteModalVisible}
+                animationType="slide"
+                onRequestClose={() => setInviteModalVisible(false)}
+              >
+                <InviteLinkModal
+                  visible={inviteModalVisible}
+                  onClose={() => setInviteModalVisible(false)}
+                  inviteLink={`https://example.com/invite/${user.userInfo.email}`}
+                />
+              </Modal>
+              <Modal
+                transparent
+                visible={addFriendModalVisible}
+                animationType="slide"
+                onRequestClose={() => setAddFriendModalVisible(false)}
+              >
+                <AddFriendModal
+                  visible={addFriendModalVisible}
+                  onClose={() => setAddFriendModalVisible(false)}
+                />
+              </Modal>
             </ScrollView>
           </KeyboardAvoidingView>
         </SafeAreaView>
@@ -276,10 +309,45 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginBottom: 20,
   },
+  quoteBox: {
+    backgroundColor: "#e1f5fe",
+    padding: 16,
+    marginHorizontal: 16,
+    borderRadius: 8,
+    borderLeftWidth: 4,
+    borderLeftColor: "#0288d1",
+    marginBottom: 20,
+    flexDirection: "row",
+    alignItems: "center",
+  },
   quoteText: {
     fontStyle: "italic",
-    textAlign: "center",
-    marginVertical: 10,
-    marginHorizontal: 16,
+    flex: 1,
+    fontSize: 14,
+    color: "#0277bd",
+  },
+  quoteMark: {
+    fontSize: 24,
+    color: "#0288d1",
+    marginHorizontal: 4,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContainer: {
+    width: "80%",
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalButton: {
+    backgroundColor: "#2196f3",
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    borderRadius: 8,
   },
 });
