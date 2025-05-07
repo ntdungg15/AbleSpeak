@@ -12,7 +12,7 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="vocabularyDetail"
+        name="VocabularyDetail"
         options={{
           tabBarStyle: { display: 'none' },
           headerShown: false,
