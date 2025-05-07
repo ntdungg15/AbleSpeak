@@ -10,6 +10,12 @@ export default function TabLayout() {
           headerShown: false, // Tắt tiêu đề
         }}
       />
+      <Stack.Screen
+        name="Roleplay"
+        options={{
+          headerShown: false, // Tắt tiêu đề
+        }}
+      />
     </Stack>
   );
 }
