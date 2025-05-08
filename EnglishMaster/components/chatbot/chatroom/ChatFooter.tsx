@@ -7,7 +7,7 @@ import { styles } from '../../../constants/chatbot/ChatFooter'
 import React from 'react'
 import { useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-i
+
 
 export const ChatFooter = () => {
   const [micPressed, setMicPressed] = useState(false);
