@@ -1,17 +1,31 @@
 import React from "react";
-import { View, Text, SafeAreaView, StatusBar, Platform, TextInput, ScrollView } from "react-native";
-import { KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { 
+  View, 
+  // Text, 
+  SafeAreaView, 
+  StatusBar, 
+  Platform, 
+  // TextInput, 
+  ScrollView,
+  KeyboardAvoidingView,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { useRouter } from "expo-router";
 import { styles } from "@/constants/chatbot/ChatRoom";
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { useState, useEffect } from "react";
+// import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { 
+  useState, 
+  // useEffect,
+} from "react";
 
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Feather from '@expo/vector-icons/Feather';
 
-import { getGroqResponse } from "@/service/gropService"
+// import { getGroqResponse } from "@/service/gropService"
 import Markdown from 'react-native-markdown-display';
+import { ChatFooter } from "@/components/chatbot/chatroom/ChatFooter";
 
 type Message = {
   text: String;
@@ -29,39 +43,39 @@ const ChatRoom = () => {
     router.back();
   };
 
-  const handleSendChat = async () => {
-    if (message.trim() === "") return;
-    setMessList(prev => [...prev, { text: message, isUser: true }]);
+  // const handleSendChat = async () => {
+  //   if (message.trim() === "") return;
+  //   setMessList(prev => [...prev, { text: message, isUser: true }]);
 
-    const response = await getGroqResponse(message);
+  //   const response = await getGroqResponse(message);
 
-    const responseText = response || "No response";
+  //   const responseText = response || "No response";
     
-    setMessList(prev => [...prev, { text: responseText, isUser: false }]);
+  //   setMessList(prev => [...prev, { text: responseText, isUser: false }]);
     
 
 
-    setMessage("");
-  }
+  //   setMessage("");
+  // }
 
-  useEffect(() => {
-    const handleResponeAnswer = () => {
-      if (messList.length > 0) {
-        const responseAns = "Hey";
+  // useEffect(() => {
+  //   const handleResponeAnswer = () => {
+  //     if (messList.length > 0) {
+  //       const responseAns = "Hey";
         
-      }
-    }
+  //     }
+  //   }
 
-    handleResponeAnswer();
-  }, [messList]);
+  //   handleResponeAnswer();
+  // }, [messList]);
   return (
     <>
     <StatusBar barStyle="dark-content" backgroundColor="#f8f8f8" />
     <KeyboardAvoidingView
-    behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // quan trọng
-    style={{ flex: 1, }}
-    keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0} // thử chỉnh offset này nếu header bị che
-  >
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // quan trọng
+      style={{ flex: 1, }}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0} // thử chỉnh offset này nếu header bị che
+    >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         
     <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0 }}>
@@ -113,25 +127,7 @@ const ChatRoom = () => {
             
                 <View
                   key={`user-${index}`}
-                  style={{
-                    marginRight: 22,
-                    marginTop: 18,
-                    marginBottom: 18,
-
-                    maxWidth: "70%",
-                    width: "auto",
-                    height: 'auto',
-                    minHeight: 28,
-                    
-                    backgroundColor: "white",
-                    borderColor: "#e0e0e0",
-                    borderWidth: 1,
-                    borderRadius: 12,
-
-                    paddingHorizontal: 20,
-                    paddingVertical: 4,
-                    justifyContent: "center",
-                  }}
+                  style={styles.userMessContainer}
                 >
                   <Markdown
                     style={{
@@ -148,26 +144,7 @@ const ChatRoom = () => {
               
                 <View
                   key={`bot-${index}`}
-                  style={{
-                    marginLeft: 22,
-                    marginTop: 18,
-                    marginBottom: 18,
-
-                    maxWidth: "70%",
-                    width: "auto",
-                    height: 'auto',
-                    minHeight: 28,                  
-                    
-                    backgroundColor: "lightblue",
-                    borderColor: "#e0e0e0",
-                    borderWidth: 1,
-                    borderRadius: 12,
-                    
-                    paddingHorizontal: 20,
-                    paddingVertical: 4,
-                    alignSelf: "flex-start",
-                    justifyContent: "center",
-                  }}
+                  style={styles.botMessContainer}
                 >
                   <Markdown
                     style={{
@@ -184,33 +161,10 @@ const ChatRoom = () => {
         </ScrollView>
         
         {/* Inputfield */}
-        <View style={styles.inputContainer}>
-          <FontAwesome name="microphone" size={18} color="black" style={{ margin: 20, }}/>
-          <View style={{
-            width: "70%",
-            height: "70%",
-            
-            backgroundColor: "#f8f8f8",
-            borderRadius: 20,
-
-            justifyContent: "center",
-            alignItems: "center",
-
-          }}>
-            <TextInput 
-              placeholder="Nhan tin" 
-              style={{
-                minWidth: "90%",
-                minHeight: "80%",
-                borderWidth: 0,
-                backgroundColor: "transparent",
-              }}
-              onChangeText={(text) => setMessage(text)}
-              value={message} 
-            />
-          </View>
-          <Feather name="send" size={18} color="black" style={{ margin: 20, }} onPress={() => {handleSendChat()}} />
+        <View>
+          <ChatFooter></ChatFooter>
         </View>
+        
       </View>
     </SafeAreaView>
       </TouchableWithoutFeedback>
