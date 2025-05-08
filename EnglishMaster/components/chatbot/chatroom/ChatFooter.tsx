@@ -1,13 +1,18 @@
 import { 
     View,
     TouchableOpacity,
-    
+    TouchableWithoutFeedback,
 } from 'react-native'
 import { styles } from '../../../constants/chatbot/ChatFooter'
 import React from 'react'
+import { useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+i
 
 export const ChatFooter = () => {
+  const [micPressed, setMicPressed] = useState(false);
+  
+    
   return (
     <View style={styles.footerContainer}>
         {/* Left Icon (Keyboard) */}
@@ -16,9 +21,21 @@ export const ChatFooter = () => {
         </TouchableOpacity>
 
         {/* Center Mic Button */}
-        <TouchableOpacity style={styles.micButton}>
-            <Icon name="microphone" size={28} color="#000" />
-        </TouchableOpacity>
+        <View style={[styles.micButton, micPressed && { backgroundColor: "red" }]}>
+            <TouchableWithoutFeedback
+                onPressIn={() => {
+                    
+                    setMicPressed(true)
+                }}
+                onPressOut={() => {
+                    
+                    setMicPressed(false)
+                }}>
+                <Icon name="microphone" size={28} color="#000" />
+            </TouchableWithoutFeedback>
+            
+            {/* RecordRing  */}
+        </View>
 
         {/* Right Icon (Pound) */}
         <TouchableOpacity style={styles.iconButton}>
