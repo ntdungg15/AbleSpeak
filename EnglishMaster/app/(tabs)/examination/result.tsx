@@ -1,7 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
+
+import excellentImage from '../../../assets/images/excellent.png';
+import goodImage from '../../../assets/images/good.png';
+import keepTryingImage from '../../../assets/images/bad.png';
 
 const ResultScreen = () => {
   const { score, totalQuestions, id } = useLocalSearchParams();
@@ -18,6 +22,12 @@ const ResultScreen = () => {
     return "Hãy ôn tập thêm để cải thiện kết quả!";
   };
 
+  const getResultImage = () => {
+    if (percentage >= 80) return excellentImage;
+    if (percentage >= 60) return goodImage;
+    return keepTryingImage;
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -27,6 +37,12 @@ const ResultScreen = () => {
           <Text style={styles.scoreText}>{scoreNum}/{totalQuestionsNum}</Text>
           <Text style={styles.percentageText}>{percentage.toFixed(1)}%</Text>
         </View>
+
+        <Image 
+          source={getResultImage()}
+          style={styles.resultImage}
+          resizeMode="contain"
+        />
 
         <View style={styles.detailsContainer}>
           <Text style={styles.message}>{getMessage()}</Text>
@@ -71,7 +87,7 @@ const styles = StyleSheet.create({
   },
   scoreContainer: {
     alignItems: 'center',
-    marginVertical: 40,
+    marginVertical: 20,
   },
   scoreText: {
     fontSize: 48,
@@ -82,6 +98,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#7f8c8d',
     marginTop: 10,
+  },
+  resultImage: {
+    width: 200,
+    height: 200,
+    marginVertical: 20,
   },
   detailsContainer: {
     width: '100%',
@@ -98,7 +119,8 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 40,
+    marginBottom: 30,
+    marginTop: -10  
   },
   button: {
     paddingVertical: 15,

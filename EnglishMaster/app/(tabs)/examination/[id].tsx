@@ -474,7 +474,7 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 20,
+    padding: 16,
     borderTopWidth: 1,
     borderTopColor: '#e0e0e0',
   },
@@ -483,9 +483,10 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 8,
-    minWidth: 100,
+    minWidth: 90,
     alignItems: 'center',
-    marginBottom: 50
+    marginBottom: 10,
+    marginTop: 10
   },
   navButtonText: {
     color: '#fff',
@@ -508,12 +509,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
     marginRight: 12,
+    marginTop: 7
   },
   progressBar: {
     flex: 1,
     height: 8,
     backgroundColor: '#E0E0E0',
     borderRadius: 4,
+    marginTop: 7
   },
   progressFill: {
     height: '100%',

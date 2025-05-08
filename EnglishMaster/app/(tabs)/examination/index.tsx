@@ -2,7 +2,11 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from 'expo-router';
-import examImage from '../../../assets/images/Frame-279398.png';
+
+import grammarBasicImage from '../../../assets/images/grammar.png';
+import vocabularyPracticeImage from '../../../assets/images/vocabulary.png';
+import readingComprehensionImage from '../../../assets/images/reading.png';
+import mixedTopicsImage from '../../../assets/images/examination.png';
 
 const examSets = [
   {
@@ -10,28 +14,28 @@ const examSets = [
     title: 'Bộ đề 1: Ngữ pháp & Từ vựng cơ bản',
     description: 'Kiểm tra tổng hợp ngữ pháp và từ vựng cơ bản.',
     questions: 10,
-    image: examImage,
+    image: grammarBasicImage
   },
   {
     id: 'grammar-2',
     title: 'Bộ đề 2: Từ vựng & Câu hỏi thực tế',
     description: 'Kiểm tra từ vựng, ngữ pháp và kiến thức thực tế.',
     questions: 10,
-    image: examImage,
+    image: vocabularyPracticeImage,
   },
   {
     id: 'grammar-3',
     title: 'Bộ đề 3: Đọc hiểu & Từ vựng mở rộng',
     description: 'Luyện tập đọc hiểu, từ vựng và kiến thức tổng hợp.',
     questions: 10,
-    image: examImage,
+    image: readingComprehensionImage,
   },
   {
     id: 'grammar-4',
     title: 'Bộ đề 4: Chủ đề đa dạng',
     description: 'Kiểm tra kiến thức tổng hợp nhiều chủ đề khác nhau.',
     questions: 10,
-    image: examImage,
+    image: mixedTopicsImage,
   },
 ];
 
