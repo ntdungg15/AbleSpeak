@@ -19,6 +19,9 @@ const ChatBot = () => {
   const handlePress = () => {
     router.push('/(tabs)/chatbot/Roleplay');
   }
+  const handlePressStart = () => {
+    router.push('/chatroom/ChatRoom');
+  }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}></View>
@@ -38,7 +41,10 @@ const ChatBot = () => {
               <Text style={styles.classicContentText}>
                 Practice English with AbleSpeak, a friendly AI chatbot.
               </Text>
-              <TouchableOpacity style={styles.classicStartButton}>                
+              <TouchableOpacity 
+                style={styles.classicStartButton}
+                onPress={() => handlePressStart()}
+              >                
                 <Text style={styles.classicStartButtonText}>Start</Text>
               </TouchableOpacity>
             </View>
