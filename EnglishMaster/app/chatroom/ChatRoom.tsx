@@ -162,7 +162,7 @@ const ChatRoom = () => {
         
         {/* Inputfield */}
         <View>
-          
+          <ChatFooter></ChatFooter>
         </View>
         
       </View>
