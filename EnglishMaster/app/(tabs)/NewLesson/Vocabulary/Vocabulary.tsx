@@ -125,17 +125,15 @@ const Vocabulary = () => {
   const [loading, setLoading] = useState(false);
   const [lessonData, setLessonData] = useState<LessonItem[]>(lessons);
   const [translationMap, setTranslationMap] = useState<{ [key: string]: string }>({});
-  const [definitionTranslations, setDefinitionTranslations] = useState<Record<string,string>>({});
+  const [definitionTranslations, setDefinitionTranslations] = useState<Record<string, string>>({});
 
   const handleSearch = async () => {
     if (!searchWord.trim()) return;
     setLoading(true);
     try {
-      // 1) Lấy nguyên dữ liệu nghĩa
       const data = await getVocabulary(searchWord.trim());
       setSearchResults(data);
 
-      // 2) Gom hết các câu cần dịch
       const texts = new Set<string>();
       data.forEach(item =>
         item.meanings.forEach(meaning =>
@@ -143,13 +141,12 @@ const Vocabulary = () => {
         )
       );
 
-      // 3) Dịch tuần tự
-      const map: Record<string,string> = {};
+      const map: Record<string, string> = {};
       for (const txt of texts) {
         try {
           map[txt] = await getTranslation(txt);
         } catch {
-          map[txt] = ''; // hoặc giữ nguyên txt
+          map[txt] = '';
         }
       }
       setDefinitionTranslations(map);
@@ -161,7 +158,7 @@ const Vocabulary = () => {
       setLoading(false);
     }
   };
-  
+
 
   const playAudio = async (audioUrl: string | undefined) => {
     if (!audioUrl) return;
@@ -180,8 +177,8 @@ const Vocabulary = () => {
     });
   };
 
-  
-  
+
+
 
   const renderSearchResults = ({ item }: { item: VocabularyItem }) => (
     <View style={styles.searchResultItem}>
@@ -203,8 +200,7 @@ const Vocabulary = () => {
         <View key={mi} style={styles.meaningContainer}>
           {/* part-of-speech */}
           <Text style={styles.partOfSpeech}>{m.partOfSpeech}</Text>
-          {/* (nếu cần dịch POS, bỏ khối này) */}
-          
+
           {m.definitions.map((def, di) => (
             <View key={di} style={{ marginVertical: 4 }}>
               {/* Anh */}
@@ -248,7 +244,7 @@ const Vocabulary = () => {
       <TouchableOpacity
         style={styles.downloadButton}
         onPress={(e) => {
-          e.stopPropagation(); 
+          e.stopPropagation();
         }}
       >
         <Text style={styles.downloadIcon}>⬇️</Text>
@@ -261,7 +257,9 @@ const Vocabulary = () => {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity><Text style={styles.menuIcon}>≡</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => router.back()}>
+          <Text style={styles.menuIcon}>←</Text>
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Học từ vựng cùng AbleSpeak</Text>
         <TouchableOpacity><Text style={styles.searchIcon}>🔍</Text></TouchableOpacity>
       </View>

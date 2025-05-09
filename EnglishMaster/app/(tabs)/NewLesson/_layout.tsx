@@ -13,14 +13,14 @@ export default function Layout() {
         name="Vocabulary"
         options={{
           tabBarStyle: { display: 'none' }, 
-          // headerShown: false, 
+          headerShown: false, 
         }}
       />
       <Tabs.Screen
         name="Grammar"
         options={{
           tabBarStyle: { display: 'none' }, 
-          // headerShown: false, 
+          headerShown: false, 
         }}
       />
       <Tabs.Screen

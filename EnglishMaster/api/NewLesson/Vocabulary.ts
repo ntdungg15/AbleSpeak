@@ -1,4 +1,3 @@
-
 const apiUrl = process.env.EXPO_PUBLIC_HOST_URL;
 console.log("API URL:", apiUrl);
 
@@ -98,6 +97,40 @@ export const getLessonVocabularyStats = async (
     return data;
   } catch (error) {
     console.error("Error fetching vocabulary stats:", error);
+    return null;
+  }
+};
+
+export const getVocabularyFromJson = async (lessonId: string): Promise<VocabularyWord[] | null> => {
+  try {
+    // Determine which part file to read based on lessonId
+    let partNumber = 1;
+    if (lessonId === "64f1a1000000000000000001" || lessonId === "64f1a1000000000000000002") {
+      partNumber = 1;
+    } else if (lessonId === "64f1a1000000000000000003" || lessonId === "64f1a1000000000000000004") {
+      partNumber = 2;
+    } else if (lessonId === "64f1a1000000000000000005" || lessonId === "64f1a1000000000000000006") {
+      partNumber = 3;
+    } else if (lessonId === "64f1a1000000000000000007" || lessonId === "64f1a1000000000000000008") {
+      partNumber = 4;
+    } else if (lessonId === "64f1a1000000000000000009" || lessonId === "64f1a1000000000000000010") {
+      partNumber = 5;
+    }
+
+    const response = await fetch(`/data/vocabulary_part${partNumber}.json`);
+    if (!response.ok) {
+      throw new Error(`Failed to load vocabulary data: ${response.status}`);
+    }
+
+    const data = await response.json();
+    // Filter vocabulary items for the specific lesson
+    const lessonVocabulary = data.vocabulary.filter(
+      (item: VocabularyWord) => item.lessonId === lessonId
+    );
+
+    return lessonVocabulary;
+  } catch (error) {
+    console.error("Error loading vocabulary from JSON:", error);
     return null;
   }
 };
