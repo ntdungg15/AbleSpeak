@@ -1,4 +1,3 @@
-// src/screens/LessonVocabulary.tsx
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -232,27 +231,35 @@ const LessonVocabulary: React.FC = () => {
                     <Text style={styles.partOfSpeech}>
                       {meaning.partOfSpeech}
                     </Text>
-                    {meaning.definitions.map(
-                      (def, dIdx) => (
-                        <View
-                          key={dIdx}
-                          style={
-                            styles.definitionContainer
-                          }
-                        >
-                          <Text style={styles.definition}>
-                            - {def.definition}
+                    {meaning.definitions.map((def, dIdx) => (
+                      <View
+                        key={dIdx}
+                        style={styles.definitionContainer}
+                      >
+                        <Text style={styles.definition}>
+                          - {def.definition}
+                        </Text>
+                        {def.definition_vi && (
+                          <Text style={{ color: '#008060', marginLeft: 16, fontStyle: 'italic' }}>
+                            → {def.definition_vi}
                           </Text>
-                          {def.example && (
-                            <Text style={styles.example}>
-                              Ví dụ: {def.example}
-                            </Text>
-                          )}
-                        </View>
-                      )
-                    )}
+                        )}
+                        {def.example && (
+                          <Text style={styles.example}>
+                            Ví dụ: {def.example}
+                          </Text>
+                        )}
+                        {def.example_vi && (
+                          <Text style={{ color: '#8a2be2', marginLeft: 16, fontStyle: 'italic' }}>
+                            Ví dụ: {def.example_vi}
+                          </Text>
+                        )}
+                      </View>
+                    ))}
                   </View>
                 ))}
+
+                <Text style={{color: 'red'}}>Dịch: {item.translation}</Text>
               </View>
             ))
           ) : (

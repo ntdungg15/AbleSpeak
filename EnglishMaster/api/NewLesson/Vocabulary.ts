@@ -1,4 +1,3 @@
-
 const apiUrl = process.env.EXPO_PUBLIC_HOST_URL;
 console.log("API URL:", apiUrl);
 
@@ -11,6 +10,8 @@ export interface Phonetic {
   export interface Definition {
     definition: string;
     example: string;
+    definition_vi?: string;
+    example_vi?: string;
   }
   
   export interface Meaning {
@@ -21,6 +22,7 @@ export interface Phonetic {
   export interface VocabularyWord {
     id: string;
     word: string;
+    translation?: string;
     phonetics: Phonetic[];
     meanings: Meaning[];
     isLearned: boolean;
@@ -98,6 +100,50 @@ export const getLessonVocabularyStats = async (
     return data;
   } catch (error) {
     console.error("Error fetching vocabulary stats:", error);
+    return null;
+  }
+};
+
+export const getVocabularyFromJson = async (lessonId: string): Promise<VocabularyWord[] | null> => {
+  try {
+    // Determine which part file to read based on lessonId
+    let partNumber = 1;
+    if (lessonId === "64f1a1000000000000000001" || lessonId === "64f1a1000000000000000002") {
+      partNumber = 1;
+    } else if (lessonId === "64f1a1000000000000000003" || lessonId === "64f1a1000000000000000004") {
+      partNumber = 2;
+    } else if (lessonId === "64f1a1000000000000000005" || lessonId === "64f1a1000000000000000006") {
+      partNumber = 3;
+    } else if (lessonId === "64f1a1000000000000000007" || lessonId === "64f1a1000000000000000008") {
+      partNumber = 4;
+    } else if (lessonId === "64f1a1000000000000000009" || lessonId === "64f1a1000000000000000010") {
+      partNumber = 5;
+    }
+
+    const response = await fetch(`/data/vocabulary_part${partNumber}.json`);
+    if (!response.ok) {
+      throw new Error(`Failed to load vocabulary data: ${response.status}`);
+    }
+
+    const data = await response.json();
+    // Filter vocabulary items for the specific lesson
+    const lessonVocabulary = data.vocabulary
+      .filter((item: any) => item.lessonId === lessonId)
+      .map((item: any) => ({
+        id: item.id || item._id || '', 
+        word: item.word,
+        translation: item.translation,
+        phonetics: item.phonetics,
+        meanings: item.meanings,
+        isLearned: item.isLearned,
+        lessonId: item.lessonId, 
+      }));
+
+    console.log('Lesson vocabulary after map   :', lessonVocabulary);
+
+    return lessonVocabulary;
+  } catch (error) {
+    console.error("Error loading vocabulary from JSON:", error);
     return null;
   }
 };

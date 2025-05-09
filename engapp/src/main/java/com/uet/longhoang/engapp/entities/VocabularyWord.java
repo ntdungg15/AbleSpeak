@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "vocabulary")
+@Document(collection = "vocabularies")
 public class VocabularyWord {
     @Id
     private String id;
