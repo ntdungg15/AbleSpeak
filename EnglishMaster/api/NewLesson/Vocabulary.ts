@@ -10,6 +10,8 @@ export interface Phonetic {
   export interface Definition {
     definition: string;
     example: string;
+    definition_vi?: string;
+    example_vi?: string;
   }
   
   export interface Meaning {
@@ -20,6 +22,7 @@ export interface Phonetic {
   export interface VocabularyWord {
     id: string;
     word: string;
+    translation?: string;
     phonetics: Phonetic[];
     meanings: Meaning[];
     isLearned: boolean;
@@ -124,9 +127,19 @@ export const getVocabularyFromJson = async (lessonId: string): Promise<Vocabular
 
     const data = await response.json();
     // Filter vocabulary items for the specific lesson
-    const lessonVocabulary = data.vocabulary.filter(
-      (item: VocabularyWord) => item.lessonId === lessonId
-    );
+    const lessonVocabulary = data.vocabulary
+      .filter((item: any) => item.lessonId === lessonId)
+      .map((item: any) => ({
+        id: item.id || item._id || '', 
+        word: item.word,
+        translation: item.translation,
+        phonetics: item.phonetics,
+        meanings: item.meanings,
+        isLearned: item.isLearned,
+        lessonId: item.lessonId, 
+      }));
+
+    console.log('Lesson vocabulary after map   :', lessonVocabulary);
 
     return lessonVocabulary;
   } catch (error) {

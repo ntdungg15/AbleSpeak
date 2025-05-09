@@ -47,33 +47,34 @@ export default function ReviewScreen() {
     }
   };
 
-  const renderItem = ({ item }: { item: VocabularyWord }) => (
-    <View style={styles.card}>
-      <Text style={styles.word}>{item.word}</Text>
-      {item.translation && (
-        <Text style={styles.translation}>Dịch: {item.translation}</Text>
-      )}
-      {item.meanings.map((m, mi) => (
-        <View key={mi} style={styles.meaning}>
-          <Text style={styles.partOfSpeech}>{m.partOfSpeech}</Text>
-          {m.definitions.map((d, di) => (
-            <View key={di} style={{ marginBottom: 6 }}>
-              <Text style={styles.definition}>– {d.definition}</Text>
-              {d.definition_vi && (
-                <Text style={styles.definitionVi}>→ {d.definition_vi}</Text>
-              )}
-              {d.example && (
-                <Text style={styles.example}>VD: {d.example}</Text>
-              )}
-              {d.example_vi && (
-                <Text style={styles.exampleVi}>Ví dụ: {d.example_vi}</Text>
-              )}
-            </View>
-          ))}
-        </View>
-      ))}
-    </View>
-  );
+  const renderItem = ({ item }: { item: VocabularyWord }) => {
+    console.log('item:', item);
+    return (
+      <View style={styles.card}>
+        <Text style={styles.word}>{item.word}</Text>
+        <Text style={{color: 'red'}}>Dịch: {item.translation}</Text>
+        {item.meanings.map((m, mi) => (
+          <View key={mi} style={styles.meaning}>
+            <Text style={styles.partOfSpeech}>{m.partOfSpeech}</Text>
+            {m.definitions.map((d, di) => (
+              <View key={di} style={{ marginBottom: 6 }}>
+                <Text style={styles.definition}>– {d.definition}</Text>
+                {d.definition_vi && (
+                  <Text style={styles.definitionVi}>→ {d.definition_vi}</Text>
+                )}
+                {d.example && (
+                  <Text style={styles.example}>VD: {d.example}</Text>
+                )}
+                {d.example_vi && (
+                  <Text style={styles.exampleVi}>Ví dụ: {d.example_vi}</Text>
+                )}
+              </View>
+            ))}
+          </View>
+        ))}
+      </View>
+    );
+  };
 
   if (loading) {
     return (
