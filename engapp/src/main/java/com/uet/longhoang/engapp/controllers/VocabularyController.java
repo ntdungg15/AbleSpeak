@@ -79,4 +79,5 @@ public class VocabularyController {
         
         return ResponseEntity.ok(stats);
     }
+    
 }
