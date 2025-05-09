@@ -8,7 +8,7 @@ import goodImage from '../../../assets/images/good.png';
 import keepTryingImage from '../../../assets/images/bad.png';
 
 const ResultScreen = () => {
-  const { score, totalQuestions, id } = useLocalSearchParams();
+  const { score, totalQuestions, id, userAnswers } = useLocalSearchParams();
 
   // Ép kiểu về số, nếu không có thì mặc định là 0
   const scoreNum = Number(score) || 0;
@@ -57,10 +57,13 @@ const ResultScreen = () => {
           </TouchableOpacity>
           
           <TouchableOpacity 
-            style={[styles.button, styles.homeButton]}
-            onPress={() => router.push('/examination')}
+            style={[styles.button, styles.answerButton]}
+            onPress={() => router.push({
+              pathname: '/examination/answers/[id]',
+              params: { id, userAnswers }
+            })}
           >
-            <Text style={styles.buttonText}>Về trang kiểm tra</Text>
+            <Text style={styles.buttonText}>Xem đáp án</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -132,8 +135,8 @@ const styles = StyleSheet.create({
   retryButton: {
     backgroundColor: '#3498db',
   },
-  homeButton: {
-    backgroundColor: '#2ecc71',
+  answerButton: {
+    backgroundColor: '#e67e22',
   },
   buttonText: {
     color: '#fff',
