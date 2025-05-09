@@ -47,74 +47,74 @@ type LessonItem = {
 // Định nghĩa các bài học cố định
 const lessons: LessonItem[] = [
   {
-    id: 'self-introduction',
-    title: 'Bài 1: Giới thiệu bản thân',
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279147/mau-gioi-thieu-ban-than-bang-tieng-viet_pprnkv.png' },
+    id: "64f1a1000000000000000001",
+    title: "Bài 1: Giới thiệu bản thân",
+    image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279147/mau-gioi-thieu-ban-than-bang-tieng-viet_pprnkv.png" },
     progress: 0,
-    totalWords: 20
+    totalWords: 5
   },
   {
-    id: 'family',
-    title: 'Bài 2: Gia đình',
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279146/family_cpdt0s.jpg' },
+    id: "64f1a1000000000000000002",
+    title: "Bài 2: Gia đình",
+    image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279146/family_cpdt0s.jpg" },
     progress: 0,
-    totalWords: 20
+    totalWords: 3
   },
   {
-    id: 'appearance-description',
-    title: 'Bài 3: Miêu tả ngoại hình',
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279146/ngo%E1%BA%A1i_h%C3%ACnh_nb4bh0.png' },
+    id: "64f1a1000000000000000003",
+    title: "Bài 3: Miêu tả ngoại hình",
+    image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279146/ngoại_hình_nb4bh0.png" },
     progress: 0,
-    totalWords: 20
+    totalWords: 4
   },
   {
-    id: 'jobs',
-    title: 'Bài 4: Nghề nghiệp',
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279148/ngh%E1%BB%81_nghi%E1%BB%87p_e8fc2p.png' },
+    id: "64f1a1000000000000000004",
+    title: "Bài 4: Nghề nghiệp",
+    image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279148/nghề_nghiệp_e8fc2p.png" },
     progress: 0,
-    totalWords: 20
+    totalWords: 4
   },
   {
-    id: 'character',
-    title: 'Bài 5: Tính cách con người',
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279146/t%C3%ADnh_c%C3%A1ch_dypbdt.jpg' },
+    id: "64f1a1000000000000000005",
+    title: "Bài 5: Tính cách con người",
+    image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279146/tính_cách_dypbdt.jpg" },
     progress: 0,
-    totalWords: 20
+    totalWords: 5
   },
   {
-    id: 'transportation',
-    title: 'Bài 6: Giao thông',
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279150/giao_th%C3%B4ng_zeg8zo.jpg' },
+    id: "64f1a1000000000000000006",
+    title: "Bài 6: Giao thông",
+    image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279150/giao_thông_zeg8zo.jpg" },
     progress: 0,
-    totalWords: 20
+    totalWords: 3
   },
   {
-    id: 'food',
-    title: 'Bài 7: Đồ ăn',
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279147/%C4%91%E1%BB%93_%C4%83n_vga6j0.png' },
+    id: "64f1a1000000000000000007",
+    title: "Bài 7: Đồ ăn",
+    image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279147/đồ_ăn_vga6j0.png" },
     progress: 0,
-    totalWords: 20
+    totalWords: 4
   },
   {
-    id: 'hobbies',
-    title: 'Bài 8: Sở thích',
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279147/s%E1%BB%9F_th%C3%ADch_brbty8.jpg' },
+    id: "64f1a1000000000000000008",
+    title: "Bài 8: Sở thích",
+    image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279147/sở_thích_brbty8.jpg" },
     progress: 0,
-    totalWords: 20
+    totalWords: 4
   },
   {
-    id: 'weather',
-    title: 'Bài 9: Thời tiết',
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279147/th%E1%BB%9Di_ti%E1%BA%BFt_qbzdxu.jpg' },
+    id: "64f1a1000000000000000009",
+    title: "Bài 9: Thời tiết",
+    image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279147/thời_tiết_qbzdxu.jpg" },
     progress: 0,
-    totalWords: 20
+    totalWords: 3
   },
   {
-    id: 'colors',
-    title: 'Bài 10: Màu sắc',
-    image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279146/m%C3%A0u_s%E1%BA%AFc_spcu2b.jpg' },
+    id: "64f1a100000000000000000a",
+    title: "Bài 10: Màu sắc",
+    image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746279146/màu_sắc_spcu2b.jpg" },
     progress: 0,
-    totalWords: 20
+    totalWords: 5
   }
 ];
 
@@ -125,17 +125,15 @@ const Vocabulary = () => {
   const [loading, setLoading] = useState(false);
   const [lessonData, setLessonData] = useState<LessonItem[]>(lessons);
   const [translationMap, setTranslationMap] = useState<{ [key: string]: string }>({});
-  const [definitionTranslations, setDefinitionTranslations] = useState<Record<string,string>>({});
+  const [definitionTranslations, setDefinitionTranslations] = useState<Record<string, string>>({});
 
   const handleSearch = async () => {
     if (!searchWord.trim()) return;
     setLoading(true);
     try {
-      // 1) Lấy nguyên dữ liệu nghĩa
       const data = await getVocabulary(searchWord.trim());
       setSearchResults(data);
 
-      // 2) Gom hết các câu cần dịch
       const texts = new Set<string>();
       data.forEach(item =>
         item.meanings.forEach(meaning =>
@@ -143,13 +141,12 @@ const Vocabulary = () => {
         )
       );
 
-      // 3) Dịch tuần tự
-      const map: Record<string,string> = {};
+      const map: Record<string, string> = {};
       for (const txt of texts) {
         try {
           map[txt] = await getTranslation(txt);
         } catch {
-          map[txt] = ''; // hoặc giữ nguyên txt
+          map[txt] = '';
         }
       }
       setDefinitionTranslations(map);
@@ -161,7 +158,7 @@ const Vocabulary = () => {
       setLoading(false);
     }
   };
-  
+
 
   const playAudio = async (audioUrl: string | undefined) => {
     if (!audioUrl) return;
@@ -176,12 +173,12 @@ const Vocabulary = () => {
   const handleLessonPress = (lessonId: string, lessonTitle: string) => {
     router.push({
       pathname: `/(tabs)/NewLesson/Vocabulary/VocabularyDetail`,
-      params: { title: lessonTitle }
+      params: { title: lessonTitle, id: lessonId }
     });
   };
 
-  
-  
+
+
 
   const renderSearchResults = ({ item }: { item: VocabularyItem }) => (
     <View style={styles.searchResultItem}>
@@ -203,8 +200,7 @@ const Vocabulary = () => {
         <View key={mi} style={styles.meaningContainer}>
           {/* part-of-speech */}
           <Text style={styles.partOfSpeech}>{m.partOfSpeech}</Text>
-          {/* (nếu cần dịch POS, bỏ khối này) */}
-          
+
           {m.definitions.map((def, di) => (
             <View key={di} style={{ marginVertical: 4 }}>
               {/* Anh */}
@@ -248,7 +244,7 @@ const Vocabulary = () => {
       <TouchableOpacity
         style={styles.downloadButton}
         onPress={(e) => {
-          e.stopPropagation(); 
+          e.stopPropagation();
         }}
       >
         <Text style={styles.downloadIcon}>⬇️</Text>
@@ -261,7 +257,9 @@ const Vocabulary = () => {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity><Text style={styles.menuIcon}>≡</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => router.back()}>
+          <Text style={styles.menuIcon}>←</Text>
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Học từ vựng cùng AbleSpeak</Text>
         <TouchableOpacity><Text style={styles.searchIcon}>🔍</Text></TouchableOpacity>
       </View>

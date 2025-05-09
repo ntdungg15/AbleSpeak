@@ -120,7 +120,6 @@ const ExaminationScreen = () => {
             <Text style={styles.question}>
               {words.map((word, index) => {
                 if (word.includes('_____')) {
-                  const currentBlankIndex = blankIndex;
                   const selectedWord = selectedAnswers[blankIndex];
                   blankIndex++;
                   
@@ -280,56 +279,31 @@ const ExaminationScreen = () => {
   };
 
   const handleSubmit = () => {
-    const unansweredQuestions = questions.filter((_, index) => {
-      const answer = allAnswers[index];
-      if (!answer) return true;
-      if (questions[index].type === 'multiple-choice') {
-        return !answer.selectedChoice;
+    const endTime = Date.now();
+    const timeSpent = Math.floor((endTime - startTime) / 1000);
+    
+    // Tính điểm
+    const score = calculateScore();
+    
+    // Chuyển đổi allAnswers thành mảng đáp án đơn giản
+    const userAnswers = allAnswers.map(answer => {
+      if (answer.type === 'multiple-choice') {
+        return answer.selectedChoice;
       } else {
-        return answer.selectedAnswers?.includes(null);
+        return answer.selectedAnswers;
       }
-    }).length;
+    });
 
-    if (unansweredQuestions > 0) {
-      Alert.alert(
-        'Xác nhận nộp bài',
-        `Bạn còn ${unansweredQuestions} câu chưa trả lời. Bạn có chắc chắn muốn nộp bài?`,
-        [
-          {
-            text: 'Hủy',
-            style: 'cancel'
-          },
-          {
-            text: 'Nộp bài',
-            onPress: () => {
-              const score = calculateScore();
-              const timeSpent = Math.floor((Date.now() - startTime) / 1000 / 60);
-              router.push({
-                pathname: "/examination/result",
-                params: {
-                  score: score.toString(),
-                  totalQuestions: questions.length.toString(),
-                  timeSpent: timeSpent.toString(),
-                  id: id?.toString() || ''
-                }
-              });
-            }
-          }
-        ]
-      );
-    } else {
-      const score = calculateScore();
-      const timeSpent = Math.floor((Date.now() - startTime) / 1000 / 60);
-      router.push({
-        pathname: "/examination/result",
-        params: {
-          score: score.toString(),
-          totalQuestions: questions.length.toString(),
-          timeSpent: timeSpent.toString(),
-          id: id?.toString() || ''
-        }
-      });
-    }
+    // Chuyển đến màn hình kết quả
+    router.push({
+      pathname: '/examination/result',
+      params: {
+        score,
+        totalQuestions: questions.length,
+        id,
+        userAnswers: JSON.stringify(userAnswers)
+      }
+    });
   };
 
   return (
@@ -428,7 +402,6 @@ const styles = StyleSheet.create({
     minWidth: 80,
     marginHorizontal: 4,
     paddingHorizontal: 8,
-    // display: 'inline-flex',
   },
   blankText: {
     fontSize: 16,
@@ -436,7 +409,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   emptyBlankText: {
-    color: '#bdc3c7',
+    color: '#ffffff'
   },
   filledBlankText: {
     color: '#3498db',
@@ -469,12 +442,13 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   disabledOptionText: {
-    color: '#bdc3c7',
+    // color: '#bdc3c7',
+    color: '#ffffff'
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 20,
+    padding: 16,
     borderTopWidth: 1,
     borderTopColor: '#e0e0e0',
   },
@@ -483,9 +457,10 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 8,
-    minWidth: 100,
+    minWidth: 90,
     alignItems: 'center',
-    marginBottom: 50
+    marginBottom: 10,
+    marginTop: 10
   },
   navButtonText: {
     color: '#fff',
@@ -508,12 +483,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
     marginRight: 12,
+    marginTop: 7
   },
   progressBar: {
     flex: 1,
     height: 8,
     backgroundColor: '#E0E0E0',
     borderRadius: 4,
+    marginTop: 7
   },
   progressFill: {
     height: '100%',

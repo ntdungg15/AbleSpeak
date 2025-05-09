@@ -96,7 +96,7 @@ export const grammarData = [
       ],
       exercises: [
         { question: 'I ____ (wait) for you for two hours.', options: ['wait', 'am waiting', 'have been waiting', 'had been waiting'], correctAnswer: 2 },
-        { question: 'How long ____ you ____ (learn) English?', options: ['do/learn', 'are/learning', 'have/been learning', 'had/been learning'], correctAnswer: 2 },
+        { question: 'How long _______ you _______ (learn) English?', options: ['do/learn', 'are/learning', 'have/been learning', 'had/been learning'], correctAnswer: 2 },
         { question: 'She ____ (work) at this company since March.', options: ['works', 'is working', 'has been working', 'had been working'], correctAnswer: 2 },
         { question: 'They ____ (not talk) to each other for weeks.', options: ['don\'t talk', 'aren\'t talking', 'haven\'t been talking', 'hadn\'t been talking'], correctAnswer: 2 },
         { question: 'It ____ (snow) all day.', options: ['snows', 'is snowing', 'has been snowing', 'had been snowing'], correctAnswer: 2 }

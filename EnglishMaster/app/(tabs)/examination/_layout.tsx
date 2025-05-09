@@ -3,7 +3,11 @@ import React from 'react';
 
 export default function ExaminationLayout() {
   return (
-    <Stack>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Stack.Screen
         name="index"
         options={{
@@ -15,7 +19,7 @@ export default function ExaminationLayout() {
         name="[id]"
         options={{
           title: 'Bài kiểm tra',
-          headerShown: false, // Ẩn header vì chúng ta đã có UI riêng
+          headerShown: false,
           presentation: 'card',
           animation: 'slide_from_right',
         }}
