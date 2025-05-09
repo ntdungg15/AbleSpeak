@@ -50,13 +50,25 @@ export default function ReviewScreen() {
   const renderItem = ({ item }: { item: VocabularyWord }) => (
     <View style={styles.card}>
       <Text style={styles.word}>{item.word}</Text>
+      {item.translation && (
+        <Text style={styles.translation}>Dịch: {item.translation}</Text>
+      )}
       {item.meanings.map((m, mi) => (
         <View key={mi} style={styles.meaning}>
           <Text style={styles.partOfSpeech}>{m.partOfSpeech}</Text>
           {m.definitions.map((d, di) => (
-            <Text key={di} style={styles.definition}>
-              – {d.definition}
-            </Text>
+            <View key={di} style={{ marginBottom: 6 }}>
+              <Text style={styles.definition}>– {d.definition}</Text>
+              {d.definition_vi && (
+                <Text style={styles.definitionVi}>→ {d.definition_vi}</Text>
+              )}
+              {d.example && (
+                <Text style={styles.example}>VD: {d.example}</Text>
+              )}
+              {d.example_vi && (
+                <Text style={styles.exampleVi}>Ví dụ: {d.example_vi}</Text>
+              )}
+            </View>
           ))}
         </View>
       ))}
@@ -118,4 +130,8 @@ const styles = StyleSheet.create({
   meaning: { marginTop: 4 },
   partOfSpeech: { fontStyle: 'italic', marginBottom: 2 },
   definition: { marginLeft: 8 },
+  translation: { color: '#008060', fontSize: 16, marginBottom: 4 },
+  definitionVi: { color: '#444', fontSize: 15, marginLeft: 16, fontStyle: 'italic' },
+  example: { color: '#555', marginLeft: 16 },
+  exampleVi: { color: '#8a2be2', marginLeft: 16, fontStyle: 'italic' },
 });
