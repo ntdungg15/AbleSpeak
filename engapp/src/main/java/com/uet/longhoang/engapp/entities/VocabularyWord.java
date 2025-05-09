@@ -15,6 +15,7 @@ public class VocabularyWord {
     @Id
     private String id;
     private String word;
+    private String translation;
     private List<Phonetic> phonetics;
     private List<Meaning> meanings;
     private boolean isLearned;
@@ -42,5 +43,7 @@ public class VocabularyWord {
     public static class Definition {
         private String definition;
         private String example;
+        private String definition_vi; 
+        private String example_vi; 
     }
 }
