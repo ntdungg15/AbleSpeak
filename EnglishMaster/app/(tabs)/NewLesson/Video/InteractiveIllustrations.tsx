@@ -1,7 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Modal } from 'react-native';
 import { Audio } from 'expo-av';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import Animated, {
+    useSharedValue,
+    useAnimatedStyle,
+    withSpring,
+    withTiming,
+    withSequence,
+    withDelay,
+    interpolate,
+    Extrapolate
+} from 'react-native-reanimated';
 
 // Types
 type IllustrationType = 'dictionary' | 'vocabulary';
@@ -28,6 +38,49 @@ const InteractiveIllustrations: React.FC = () => {
     const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
     const [sound, setSound] = useState<Audio.Sound | null>(null);
 
+    const scale = useSharedValue(1);
+    const opacity = useSharedValue(1);
+    const modalScale = useSharedValue(0.8);
+    const modalOpacity = useSharedValue(0);
+
+    const animatedStyle = useAnimatedStyle(() => ({
+        transform: [{ scale: scale.value }],
+        opacity: opacity.value
+    }));
+
+    const modalAnimatedStyle = useAnimatedStyle(() => ({
+        transform: [{ scale: modalScale.value }],
+        opacity: modalOpacity.value
+    }));
+
+    const handlePressIn = () => {
+        scale.value = withSpring(0.95);
+        opacity.value = withTiming(0.8);
+    };
+
+    const handlePressOut = () => {
+        scale.value = withSpring(1);
+        opacity.value = withTiming(1);
+    };
+    const globalScale = useSharedValue(1);
+    const globalOpacity = useSharedValue(1);
+
+    const touchStyle = useAnimatedStyle(() => ({
+        transform: [{ scale: globalScale.value }],
+        opacity: globalOpacity.value,
+    }));
+    const headerY = useSharedValue(-20);
+    const headerOpacity = useSharedValue(0);
+
+    useEffect(() => {
+        headerY.value = withSpring(0);
+        headerOpacity.value = withTiming(1, { duration: 500 });
+    }, []);
+
+    const headerStyle = useAnimatedStyle(() => ({
+        transform: [{ translateY: headerY.value }],
+        opacity: headerOpacity.value,
+    }));
     const illustrations: IllustrationItem[] = [
         {
             id: 'animal1',
@@ -149,6 +202,8 @@ const InteractiveIllustrations: React.FC = () => {
         setSelectedItem(item);
         setSelectedOption(null);
         setIsCorrect(null);
+        modalScale.value = withSpring(1);
+        modalOpacity.value = withTiming(1);
     };
 
     const handleOptionSelect = (index: number) => {
@@ -159,9 +214,12 @@ const InteractiveIllustrations: React.FC = () => {
     };
 
     const closeModal = () => {
-        setSelectedItem(null);
-        setSelectedOption(null);
-        setIsCorrect(null);
+        modalScale.value = withSpring(0.8);
+        modalOpacity.value = withTiming(0, {}, () => {
+            setSelectedItem(null);
+            setSelectedOption(null);
+            setIsCorrect(null);
+        });
     };
 
     const categories: { id: IllustrationCategory; label: string; icon: string }[] = [
@@ -172,9 +230,47 @@ const InteractiveIllustrations: React.FC = () => {
         { id: 'sports', label: 'Sports', icon: '⚽' },
     ];
 
+    const renderIllustrationItem = ({ item, index }: { item: IllustrationItem; index: number }) => (
+        <Animated.View
+            style={[
+                styles.illustrationItem,
+                { transform: [{ translateY: index * 20 }] },
+                touchStyle
+            ]}
+        >
+            <TouchableOpacity
+                onPressIn={() => {
+                    globalScale.value = withSpring(0.95);
+                    globalOpacity.value = withTiming(0.8);
+                }}
+                onPressOut={() => {
+                    globalScale.value = withSpring(1);
+                    globalOpacity.value = withTiming(1);
+                }}
+                onPress={() => handleItemPress(item)}
+            >
+                <Image source={item.image} style={styles.itemImage} />
+                {activeType === 'dictionary' && (
+                    <View style={styles.itemInfo}>
+                        <Text style={styles.itemWord}>{item.word}</Text>
+                        <Text style={styles.itemPronunciation}>{item.pronunciation}</Text>
+                    </View>
+                )}
+                {activeType === 'vocabulary' && (
+                    <View style={styles.itemInfo}>
+                        <Text style={styles.itemQuestion}>What is this?</Text>
+                        <MaterialIcons name="touch-app" size={24} color="#0066cc" />
+                    </View>
+                )}
+            </TouchableOpacity>
+        </Animated.View>
+    );
+
     return (
         <View style={styles.container}>
-            <Text style={styles.header}>🖌 Interactive Illustrations</Text>
+            <Animated.Text style={[styles.header, headerStyle]}>
+                🖌 Interactive Illustrations
+            </Animated.Text>
 
             <View style={styles.typeTabs}>
                 <TouchableOpacity
@@ -239,27 +335,7 @@ const InteractiveIllustrations: React.FC = () => {
 
             <ScrollView style={styles.itemsContainer}>
                 <View style={styles.itemsGrid}>
-                    {filteredItems.map((item) => (
-                        <TouchableOpacity
-                            key={item.id}
-                            style={styles.illustrationItem}
-                            onPress={() => handleItemPress(item)}
-                        >
-                            <Image source={item.imageUrl} style={styles.itemImage} />
-                            {activeType === 'dictionary' && (
-                                <View style={styles.itemInfo}>
-                                    <Text style={styles.itemWord}>{item.word}</Text>
-                                    <Text style={styles.itemPronunciation}>{item.pronunciation}</Text>
-                                </View>
-                            )}
-                            {activeType === 'vocabulary' && (
-                                <View style={styles.itemInfo}>
-                                    <Text style={styles.itemQuestion}>What is this?</Text>
-                                    <MaterialIcons name="touch-app" size={24} color="#0066cc" />
-                                </View>
-                            )}
-                        </TouchableOpacity>
-                    ))}
+                    {filteredItems.map((item, index) => renderIllustrationItem({ item, index }))}
                 </View>
             </ScrollView>
 
@@ -268,16 +344,16 @@ const InteractiveIllustrations: React.FC = () => {
                 <Modal
                     visible={!!selectedItem}
                     transparent={true}
-                    animationType="slide"
+                    animationType="none"
                     onRequestClose={closeModal}
                 >
-                    <View style={styles.modalContainer}>
+                    <Animated.View style={[styles.modalContainer, modalAnimatedStyle]}>
                         <View style={styles.modalContent}>
                             <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
                                 <Ionicons name="close" size={24} color="#666" />
                             </TouchableOpacity>
 
-                            <Image source={selectedItem.imageUrl} style={styles.modalImage} />
+                            <Image source={selectedItem.image} style={styles.modalImage} />
 
                             <View style={styles.modalHeader}>
                                 <View>
@@ -298,7 +374,7 @@ const InteractiveIllustrations: React.FC = () => {
                                 <Text style={styles.saveButtonText}>Save to My Vocabulary</Text>
                             </TouchableOpacity>
                         </View>
-                    </View>
+                    </Animated.View>
                 </Modal>
             )}
 
@@ -307,16 +383,16 @@ const InteractiveIllustrations: React.FC = () => {
                 <Modal
                     visible={!!selectedItem}
                     transparent={true}
-                    animationType="slide"
+                    animationType="none"
                     onRequestClose={closeModal}
                 >
-                    <View style={styles.modalContainer}>
+                    <Animated.View style={[styles.modalContainer, modalAnimatedStyle]}>
                         <View style={styles.modalContent}>
                             <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
                                 <Ionicons name="close" size={24} color="#666" />
                             </TouchableOpacity>
 
-                            <Image source={selectedItem.imageUrl} style={styles.modalImage} />
+                            <Image source={selectedItem.image} style={styles.modalImage} />
 
                             <Text style={styles.quizQuestion}>What is this?</Text>
 
@@ -388,7 +464,7 @@ const InteractiveIllustrations: React.FC = () => {
                                 </TouchableOpacity>
                             )}
                         </View>
-                    </View>
+                    </Animated.View>
                 </Modal>
             )}
         </View>

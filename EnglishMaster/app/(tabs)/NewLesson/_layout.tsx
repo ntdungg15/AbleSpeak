@@ -34,7 +34,7 @@ export default function Layout() {
         name="Video"
         options={{
           tabBarStyle: { display: 'none' }, 
-          // headerShown: false, 
+          headerShown: false, 
         }}
       />
     </Tabs>

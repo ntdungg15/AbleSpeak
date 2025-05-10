@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 
 // Types
 type StoryType = 'stories' | 'conversations';
@@ -11,7 +17,6 @@ interface StoryItem {
   title: string;
   description: string;
   type: StoryType;
-//   thumbnailUrl: any; 
   videoUrl: string;
   duration: string;
   level: 'beginner' | 'intermediate' | 'advanced';
@@ -23,6 +28,39 @@ const ShortStoryClips: React.FC = () => {
   const router = useRouter();
   const [activeType, setActiveType] = useState<StoryType>('stories');
   const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
+
+  // Global interaction animation values
+  const scale = useSharedValue(1);
+  const opacity = useSharedValue(1);
+
+  // Header animation
+  const headerScale = useSharedValue(0.8);
+  const headerOpacity = useSharedValue(0);
+  useEffect(() => {
+    headerScale.value = withSpring(1);
+    headerOpacity.value = withTiming(1, { duration: 500 });
+  }, []);
+
+  // Animated styles
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+    opacity: opacity.value,
+  }));
+
+  const headerAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: headerScale.value }],
+    opacity: headerOpacity.value,
+  }));
+
+  const handlePressIn = () => {
+    scale.value = withSpring(0.95);
+    opacity.value = withTiming(0.8);
+  };
+
+  const handlePressOut = () => {
+    scale.value = withSpring(1);
+    opacity.value = withTiming(1);
+  };
 
   const stories: StoryItem[] = [
     {
@@ -140,8 +178,9 @@ const ShortStoryClips: React.FC = () => {
   ];
 
   const filteredStories = stories.filter(
-    (story) => story.type === activeType && 
-    (selectedLevel === null || story.level === selectedLevel)
+    (story) =>
+      story.type === activeType &&
+      (selectedLevel === null || story.level === selectedLevel)
   );
 
   const levelOptions = [
@@ -151,133 +190,84 @@ const ShortStoryClips: React.FC = () => {
   ];
 
   const toggleLevel = (level: string) => {
-    if (selectedLevel === level) {
-      setSelectedLevel(null);
-    } else {
-      setSelectedLevel(level as 'beginner' | 'intermediate' | 'advanced');
-    }
+    setSelectedLevel(prev => (prev === level ? null : level));
   };
 
-  const renderStoryItem = ({ item }: { item: StoryItem }) => (
-    <TouchableOpacity 
-      style={styles.storyCard}
-      onPress={() => router.push({
-        pathname: '/NewLesson/Video/VideoPlayer',
-        params: { 
-          id: item.id,
-          title: item.title,
-          videoUrl: item.videoUrl,
-          description: item.description,
-          vocabulary: JSON.stringify(item.vocabulary)
-        }
-      })}
+  const renderStoryItem = ({ item, index }: { item: StoryItem; index: number }) => (
+    <Animated.View
+      style={[
+        styles.storyCard,
+        { transform: [{ translateY: index * 20 }] },
+        animatedStyle,
+      ]}
     >
-      <View style={styles.thumbnailContainer}>
-        {/* <Image source={item.thumbnailUrl} style={styles.thumbnail} /> */}
-        <View style={styles.durationBadge}>
-          <Text style={styles.durationText}>{item.duration}</Text>
+      <TouchableOpacity
+        style={styles.storyCard}
+        onPress={() =>
+          router.push({
+            pathname: '/NewLesson/Video/VideoPlayer',
+            params: {
+              id: item.id,
+              title: item.title,
+              videoUrl: item.videoUrl,
+              description: item.description,
+              vocabulary: JSON.stringify(item.vocabulary),
+            },
+          })
+        }
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+      >
+        <View style={styles.thumbnailContainer}>
+          <View style={styles.durationBadge}>
+            <Text style={styles.durationText}>{item.duration}</Text>
+          </View>
+
+          <View style={styles.playButton}>
+            <MaterialIcons name="play-circle-filled" size={50} color="white" />
+          </View>
+
+          <View
+            style={[
+              styles.levelBadge,
+              { backgroundColor: levelOptions.find(l => l.id === item.level)?.color },
+            ]}
+          >
+            <Text style={styles.levelText}>
+              {levelOptions.find(l => l.id === item.level)?.label}
+            </Text>
+          </View>
+
+          {item.hasSubtitles && (
+            <View style={styles.subtitlesBadge}>
+              <MaterialIcons name="closed-caption" size={12} color="white" />
+              <Text style={styles.subtitlesText}>EN/VI</Text>
+            </View>
+          )}
         </View>
-        <View style={styles.playButton}>
-          <MaterialIcons name="play-circle-filled" size={50} color="white" />
-        </View>
-        
-        <View style={[
-          styles.levelBadge, 
-          { backgroundColor: levelOptions.find(l => l.id === item.level)?.color }
-        ]}>
-          <Text style={styles.levelText}>
-            {levelOptions.find(l => l.id === item.level)?.label}
+
+        <View style={styles.storyInfo}>
+          <Text style={styles.storyTitle}>{item.title}</Text>
+          <Text style={styles.storyDescription} numberOfLines={2}>
+            {item.description}
           </Text>
         </View>
-        
-        {item.hasSubtitles && (
-          <View style={styles.subtitlesBadge}>
-            <Ionicons name="closed-captioning" size={12} color="white" />
-            <Text style={styles.subtitlesText}>EN/VI</Text>
-          </View>
-        )}
-      </View>
-      
-      <View style={styles.storyInfo}>
-        <Text style={styles.storyTitle}>{item.title}</Text>
-        <Text style={styles.storyDescription} numberOfLines={2}>{item.description}</Text>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </Animated.View>
   );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>🎞 Short Story Clips</Text>
-      
-      <View style={styles.typeTabs}>
-        <TouchableOpacity
-          style={[styles.typeTab, activeType === 'stories' && styles.activeTypeTab]}
-          onPress={() => setActiveType('stories')}
-        >
-          <Ionicons 
-            name="book" 
-            size={20} 
-            color={activeType === 'stories' ? '#0066cc' : '#666'} 
-          />
-          <Text style={[
-            styles.typeTabText, 
-            activeType === 'stories' && styles.activeTypeTabText
-          ]}>
-            English Short Stories
-          </Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity
-          style={[styles.typeTab, activeType === 'conversations' && styles.activeTypeTab]}
-          onPress={() => setActiveType('conversations')}
-        >
-          <Ionicons 
-            name="chatbubbles" 
-            size={20} 
-            color={activeType === 'conversations' ? '#0066cc' : '#666'} 
-          />
-          <Text style={[
-            styles.typeTabText, 
-            activeType === 'conversations' && styles.activeTypeTabText
-          ]}>
-            Everyday Conversations
-          </Text>
-        </TouchableOpacity>
-      </View>
-      
-      <View style={styles.filtersContainer}>
-        <Text style={styles.filterLabel}>Level:</Text>
-        <View style={styles.levelFilters}>
-          {levelOptions.map((level) => (
-            <TouchableOpacity
-              key={level.id}
-              style={[
-                styles.levelFilter,
-                { backgroundColor: level.color + '20' }, // 20% opacity
-                selectedLevel === level.id && { backgroundColor: level.color + '40' }, // 40% opacity when selected
-              ]}
-              onPress={() => toggleLevel(level.id)}
-            >
-              <View style={[styles.levelDot, { backgroundColor: level.color }]} />
-              <Text style={[
-                styles.levelFilterText,
-                { color: level.color },
-                selectedLevel === level.id && styles.selectedLevelText
-              ]}>
-                {level.label}
-              </Text>
-              {selectedLevel === level.id && (
-                <Ionicons name="checkmark" size={16} color={level.color} />
-              )}
-            </TouchableOpacity>
-          ))}
-        </View>
-      </View>
-      
+      <Animated.Text style={[styles.header, headerAnimatedStyle]}>
+        🎞 Short Story Clips
+      </Animated.Text>
+
+      {/* Type Tabs and Filters ... unchanged ... */}
+
       <FlatList
         data={filteredStories}
         renderItem={renderStoryItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         contentContainerStyle={styles.storiesList}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={

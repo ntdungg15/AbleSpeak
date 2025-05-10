@@ -9,7 +9,7 @@ export default function Layout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="Video_Illustration"
         options={{
           title: "Video/Illustrations",
           headerTitle: "Video/Illustrations",

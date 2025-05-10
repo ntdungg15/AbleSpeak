@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, SafeAreaView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+import { Tabs } from "expo-router";
 
 const VideoIllustrationsHome: React.FC = () => {
   const router = useRouter();
@@ -10,7 +11,7 @@ const VideoIllustrationsHome: React.FC = () => {
     {
       id: 'illustration-videos',
       title: '🎬 Illustration Videos',
-      description: 'Visual storytelling and grammar animations to help you learn English concepts through engaging videos.',
+      description: 'Learn English with engaging animation videos.',
       icon: <Ionicons name="videocam" size={40} color="#0066cc" />,
       route: '/NewLesson/Video/IllustrationVideos',
       image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746879285/istockphoto-1320675065-612x612_tskesz.jpg' },
@@ -18,49 +19,59 @@ const VideoIllustrationsHome: React.FC = () => {
     {
       id: 'interactive-illustrations',
       title: '🖌 Interactive Illustrations',
-      description: 'Picture dictionary and visual vocabulary builder with interactive elements.',
+      description: 'Build vocabulary with interactive pictures.',
       icon: <MaterialIcons name="touch-app" size={40} color="#0066cc" />,
       route: '/NewLesson/Video/InteractiveIllustrations',
-      image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746879285/interactive-illustrations_n3odmy.avif' },
+      image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746881431/interactive-illustrations_sngm3h.jpg' },
     },
     {
       id: 'short-story-clips',
       title: '🎞 Short Story Clips',
-      description: 'English short stories and everyday conversations with bilingual subtitles.',
+      description: 'Watch short stories with bilingual subtitles.',
       icon: <FontAwesome5 name="film" size={40} color="#0066cc" />,
       route: '/NewLesson/Video/ShortStoryClips',
-      image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746879285/istockphoto-1320675065-612x612_tskesz.jpg' },
+      image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746881431/short-story-clips_mwneis.png' },
     },
   ];
-
+  const img: { uri: string } = { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746887720/footer_b7cbwx.jpg' };
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      <Text style={styles.header}>Video & Illustrations</Text>
-      <Text style={styles.subheader}>
-        Learn English through visual and interactive content
-      </Text>
+    <SafeAreaView style={styles.container} >
 
-      {categories.map((category) => (
-        <TouchableOpacity
-          key={category.id}
-          style={styles.card}
-          onPress={() => router.push(category.route)}
-        >
-          <View style={styles.cardContent}>
-            <View style={styles.iconContainer}>{category.icon}</View>
-            <View style={styles.textContainer}>
-              <Text style={styles.cardTitle}>{category.title}</Text>
-              <Text style={styles.cardDescription}>{category.description}</Text>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+
+        <Text style={styles.header}>Video & Illustrations</Text>
+        <Text style={styles.subheader}>
+          Learn English through visual and interactive content
+        </Text>
+
+        <View style={styles.cardSeparator} >
+          <Image source={img} style={styles.cardImageFooter} />
+        </View>
+        <View>
+          {categories.map((category) => (
+          <TouchableOpacity
+            key={category.id}
+            style={styles.card}
+            onPress={() => router.push({ pathname: category.route as "/NewLesson/Video/IllustrationVideos" | "/NewLesson/Video/InteractiveIllustrations" | "/NewLesson/Video/ShortStoryClips" })}
+          >
+            <View style={styles.cardRow}>
+              <View style={styles.cardContent}>
+                <Text style={styles.cardTitle}>{category.title}</Text>
+                <Text style={styles.cardDescription}>{category.description}</Text>
+                <View style={styles.cardFooter}>
+                  <Text style={styles.exploreText}>Explore</Text>
+                  <Ionicons name="arrow-forward" size={20} color="#0066cc" />
+                </View>
+              </View>
+              <Image source={category.image} style={styles.cardImage} />
             </View>
-          </View>
-          <Image source={category.image} style={styles.cardImage} />
-          <View style={styles.cardFooter}>
-            <Text style={styles.exploreText}>Explore</Text>
-            <Ionicons name="arrow-forward" size={20} color="#0066cc" />
-          </View>
-        </TouchableOpacity>
-      ))}
-    </ScrollView>
+          </TouchableOpacity>
+        ))}
+        </View>
+
+      </ScrollView>
+    </SafeAreaView>
+
   );
 };
 
@@ -70,7 +81,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f8f9fa',
   },
   contentContainer: {
-    padding: 16,
+    padding: 10,
   },
   header: {
     fontSize: 28,
@@ -91,12 +102,17 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    overflow: 'hidden',
+    shadowRadius: 10,
+    // overflow: 'hidden',
+  },
+  cardRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   cardContent: {
-    flexDirection: 'row',
+    flex: 2,
     padding: 16,
+    justifyContent: 'space-between',
   },
   iconContainer: {
     marginRight: 16,
@@ -106,7 +122,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cardTitle: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: 'bold',
     marginBottom: 6,
     color: '#333',
@@ -117,9 +133,12 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   cardImage: {
-    width: '100%',
-    height: 150,
+    flex: 1.3,
+    height: 120,
     resizeMode: 'cover',
+    borderTopRightRadius: 12,
+    borderBottomRightRadius: 12,
+    marginRight: 10,
   },
   cardFooter: {
     flexDirection: 'row',
@@ -131,6 +150,18 @@ const styles = StyleSheet.create({
     color: '#0066cc',
     fontWeight: 'bold',
     marginRight: 4,
+  },
+  cardSeparator: {
+    flex: 2,
+    height: 230,
+    resizeMode: 'cover',
+    borderRadius: 12,
+  },
+  cardImageFooter: {
+    width: '100%',
+    height: 210,
+    resizeMode: 'cover',
+    borderRadius: 12,
   },
 });
 
