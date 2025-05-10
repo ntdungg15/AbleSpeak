@@ -75,7 +75,7 @@ interface VideoItem {
             title: 'Conditional Sentences',
             description: 'Learn how to form and use different types of conditional sentences.',
             category: 'grammar',
-            videoUrl: 'https://example.com/videos/grammar2.mp4',
+            videoUrl: 'https://res.cloudinary.com/dtz1pxv22/video/upload/v1746896512/Conditional_Sentences_yuaeao.mp4',
             duration: '3:55',
             vocabulary: [
                 { word: 'First Conditional', definition: 'Used for possible situations in the future' },
@@ -88,7 +88,7 @@ interface VideoItem {
             title: 'Common Pronunciation Mistakes',
             description: 'Avoid these common pronunciation errors made by English learners.',
             category: 'mistakes',
-            videoUrl: 'https://example.com/videos/mistake1.mp4',
+            videoUrl: 'https://res.cloudinary.com/dtz1pxv22/video/upload/v1746896519/Common_Pronunciation_Mistakes_qateju.mp4',
             duration: '2:30',
             vocabulary: [
                 { word: 'thought', definition: 'Past tense of think - often mispronounced' },
@@ -113,10 +113,28 @@ interface VideoItem {
 
     const VideoCard = React.memo(({ item, index, isActive }: { item: VideoItem; index: number; isActive: boolean }) => {
       const videoRef = useRef<Video>(null);
+      const [isPlaying, setIsPlaying] = useState(false);
       const [loading, setLoading] = useState(true);
+
+      const handlePlayPause = async () => {
+        if (isPlaying) {
+          await videoRef.current?.pauseAsync();
+          setIsPlaying(false);
+        } else {
+          await videoRef.current?.playAsync();
+          setIsPlaying(true);
+        }
+      };
 
       const handleFullscreen = () => {
         videoRef.current?.presentFullscreenPlayer();
+      };
+
+      const handleVideoPress = async () => {
+        if (isPlaying) {
+          await videoRef.current?.pauseAsync();
+          setIsPlaying(false);
+        }
       };
 
       return (
@@ -127,20 +145,40 @@ interface VideoItem {
                 <Text style={{ color: '#fff' }}>Loading...</Text>
               </View>
             )}
-            <Video
-              ref={videoRef}
-              source={{ uri: item.videoUrl }}
-              style={styles.video}
-              resizeMode={ResizeMode.CONTAIN}
-              isLooping
-              shouldPlay={isActive}
-              onLoadStart={() => setLoading(true)}
-              onLoad={() => setLoading(false)}
-              onError={e => setLoading(false)}
-            />
+            <TouchableOpacity
+              activeOpacity={1}
+              style={{ width: '100%', height: '100%', position: 'absolute', zIndex: 2 }}
+              onPress={handleVideoPress}
+            >
+              <Video
+                ref={videoRef}
+                source={{ uri: item.videoUrl }}
+                style={styles.video}
+                resizeMode={ResizeMode.CONTAIN}
+                isLooping
+                shouldPlay={isPlaying}
+                onLoadStart={() => setLoading(true)}
+                onLoad={() => setLoading(false)}
+                onError={e => setLoading(false)}
+              />
+              {!isPlaying && !loading && (
+                <TouchableOpacity
+                  onPress={handlePlayPause}
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: [{ translateX: -30 }, { translateY: -30 }],
+                    zIndex: 3,
+                  }}
+                >
+                  <MaterialIcons name="play-circle-filled" size={60} color="white" />
+                </TouchableOpacity>
+              )}
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={handleFullscreen}
-              style={{ position: 'absolute', bottom: 8, left: 8, backgroundColor: '#0008', padding: 6, borderRadius: 4, zIndex: 2 }}
+              style={{ position: 'absolute', bottom: 8, left: 8, backgroundColor: '#0008', padding: 6, borderRadius: 4, zIndex: 4 }}
             >
               <MaterialIcons name="fullscreen" size={24} color="white" />
             </TouchableOpacity>

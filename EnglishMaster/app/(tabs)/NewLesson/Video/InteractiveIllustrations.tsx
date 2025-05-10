@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Modal } from 'react-native';
-import  Audio  from 'expo-av';
+import { Audio } from 'expo-av';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import Animated, {
     useSharedValue,
@@ -88,7 +88,7 @@ const InteractiveIllustrations: React.FC = () => {
             definition: 'A large wild cat with a mane around its face, living in Africa.',
             pronunciation: '/ˈlaɪən/',
             audioUrl: 'https://example.com/audio/lion.mp3',
-            image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746879285/interactive-illustrations_n3odmy.avif' },
+            image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896761/lion_hnocf8.jpg' },
             category: 'animals',
 
             type: 'dictionary',
@@ -99,7 +99,7 @@ const InteractiveIllustrations: React.FC = () => {
             definition: 'A very large animal with a long, flexible nose and two tusks.',
             pronunciation: '/ˈelɪfənt/',
             audioUrl: 'https://example.com/audio/elephant.mp3',
-            image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746879285/interactive-illustrations_n3odmy.avif' },
+            image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896762/elephant_xytl1e.jpg' },
             category: 'animals',
 
             type: 'dictionary',
@@ -110,7 +110,7 @@ const InteractiveIllustrations: React.FC = () => {
             definition: 'A flat, round bread covered with tomato sauce, cheese, and other toppings.',
             pronunciation: '/ˈpiːtsə/',
             audioUrl: 'https://example.com/audio/pizza.mp3',
-            image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746879285/interactive-illustrations_n3odmy.avif' },
+            image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896823/Pizza_q7neo1.jpg' },
             category: 'food',
 
             type: 'dictionary',
@@ -121,7 +121,7 @@ const InteractiveIllustrations: React.FC = () => {
             definition: 'A Japanese dish of prepared rice with fish, vegetables, or eggs.',
             pronunciation: '/ˈsuːʃi/',
             audioUrl: 'https://example.com/audio/sushi.mp3',
-            image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746879285/interactive-illustrations_n3odmy.avif' },
+            image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896823/Sushi_ayqydt.jpg' },
             category: 'food',
 
             type: 'dictionary',
@@ -133,7 +133,7 @@ const InteractiveIllustrations: React.FC = () => {
             definition: 'A large wild cat with a mane around its face, living in Africa.',
             pronunciation: '/ˈlaɪən/',
             audioUrl: 'https://example.com/audio/lion.mp3',
-            image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746879285/interactive-illustrations_n3odmy.avif' },
+            image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896761/lion_hnocf8.jpg' },
             category: 'animals',
 
             type: 'vocabulary',
@@ -146,7 +146,7 @@ const InteractiveIllustrations: React.FC = () => {
             definition: 'A very large animal with a long, flexible nose and two tusks.',
             pronunciation: '/ˈelɪfənt/',
             audioUrl: 'https://example.com/audio/elephant.mp3',
-            image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746879285/interactive-illustrations_n3odmy.avif' },
+            image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896762/elephant_xytl1e.jpg' },
             category: 'animals',
 
             type: 'vocabulary',
@@ -159,7 +159,7 @@ const InteractiveIllustrations: React.FC = () => {
             definition: 'A flat, round bread covered with tomato sauce, cheese, and other toppings.',
             pronunciation: '/ˈpiːtsə/',
             audioUrl: 'https://example.com/audio/pizza.mp3',
-            image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746879285/interactive-illustrations_n3odmy.avif' },
+            image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896823/Pizza_q7neo1.jpg' },
             category: 'food',
             type: 'vocabulary',
             options: ['Pasta', 'Pizza', 'Burger', 'Sandwich'],
@@ -171,7 +171,7 @@ const InteractiveIllustrations: React.FC = () => {
             definition: 'A Japanese dish of prepared rice with fish, vegetables, or eggs.',
             pronunciation: '/ˈsuːʃi/',
             audioUrl: 'https://example.com/audio/sushi.mp3',
-            image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746879285/interactive-illustrations_n3odmy.avif' },
+            image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896823/Sushi_ayqydt.jpg' },
             category: 'food',
             type: 'vocabulary',
             options: ['Sushi', 'Ramen', 'Tempura', 'Sashimi'],
