@@ -4,7 +4,6 @@ import { Video, AVPlaybackStatus, ResizeMode } from 'expo-av';
 import { useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 
-// Types
 type VideoCategory = 'storytelling' | 'grammar' | 'mistakes';
 
 interface VideoItem {
@@ -12,7 +11,7 @@ interface VideoItem {
   title: string;
   description: string;
   category: VideoCategory;
-  thumbnailUrl: any; // Using require for local images
+//   thumbnailUrl: any; 
   videoUrl: string;
   duration: string;
   vocabulary: Array<{ word: string; definition: string }>;
@@ -22,15 +21,14 @@ const IllustrationVideos: React.FC = () => {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<VideoCategory>('storytelling');
 
-  // Sample data
   const videos: VideoItem[] = [
     {
       id: 'story1',
       title: 'A Day at the Beach',
       description: 'Learn common phrases related to beach activities and weather.',
       category: 'storytelling',
-      thumbnailUrl: require('../../../../assets/images/beach-thumbnail.png'),
-      videoUrl: 'https://example.com/videos/beach.mp4',
+    //   thumbnailUrl: require('../../../../assets/images/beach-thumbnail.png'),
+      videoUrl: 'https://www.google.com/search?sca_esv=2848611885b4dcac&rlz=1C1GCEU_viVN1161VN1161&sxsrf=AHTn8zrTkDijyU07sJmjE_Rb1te_QX9DWQ:1746879427593&q=A+Day+at+the+Beach&udm=7&fbs=ABzOT_AfCikcO6SgGMxZXxAG9tmSB0ivEfrkZ2bhGvfAzfZcBPFQXafK35I07oyiMbr5AAlHL_h3YRlaB3oZ9wR8O-dI2T7lpiK9uCemCiEK-RltAwdgI1Y7hghVwQy-w3HjlUdTUDYnkms9r0VC6bVjx9sZQXAHoCLNaA2_Bzd3oQ6zLKdeilcWU5zcHcRKjfcLp4PMAmjTdfzG3zFny6B2x2uGvRAVpBNcMviqgkvH6vqUNJ_LIcE085I7ajuob_caNMu6DDkp&sa=X&sqi=2&ved=2ahUKEwid7_z98JiNAxXuk68BHeUsMzgQtKgLegQIIBAB&biw=1509&bih=944&dpr=1#fpstate=ive&vld=cid:987aedc4,vid:Fss6z5l1va8,st:0',
       duration: '2:45',
       vocabulary: [
         { word: 'sunbathe', definition: 'to sit or lie in the sun to get a tan' },
@@ -43,7 +41,7 @@ const IllustrationVideos: React.FC = () => {
       title: 'At the Restaurant',
       description: 'Learn how to order food and have conversations at restaurants.',
       category: 'storytelling',
-      thumbnailUrl: require('../../../../assets/images/restaurant-thumbnail.png'),
+    //   thumbnailUrl: require('../../../../assets/images/restaurant-thumbnail.png'),
       videoUrl: 'https://example.com/videos/restaurant.mp4',
       duration: '3:12',
       vocabulary: [
@@ -57,7 +55,7 @@ const IllustrationVideos: React.FC = () => {
       title: 'Present Perfect vs. Past Simple',
       description: 'Understand when to use Present Perfect and Past Simple tenses.',
       category: 'grammar',
-      thumbnailUrl: require('../../../../assets/images/grammar-thumbnail.png'),
+    //   thumbnailUrl: require('../../../../assets/images/grammar-thumbnail.png'),
       videoUrl: 'https://example.com/videos/present-perfect.mp4',
       duration: '4:10',
       vocabulary: [
@@ -71,7 +69,7 @@ const IllustrationVideos: React.FC = () => {
       title: 'Conditional Sentences',
       description: 'Learn how to form and use different types of conditional sentences.',
       category: 'grammar',
-      thumbnailUrl: require('../../../../assets/images/conditionals-thumbnail.png'),
+    //   thumbnailUrl: require('../../../../assets/images/conditionals-thumbnail.png'),
       videoUrl: 'https://example.com/videos/conditionals.mp4',
       duration: '3:55',
       vocabulary: [
@@ -85,7 +83,7 @@ const IllustrationVideos: React.FC = () => {
       title: 'Common Pronunciation Mistakes',
       description: 'Avoid these common pronunciation errors made by English learners.',
       category: 'mistakes',
-      thumbnailUrl: require('../../../../assets/images/pronunciation-thumbnail.png'),
+    //   thumbnailUrl: require('../../../../assets/images/pronunciation-thumbnail.png'),
       videoUrl: 'https://example.com/videos/pronunciation.mp4',
       duration: '2:30',
       vocabulary: [
@@ -99,7 +97,7 @@ const IllustrationVideos: React.FC = () => {
       title: 'Preposition Errors',
       description: 'Learn how to use prepositions correctly in English.',
       category: 'mistakes',
-      thumbnailUrl: require('../../../../assets/images/prepositions-thumbnail.png'),
+    //   thumbnailUrl: require('../../../../assets/images/prepositions-thumbnail.png'),
       videoUrl: 'https://example.com/videos/prepositions.mp4',
       duration: '3:20',
       vocabulary: [
@@ -127,7 +125,7 @@ const IllustrationVideos: React.FC = () => {
       })}
     >
       <View style={styles.thumbnailContainer}>
-        <Image source={item.thumbnailUrl} style={styles.thumbnail} />
+        {/* <Image source={item.thumbnailUrl} style={styles.thumbnail} /> */}
         <View style={styles.durationBadge}>
           <Text style={styles.durationText}>{item.duration}</Text>
         </View>

@@ -11,7 +11,7 @@ interface StoryItem {
   title: string;
   description: string;
   type: StoryType;
-  thumbnailUrl: any; // Using require for local images
+//   thumbnailUrl: any; 
   videoUrl: string;
   duration: string;
   level: 'beginner' | 'intermediate' | 'advanced';
@@ -24,14 +24,13 @@ const ShortStoryClips: React.FC = () => {
   const [activeType, setActiveType] = useState<StoryType>('stories');
   const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
 
-  // Sample data
   const stories: StoryItem[] = [
     {
       id: 'story1',
       title: 'The Lost Key',
       description: 'A short story about a man who lost his keys and the journey to find them.',
       type: 'stories',
-      thumbnailUrl: require('../../../../assets/images/lost-key.png'),
+    //   thumbnailUrl: require('../../../../assets/images/lost-key.png'),
       videoUrl: 'https://example.com/videos/lost-key.mp4',
       duration: '4:30',
       level: 'beginner',
@@ -59,7 +58,7 @@ const ShortStoryClips: React.FC = () => {
       title: 'The Unexpected Gift',
       description: 'A heartwarming story about receiving an unexpected present from a stranger.',
       type: 'stories',
-      thumbnailUrl: require('../../../../assets/images/unexpected-gift.png'),
+    //   thumbnailUrl: require('../../../../assets/images/unexpected-gift.png'),
       videoUrl: 'https://example.com/videos/unexpected-gift.mp4',
       duration: '5:15',
       level: 'intermediate',
@@ -87,7 +86,7 @@ const ShortStoryClips: React.FC = () => {
       title: 'At the Coffee Shop',
       description: 'Learn how to order coffee and have casual conversations at a café.',
       type: 'conversations',
-      thumbnailUrl: require('../../../../assets/images/coffee-shop.png'),
+    //   thumbnailUrl: require('../../../../assets/images/coffee-shop.png'),
       videoUrl: 'https://example.com/videos/coffee-shop.mp4',
       duration: '3:45',
       level: 'beginner',
@@ -115,7 +114,7 @@ const ShortStoryClips: React.FC = () => {
       title: 'Job Interview',
       description: 'Learn professional vocabulary and phrases used in job interviews.',
       type: 'conversations',
-      thumbnailUrl: require('../../../../assets/images/job-interview.png'),
+    //   thumbnailUrl: require('../../../../assets/images/job-interview.png'),
       videoUrl: 'https://example.com/videos/job-interview.mp4',
       duration: '6:20',
       level: 'advanced',
@@ -174,7 +173,7 @@ const ShortStoryClips: React.FC = () => {
       })}
     >
       <View style={styles.thumbnailContainer}>
-        <Image source={item.thumbnailUrl} style={styles.thumbnail} />
+        {/* <Image source={item.thumbnailUrl} style={styles.thumbnail} /> */}
         <View style={styles.durationBadge}>
           <Text style={styles.durationText}>{item.duration}</Text>
         </View>

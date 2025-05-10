@@ -1,124 +1,137 @@
-import React, { useRef, useState } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity, ProgressBarAndroid } from 'react-native';
-import { Video, AVPlaybackStatus, ResizeMode } from 'expo-av';
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Ionicons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
-const VideoIllustration: React.FC = () => {
-  const videoRef = useRef<Video>(null);
-  const [progress, setProgress] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
+const VideoIllustrationsHome: React.FC = () => {
+  const router = useRouter();
 
-  const handlePlayPause = async () => {
-    if (videoRef.current) {
-      const status = await videoRef.current.getStatusAsync();
-      if (status.isLoaded && status.isPlaying) {
-        videoRef.current.pauseAsync();
-      } else {
-        videoRef.current.playAsync();
-      }
-      setIsPlaying(status.isLoaded ? !status.isPlaying : false);
-    }
-  };
-
-  const handleReplay = async () => {
-    if (videoRef.current) {
-      await videoRef.current.setPositionAsync(0);
-      videoRef.current.playAsync();
-      setIsPlaying(true);
-    }
-  };
-
-  const handleProgress = (status: AVPlaybackStatus) => {
-    if (status.isLoaded && status.durationMillis) {
-      const currentProgress = (status.positionMillis / status.durationMillis) * 100;
-      setProgress(currentProgress);
-    }
-  };
+  const categories = [
+    {
+      id: 'illustration-videos',
+      title: '🎬 Illustration Videos',
+      description: 'Visual storytelling and grammar animations to help you learn English concepts through engaging videos.',
+      icon: <Ionicons name="videocam" size={40} color="#0066cc" />,
+      route: '/NewLesson/Video/IllustrationVideos',
+      image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746879285/istockphoto-1320675065-612x612_tskesz.jpg' },
+    },
+    {
+      id: 'interactive-illustrations',
+      title: '🖌 Interactive Illustrations',
+      description: 'Picture dictionary and visual vocabulary builder with interactive elements.',
+      icon: <MaterialIcons name="touch-app" size={40} color="#0066cc" />,
+      route: '/NewLesson/Video/InteractiveIllustrations',
+      image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746879285/interactive-illustrations_n3odmy.avif' },
+    },
+    {
+      id: 'short-story-clips',
+      title: '🎞 Short Story Clips',
+      description: 'English short stories and everyday conversations with bilingual subtitles.',
+      icon: <FontAwesome5 name="film" size={40} color="#0066cc" />,
+      route: '/NewLesson/Video/ShortStoryClips',
+      image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746879285/istockphoto-1320675065-612x612_tskesz.jpg' },
+    },
+  ];
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Video Illustration</Text>
-      <Video
-        ref={videoRef}
-        style={styles.video}
-        source={{ uri: 'path-to-your-video.mp4' }}
-        resizeMode={ResizeMode.CONTAIN}
-        onPlaybackStatusUpdate={handleProgress}
-      />
-      <View style={styles.controls}>
-        <TouchableOpacity style={styles.button} onPress={handlePlayPause}>
-          <Text style={styles.buttonText}>{isPlaying ? 'Pause' : 'Play'}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleReplay}>
-          <Text style={styles.buttonText}>Replay</Text>
-        </TouchableOpacity>
-      </View>
-      <ProgressBarAndroid style={styles.progressBar} styleAttr="Horizontal" progress={progress / 100} />
-      <Text style={styles.description}>
-        Watch this video to improve your English listening and comprehension skills.
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+      <Text style={styles.header}>Video & Illustrations</Text>
+      <Text style={styles.subheader}>
+        Learn English through visual and interactive content
       </Text>
-      <View style={styles.notes}>
-        <Text style={styles.notesTitle}>Vocabulary & Notes</Text>
-        <Text style={styles.notesList}>- Word 1: Definition or example sentence</Text>
-        <Text style={styles.notesList}>- Word 2: Definition or example sentence</Text>
-        <Text style={styles.notesList}>- Word 3: Definition or example sentence</Text>
-      </View>
-    </View>
+
+      {categories.map((category) => (
+        <TouchableOpacity
+          key={category.id}
+          style={styles.card}
+          onPress={() => router.push(category.route)}
+        >
+          <View style={styles.cardContent}>
+            <View style={styles.iconContainer}>{category.icon}</View>
+            <View style={styles.textContainer}>
+              <Text style={styles.cardTitle}>{category.title}</Text>
+              <Text style={styles.cardDescription}>{category.description}</Text>
+            </View>
+          </View>
+          <Image source={category.image} style={styles.cardImage} />
+          <View style={styles.cardFooter}>
+            <Text style={styles.exploreText}>Explore</Text>
+            <Ionicons name="arrow-forward" size={20} color="#0066cc" />
+          </View>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    padding: 20,
+    backgroundColor: '#f8f9fa',
   },
-  title: {
-    fontSize: 24,
+  contentContainer: {
+    padding: 16,
+  },
+  header: {
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 8,
+    color: '#333',
   },
-  video: {
-    width: '100%',
-    height: 200,
-    marginBottom: 20,
+  subheader: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 24,
   },
-  controls: {
+  card: {
+    backgroundColor: 'white',
+    borderRadius: 12,
+    marginBottom: 20,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    overflow: 'hidden',
+  },
+  cardContent: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '80%',
-    marginBottom: 10,
+    padding: 16,
   },
-  button: {
-    padding: 10,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 5,
+  iconContainer: {
+    marginRight: 16,
+    justifyContent: 'center',
   },
-  buttonText: {
-    fontSize: 16,
+  textContainer: {
+    flex: 1,
   },
-  progressBar: {
-    width: '80%',
-    height: 10,
-    marginBottom: 20,
-  },
-  description: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  notes: {
-    width: '80%',
-    textAlign: 'left',
-  },
-  notesTitle: {
-    fontSize: 20,
+  cardTitle: {
+    fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 6,
+    color: '#333',
   },
-  notesList: {
-    fontSize: 16,
-    lineHeight: 24,
+  cardDescription: {
+    fontSize: 14,
+    color: '#666',
+    lineHeight: 20,
+  },
+  cardImage: {
+    width: '100%',
+    height: 150,
+    resizeMode: 'cover',
+  },
+  cardFooter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: 12,
+  },
+  exploreText: {
+    color: '#0066cc',
+    fontWeight: 'bold',
+    marginRight: 4,
   },
 });
 
-export default VideoIllustration;
+export default VideoIllustrationsHome; 

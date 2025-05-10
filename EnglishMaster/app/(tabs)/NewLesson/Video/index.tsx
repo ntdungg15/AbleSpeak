@@ -13,7 +13,7 @@ const VideoIllustrationsHome: React.FC = () => {
       description: 'Visual storytelling and grammar animations to help you learn English concepts through engaging videos.',
       icon: <Ionicons name="videocam" size={40} color="#0066cc" />,
       route: '/NewLesson/Video/IllustrationVideos',
-      image: require('../../../../assets/images/illustration-video-placeholder.png'),
+      image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746879285/istockphoto-1320675065-612x612_tskesz.jpg' },
     },
     {
       id: 'interactive-illustrations',
@@ -21,7 +21,7 @@ const VideoIllustrationsHome: React.FC = () => {
       description: 'Picture dictionary and visual vocabulary builder with interactive elements.',
       icon: <MaterialIcons name="touch-app" size={40} color="#0066cc" />,
       route: '/NewLesson/Video/InteractiveIllustrations',
-      image: require('../../../../assets/images/interactive-illustration-placeholder.png'),
+      image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746879285/interactive-illustrations_n3odmy.avif' },
     },
     {
       id: 'short-story-clips',
@@ -29,7 +29,7 @@ const VideoIllustrationsHome: React.FC = () => {
       description: 'English short stories and everyday conversations with bilingual subtitles.',
       icon: <FontAwesome5 name="film" size={40} color="#0066cc" />,
       route: '/NewLesson/Video/ShortStoryClips',
-      image: require('../../../../assets/images/short-story-placeholder.png'),
+      image: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1746879285/istockphoto-1320675065-612x612_tskesz.jpg' },
     },
   ];
 
