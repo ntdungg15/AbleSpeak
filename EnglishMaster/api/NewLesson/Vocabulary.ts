@@ -126,7 +126,6 @@ export const getVocabularyFromJson = async (lessonId: string): Promise<Vocabular
     }
 
     const data = await response.json();
-    // Filter vocabulary items for the specific lesson
     const lessonVocabulary = data.vocabulary
       .filter((item: any) => item.lessonId === lessonId)
       .map((item: any) => ({

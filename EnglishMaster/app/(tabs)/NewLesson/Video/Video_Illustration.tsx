@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, ProgressBarAndroid } from 'react-native';
-import { Video } from 'expo-av';
+import { Video, AVPlaybackStatus, ResizeMode } from 'expo-av';
 
 const VideoIllustration: React.FC = () => {
   const videoRef = useRef<Video>(null);
@@ -10,12 +10,12 @@ const VideoIllustration: React.FC = () => {
   const handlePlayPause = async () => {
     if (videoRef.current) {
       const status = await videoRef.current.getStatusAsync();
-      if (status.isPlaying) {
+      if (status.isLoaded && status.isPlaying) {
         videoRef.current.pauseAsync();
       } else {
         videoRef.current.playAsync();
       }
-      setIsPlaying(!status.isPlaying);
+      setIsPlaying(status.isLoaded ? !status.isPlaying : false);
     }
   };
 
@@ -27,13 +27,10 @@ const VideoIllustration: React.FC = () => {
     }
   };
 
-  const handleProgress = async () => {
-    if (videoRef.current) {
-      const status = await videoRef.current.getStatusAsync();
-      if (status.isLoaded && status.durationMillis) {
-        const currentProgress = (status.positionMillis / status.durationMillis) * 100;
-        setProgress(currentProgress);
-      }
+  const handleProgress = (status: AVPlaybackStatus) => {
+    if (status.isLoaded && status.durationMillis) {
+      const currentProgress = (status.positionMillis / status.durationMillis) * 100;
+      setProgress(currentProgress);
     }
   };
 
@@ -44,7 +41,7 @@ const VideoIllustration: React.FC = () => {
         ref={videoRef}
         style={styles.video}
         source={{ uri: 'path-to-your-video.mp4' }}
-        resizeMode="contain"
+        resizeMode={ResizeMode.CONTAIN}
         onPlaybackStatusUpdate={handleProgress}
       />
       <View style={styles.controls}>
