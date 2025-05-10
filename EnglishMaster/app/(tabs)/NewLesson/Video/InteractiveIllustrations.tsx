@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Modal } from 'react-native';
-import { Audio } from 'expo-av';
+import  Audio  from 'expo-av';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import Animated, {
     useSharedValue,
