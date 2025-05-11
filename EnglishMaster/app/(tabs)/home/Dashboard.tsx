@@ -23,7 +23,7 @@ import LoginScreen from "@/components/profile/LoginComponent";
 const Dashboard = () => {
   const [userName, setUserName] = useState("Minh");
   const [streakDays, setStreakDays] = useState(5);
-  const [progress, setProgress] = useState(67);
+  const [progress, setProgress] = useState(60);
   const user = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -59,28 +59,28 @@ const Dashboard = () => {
   const dailyActivities = [
     {
       id: 1,
-      title: "Học từ vựng mới",
+      title: "Learn new vocabulary",
       icon: "book",
       type: "FontAwesome",
       color: "#4F8EF7",
     },
     {
       id: 2,
-      title: "Luyện nghe",
+      title: "Practice listening",
       icon: "headphones",
       type: "FontAwesome",
       color: "#4CD964",
     },
     {
       id: 3,
-      title: "Nói 5 phút",
+      title: "Speak 5 minutes",
       icon: "wechat",
       type: "FontAwesome",
       color: "#9C27B0",
     },
     {
       id: 4,
-      title: "Ôn ngữ pháp",
+      title: "Study grammar",
       icon: "file-document-outline",
       type: "MaterialCommunityIcons",
       color: "#FF9500",
@@ -91,7 +91,7 @@ const Dashboard = () => {
     {
       id: 1,
       title: "Vocabulary",
-      description: "Học từ vựng và cách đánh vần",
+      description: "Learn pronunciation and meaning",
       icon: "book",
       color: "#4F8EF7",
       bgColor: "#E3F2FD",
@@ -100,7 +100,7 @@ const Dashboard = () => {
     {
       id: 2,
       title: "Grammar",
-      description: "Làm chủ ngữ pháp",
+      description: "Master grammar rules",
       icon: "pencil",
       color: "#FB8C00",
       bgColor: "#FFF3E0",
@@ -109,7 +109,7 @@ const Dashboard = () => {
     {
       id: 3,
       title: "Speaking",
-      description: "Luyện phát âm và giao tiếp",
+      description: "Practice speaking skills",
       icon: "microphone",
       color: "#7CB342",
       bgColor: "#F1F8E9",
@@ -118,7 +118,7 @@ const Dashboard = () => {
     {
       id: 4,
       title: "Listening",
-      description: "Luyện nghe hiệu quả",
+      description: "Improve listening skills",
       icon: "headphones",
       color: "#7B1FA2",
       bgColor: "#F3E5F5",
@@ -154,8 +154,10 @@ const Dashboard = () => {
               </Text>
             </View>
             <View>
-              <Text style={styles.greeting}>Xin chào, {userName}!</Text>
-              <Text style={styles.subGreeting}>Hôm nay bạn muốn học gì?</Text>
+              <Text style={styles.greeting}>Hello, {userName}!</Text>
+              <Text style={styles.subGreeting}>
+                What do you want to learn today?
+              </Text>
             </View>
           </View>
           <View style={styles.headerIcons}>
@@ -181,7 +183,7 @@ const Dashboard = () => {
             </View>
             <View>
               <Text style={styles.streakTitle}>Streak</Text>
-              <Text style={styles.streakValue}>{streakDays} ngày</Text>
+              <Text style={styles.streakValue}>{streakDays} days</Text>
             </View>
           </View>
           <View style={styles.separator} />
@@ -192,7 +194,7 @@ const Dashboard = () => {
               <Icon name="bar-chart" size={24} color="#03A9F4" />
             </View>
             <View>
-              <Text style={styles.streakTitle}>Tiến độ</Text>
+              <Text style={styles.streakTitle}>Progress</Text>
               <Text style={styles.streakValue}>{progress}%</Text>
             </View>
           </View>
@@ -201,9 +203,9 @@ const Dashboard = () => {
         {/* Continue Learning Section */}
         <View style={styles.sectionContainer}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Tiếp tục học</Text>
+            <Text style={styles.sectionTitle}>Continue learning</Text>
             <TouchableOpacity>
-              <Text style={styles.seeAll}>Xem tất cả</Text>
+              <Text style={styles.seeAll}>See all</Text>
             </TouchableOpacity>
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -221,7 +223,7 @@ const Dashboard = () => {
                     />
                   </View>
                   <Text style={styles.progressText}>
-                    {course.progress}% hoàn thành
+                    {course.progress}% completed
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -232,7 +234,7 @@ const Dashboard = () => {
         {/* Daily Activities */}
         <View style={styles.sectionContainer}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Hoạt động hàng ngày</Text>
+            <Text style={styles.sectionTitle}>Daily activities</Text>
           </View>
           <View style={styles.activitiesContainer}>
             {dailyActivities.map((activity) => (
@@ -254,7 +256,7 @@ const Dashboard = () => {
         {/* Learning Categories */}
         <View style={styles.sectionContainer}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Bài học mới</Text>
+            <Text style={styles.sectionTitle}>New lesson</Text>
           </View>
           <View style={styles.categoriesContainer}>
             {lessonCategories.map((category) => (
@@ -296,9 +298,9 @@ const Dashboard = () => {
                 <Icon name="trophy" size={32} color="#FFD700" />
               </View>
               <View style={styles.achievementTextContainer}>
-                <Text style={styles.achievementTitle}>Thử thách tuần</Text>
+                <Text style={styles.achievementTitle}>Weekly challenge</Text>
                 <Text style={styles.achievementDescription}>
-                  Học 7 ngày liên tục để nhận phần thưởng
+                  Learn 7 days in a row to earn a badge
                 </Text>
               </View>
             </View>

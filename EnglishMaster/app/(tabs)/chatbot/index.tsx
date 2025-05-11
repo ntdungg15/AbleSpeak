@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -6,71 +6,104 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  // Modal,
-  // ActivityIndicator,
-} from 'react-native';
-import { useRouter } from 'expo-router'
-import { styles } from '@/constants/chatbot/ChatBot'
-import logoDogImage from '@/assets/images/logo-dog.png';
-import RolePlayCard from '@/components/chatbot/RolePlayCard';
+  AccessibilityInfo,
+  Platform,
+} from "react-native";
+import { useRouter } from "expo-router";
+import * as Speech from "expo-speech";
+import { Ionicons } from "@expo/vector-icons";
+import { styles } from "@/constants/chatbot/ChatBot";
+import logoDogImage from "@/assets/images/logo-dog.png";
+import RolePlayCard from "@/components/chatbot/RolePlayCard";
 
 const ChatBot = () => {
   const router = useRouter();
-  const handlePress = () => {
-    router.push('/(tabs)/chatbot/Roleplay');
-  }
+
+  const speak = (text: string) => {
+    Speech.speak(text, {
+      language: "en",
+      rate: 0.9,
+      pitch: 1.0,
+    });
+  };
+
   const handlePressStart = () => {
-    router.push('/chatroom/ChatRoom');
-  }
+    speak("Starting a classic conversation.");
+    router.push("/chatroom/ChatRoom");
+  };
+
+  const handlePressRolePlay = () => {
+    speak("Navigating to Role Play topics.");
+    router.push("/(tabs)/chatbot/Roleplay");
+  };
+
+  useEffect(() => {
+    if (Platform.OS === "ios" || Platform.OS === "android") {
+      AccessibilityInfo.announceForAccessibility(
+        "Welcome to AbleSpeak ChatBot screen"
+      );
+    }
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}></View>
-      <ScrollView 
+      <ScrollView
         style={styles.mainContainerScroll}
         contentContainerStyle={styles.mainContainerView}
-      > 
-        {/* Classic  */}
+        accessible={true}
+        accessibilityLabel="Main content scroll area"
+      >
+        {/* Classic Section */}
         <View style={styles.classicContainer}>
-          <Text style={styles.textcardheader}>Classic</Text>
+          <Text style={styles.textcardheader} accessibilityRole="header">
+            Classic
+          </Text>
           <View style={styles.classicContent}>
             <Image
               source={logoDogImage}
               style={styles.classicImage}
+              accessibilityLabel="AbleSpeak logo with a friendly dog illustration"
             />
             <View style={styles.classicTextContainer}>
-              <Text style={styles.classicContentText}>
+              <Text
+                style={styles.classicContentText}
+                accessibilityLabel="Practice English with AbleSpeak, a friendly AI chatbot."
+              >
                 Practice English with AbleSpeak, a friendly AI chatbot.
               </Text>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.classicStartButton}
-                onPress={() => handlePressStart()}
-              >                
+                onPress={handlePressStart}
+                accessibilityRole="button"
+                accessibilityLabel="Start classic conversation"
+              >
                 <Text style={styles.classicStartButtonText}>Start</Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
 
-        {/* Role-Play  */}
+        {/* Role-Play Section */}
         <View style={styles.topicContainer}>
-          {/* RolePlay header  */}
           <View style={styles.roleplayHeader}>
-            <Text style={styles.textcardheader}>Role-Play</Text>
-            <Text style={{marginRight: 12,}} onPress={handlePress}>See more</Text>
+            <Text style={styles.textcardheader} accessibilityRole="header">
+              Role-Play
+            </Text>
+            <Text
+              style={{ marginRight: 12 }}
+              onPress={handlePressRolePlay}
+              accessibilityRole="link"
+              accessibilityLabel="See more role play topics"
+            >
+              See more
+            </Text>
           </View>
           <RolePlayCard />
         </View>
-        
-        {/* Read and talk  */}
-        {/* <View style={styles.topicContainer}>
-          <Text style={styles.textcardheader}>Read and Talk</Text>
-          
-        </View> */}
-
-
       </ScrollView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 export default ChatBot;
