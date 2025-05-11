@@ -12,7 +12,6 @@ import {
   Platform,
   KeyboardAvoidingView,
   Modal,
-  TouchableOpacity,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useSelector, useDispatch } from "react-redux";
@@ -56,193 +55,201 @@ export default function ProfileScreen() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <LinearGradient colors={["#e0f7fa", "#fff"]} style={styles.container}>
-        <SafeAreaView style={{ flex: 1 }}>
-          <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS === "ios" ? "padding" : undefined}
-          >
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              keyboardShouldPersistTaps="handled"
-              contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
+      <ScrollView>
+        <LinearGradient colors={["#e0f7fa", "#fff"]} style={styles.container}>
+          <SafeAreaView style={{ flex: 1 }}>
+            <KeyboardAvoidingView
+              style={{ flex: 1 }}
+              behavior={Platform.OS === "ios" ? "padding" : undefined}
             >
-              <View style={{ flex: 1 }}>
-                <View style={styles.header}>
-                  <Image
-                    style={styles.avatar}
-                    source={{
-                      uri: "https://i.pinimg.com/736x/86/82/12/8682125231a362848c3743c444f1ce98.jpg",
-                    }}
-                  />
-                  <View style={styles.headerInfo}>
-                    <Text style={styles.username}>{user.userInfo.name}!</Text>
-                    <Text style={styles.level}>Level 3 · Intermediate</Text>
-                    <View style={styles.userAppInfo}>
-                      <View style={{ padding: 5 }}>
-                        <Text style={styles.joindate}>Join from Mar 2023</Text>
-                      </View>
-                      <View style={styles.nationality}>
-                        <Image
-                          source={{
-                            uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/640px-Flag_of_Vietnam.svg.png",
-                          }}
-                          style={{ width: 30, height: 20 }}
-                        />
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps="handled"
+                contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
+              >
+                <View style={{ flex: 1 }}>
+                  <View style={styles.header}>
+                    <Image
+                      style={styles.avatar}
+                      source={{
+                        uri: "https://i.pinimg.com/736x/86/82/12/8682125231a362848c3743c444f1ce98.jpg",
+                      }}
+                    />
+                    <View style={styles.headerInfo}>
+                      <Text style={styles.username}>{user.userInfo.name}!</Text>
+                      <Text style={styles.level}>Level 3 · Intermediate</Text>
+                      <View style={styles.userAppInfo}>
+                        <View style={{ padding: 5 }}>
+                          <Text style={styles.joindate}>
+                            Join from Mar 2023
+                          </Text>
+                        </View>
+                        <View style={styles.nationality}>
+                          <Image
+                            source={{
+                              uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/640px-Flag_of_Vietnam.svg.png",
+                            }}
+                            style={{ width: 30, height: 20 }}
+                          />
+                        </View>
                       </View>
                     </View>
+                    <Pressable
+                      style={styles.settingButon}
+                      onPress={() => router.push("/(tabs)/profile/setting")}
+                    >
+                      <FontAwesome name="cog" size={24} color="black" />
+                    </Pressable>
                   </View>
-                  <Pressable
-                    style={styles.settingButon}
-                    onPress={() => router.push("/(tabs)/profile/setting")}
+
+                  <Progress.Bar
+                    progress={0.6}
+                    width={null}
+                    height={10}
+                    color="#4caf50"
+                  />
+                  <Text style={{ textAlign: "center", marginTop: 5 }}>
+                    60% to next level
+                  </Text>
+
+                  <Text style={[styles.sectionTitle, { marginTop: 20 }]}>
+                    Motivational Quote
+                  </Text>
+                  <View style={styles.quoteBox}>
+                    <Text style={styles.quoteMark}>“</Text>
+                    <Text style={styles.quoteText}>{randomQuote}</Text>
+                    <Text style={styles.quoteMark}>”</Text>
+                  </View>
+
+                  <StatistifcsComponent />
+                  <WeeklyXPChart />
+
+                  <Text style={styles.sectionTitle}>Achievements</Text>
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.scrollRow}
                   >
-                    <FontAwesome name="cog" size={24} color="black" />
-                  </Pressable>
-                </View>
+                    {["7-Day Streak", "100 Words", "10 Listening"].map(
+                      (badge, index) => (
+                        <View
+                          key={index}
+                          style={{ padding: 10, alignItems: "center" }}
+                        >
+                          <FontAwesome
+                            name="trophy"
+                            size={24}
+                            color="#ffd700"
+                          />
+                          <Text>{badge}</Text>
+                        </View>
+                      )
+                    )}
+                  </ScrollView>
 
-                <Progress.Bar
-                  progress={0.6}
-                  width={null}
-                  height={10}
-                  color="#4caf50"
-                />
-                <Text style={{ textAlign: "center", marginTop: 5 }}>
-                  60% to next level
-                </Text>
+                  <Text style={styles.sectionTitle}>Today's Goal</Text>
+                  <View style={styles.dailyGoal}>
+                    <Text>🎯 Complete 3 practices</Text>
+                    <Text>🎯 Learn 5 new words</Text>
+                  </View>
 
-                <Text style={[styles.sectionTitle, { marginTop: 20 }]}>
-                  Motivational Quote
-                </Text>
-                <View style={styles.quoteBox}>
-                  <Text style={styles.quoteMark}>“</Text>
-                  <Text style={styles.quoteText}>{randomQuote}</Text>
-                  <Text style={styles.quoteMark}>”</Text>
-                </View>
+                  <Text style={styles.sectionTitle}>Quick Practice</Text>
+                  <View style={styles.practiceRow}>
+                    <Pressable style={styles.practiceBtn}>
+                      <Text>Vocabulary</Text>
+                    </Pressable>
+                    <Pressable style={styles.practiceBtn}>
+                      <Text>Listening</Text>
+                    </Pressable>
+                    <Pressable style={styles.practiceBtn}>
+                      <Text>Speaking</Text>
+                    </Pressable>
+                  </View>
 
-                <StatistifcsComponent />
-                <WeeklyXPChart />
+                  <FriendComponent
+                    relationship={relationship}
+                    onAddFriend={() =>
+                      setAddFriendModalVisible(!addFriendModalVisible)
+                    }
+                  />
 
-                <Text style={styles.sectionTitle}>Achievements</Text>
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  style={styles.scrollRow}
-                >
-                  {["7-Day Streak", "100 Words", "10 Listening"].map(
-                    (badge, index) => (
-                      <View
-                        key={index}
-                        style={{ padding: 10, alignItems: "center" }}
-                      >
-                        <FontAwesome name="trophy" size={24} color="#ffd700" />
-                        <Text>{badge}</Text>
-                      </View>
-                    )
-                  )}
-                </ScrollView>
-
-                <Text style={styles.sectionTitle}>Today's Goal</Text>
-                <View style={styles.dailyGoal}>
-                  <Text>🎯 Complete 3 practices</Text>
-                  <Text>🎯 Learn 5 new words</Text>
-                </View>
-
-                <Text style={styles.sectionTitle}>Quick Practice</Text>
-                <View style={styles.practiceRow}>
-                  <Pressable style={styles.practiceBtn}>
-                    <Text>Vocabulary</Text>
-                  </Pressable>
-                  <Pressable style={styles.practiceBtn}>
-                    <Text>Listening</Text>
-                  </Pressable>
-                  <Pressable style={styles.practiceBtn}>
-                    <Text>Speaking</Text>
-                  </Pressable>
-                </View>
-
-                <FriendComponent
-                  relationship={relationship}
-                  onAddFriend={() =>
-                    setAddFriendModalVisible(!addFriendModalVisible)
-                  }
-                />
-
-                <Text style={styles.sectionTitle}>Recently Reviewed</Text>
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  style={styles.scrollRow}
-                >
-                  {["apple", "run", "beautiful", "quickly"].map(
-                    (word, index) => (
-                      <View key={index} style={styles.wordBox}>
-                        <Text style={styles.wordText}>{word}</Text>
-                      </View>
-                    )
-                  )}
-                </ScrollView>
-
-                <View style={{ alignItems: "center", marginTop: 10 }}>
-                  <Pressable
-                    onPress={() => setInviteModalVisible(true)}
-                    style={{
-                      backgroundColor: "#2196f3",
-                      paddingVertical: 10,
-                      paddingHorizontal: 30,
-                      borderRadius: 8,
-                      marginBottom: 10,
-                    }}
+                  <Text style={styles.sectionTitle}>Recently Reviewed</Text>
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.scrollRow}
                   >
-                    <Text style={{ color: "#fff", fontWeight: "bold" }}>
-                      Invite Friends
-                    </Text>
-                  </Pressable>
+                    {["apple", "run", "beautiful", "quickly"].map(
+                      (word, index) => (
+                        <View key={index} style={styles.wordBox}>
+                          <Text style={styles.wordText}>{word}</Text>
+                        </View>
+                      )
+                    )}
+                  </ScrollView>
+
+                  <View style={{ alignItems: "center", marginTop: 10 }}>
+                    <Pressable
+                      onPress={() => setInviteModalVisible(true)}
+                      style={{
+                        backgroundColor: "#2196f3",
+                        paddingVertical: 10,
+                        paddingHorizontal: 30,
+                        borderRadius: 8,
+                        marginBottom: 10,
+                      }}
+                    >
+                      <Text style={{ color: "#fff", fontWeight: "bold" }}>
+                        Invite Friends
+                      </Text>
+                    </Pressable>
+                  </View>
+
+                  <View style={{ alignItems: "center", marginTop: 10 }}>
+                    <Pressable
+                      onPress={() => dispatch(logout())}
+                      style={{
+                        backgroundColor: "#ff5252",
+                        paddingVertical: 10,
+                        paddingHorizontal: 30,
+                        borderRadius: 8,
+                      }}
+                    >
+                      <Text style={{ color: "#fff", fontWeight: "bold" }}>
+                        Logout
+                      </Text>
+                    </Pressable>
+                  </View>
                 </View>
 
-                <View style={{ alignItems: "center", marginTop: 10 }}>
-                  <Pressable
-                    onPress={() => dispatch(logout())}
-                    style={{
-                      backgroundColor: "#ff5252",
-                      paddingVertical: 10,
-                      paddingHorizontal: 30,
-                      borderRadius: 8,
-                    }}
-                  >
-                    <Text style={{ color: "#fff", fontWeight: "bold" }}>
-                      Logout
-                    </Text>
-                  </Pressable>
-                </View>
-              </View>
-
-              <Modal
-                transparent
-                visible={inviteModalVisible}
-                animationType="slide"
-                onRequestClose={() => setInviteModalVisible(false)}
-              >
-                <InviteLinkModal
+                <Modal
+                  transparent
                   visible={inviteModalVisible}
-                  onClose={() => setInviteModalVisible(false)}
-                  inviteLink={`https://example.com/invite/${user.userInfo.email}`}
-                />
-              </Modal>
-              <Modal
-                transparent
-                visible={addFriendModalVisible}
-                animationType="slide"
-                onRequestClose={() => setAddFriendModalVisible(false)}
-              >
-                <AddFriendModal
+                  animationType="slide"
+                  onRequestClose={() => setInviteModalVisible(false)}
+                >
+                  <InviteLinkModal
+                    visible={inviteModalVisible}
+                    onClose={() => setInviteModalVisible(false)}
+                    inviteLink={`https://example.com/invite/${user.userInfo.email}`}
+                  />
+                </Modal>
+                <Modal
+                  transparent
                   visible={addFriendModalVisible}
-                  onClose={() => setAddFriendModalVisible(false)}
-                />
-              </Modal>
-            </ScrollView>
-          </KeyboardAvoidingView>
-        </SafeAreaView>
-      </LinearGradient>
+                  animationType="slide"
+                  onRequestClose={() => setAddFriendModalVisible(false)}
+                >
+                  <AddFriendModal
+                    visible={addFriendModalVisible}
+                    onClose={() => setAddFriendModalVisible(false)}
+                  />
+                </Modal>
+              </ScrollView>
+            </KeyboardAvoidingView>
+          </SafeAreaView>
+        </LinearGradient>
+      </ScrollView>
     </TouchableWithoutFeedback>
   );
 }
