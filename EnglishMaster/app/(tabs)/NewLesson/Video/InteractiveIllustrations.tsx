@@ -22,6 +22,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { illustrationData } from "@/api/NewLesson/illustrations";
 import { fetchIllustrations } from "@/api/NewLesson/illustrations";
+import { getVocabulary } from "@/api/NewLesson/newlesson";
+
 import { styles } from "@/constants/newlesson/Video/Intereactive";
 // Types
 type IllustrationType = "dictionary" | "vocabulary";
@@ -38,6 +40,88 @@ interface IllustrationItem {
   type: IllustrationType;
   options?: string[];
   correctAnswer?: number;
+}
+
+// Cache để lưu kết quả API
+const audioCache = new Map<string, string>();
+
+// Hàm delay helper
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+// Hàm để lấy audio URL với cache
+async function getAudioUrlWithCache(word: string): Promise<string> {
+  // Kiểm tra cache trước
+  if (audioCache.has(word)) {
+    console.log('Using cached audio URL for:', word);
+    return audioCache.get(word) || '';
+  }
+
+  try {
+    // Thêm delay cố định 500ms giữa các request
+    await delay(500);
+    
+    const data = await getVocabulary(word);
+    console.log('Raw API response for', word, ':', JSON.stringify(data, null, 2));
+    
+    if (!data || !Array.isArray(data) || data.length === 0) {
+      console.warn('Invalid API response for word:', word);
+      return '';
+    }
+
+    const entry = data[0];
+    if (!entry.phonetics || !Array.isArray(entry.phonetics)) {
+      console.warn('No phonetics data for word:', word);
+      return '';
+    }
+
+    // Tìm audio URL hợp lệ
+    let audioUrl = '';
+    for (const phonetic of entry.phonetics) {
+      if (phonetic?.audio?.trim()) {
+        try {
+          new URL(phonetic.audio); // Validate URL
+          audioUrl = phonetic.audio;
+          break;
+        } catch (e) {
+          console.warn('Invalid audio URL:', phonetic.audio);
+        }
+      }
+    }
+
+    // Cache kết quả
+    audioCache.set(word, audioUrl);
+    return audioUrl;
+  } catch (error) {
+    console.error('Failed to get audio URL for', word, ':', error);
+    return '';
+  }
+}
+
+// Hàm để xử lý từng batch items
+async function processBatch(items: IllustrationItem[], batchSize: number = 3) {
+  const results: IllustrationItem[] = [...items];
+  
+  // Xử lý theo từng batch
+  for (let i = 0; i < items.length; i += batchSize) {
+    const batch = items.slice(i, i + batchSize);
+    await Promise.all(
+      batch.map(async (item) => {
+        try {
+          const audioUrl = await getAudioUrlWithCache(item.word);
+          if (audioUrl) {
+            const index = results.findIndex(r => r.id === item.id);
+            if (index !== -1) {
+              results[index] = { ...results[index], audioUrl };
+            }
+          }
+        } catch (error) {
+          console.warn(`Failed to process item ${item.word}:`, error);
+        }
+      })
+    );
+  }
+  
+  return results;
 }
 
 const InteractiveIllustrations: React.FC = () => {
@@ -97,10 +181,26 @@ const InteractiveIllustrations: React.FC = () => {
   }));
 
   useEffect(() => {
-    fetchIllustrations().then((data) => {
-      setIllustrations(data as IllustrationItem[]);
-    });
+    const loadIllustrations = async () => {
+      try {
+        const data = (await fetchIllustrations()) as IllustrationItem[];
+        // Set data ban đầu
+        setIllustrations(data.map(item => ({
+          ...item,
+          audioUrl: '' // Reset audioUrl ban đầu
+        })));
+
+        // Xử lý theo batch
+        const enriched = await processBatch(data, 3);
+        setIllustrations(enriched);
+      } catch (error) {
+        console.error("Failed to load illustrations:", error);
+      }
+    };
+
+    loadIllustrations();
   }, []);
+  
 
   const filteredItems = illustrations.filter(
     (item: IllustrationItem) => item.type === activeType && item.category === activeCategory
@@ -108,6 +208,11 @@ const InteractiveIllustrations: React.FC = () => {
 
   const playSound = async (audioUrl: string) => {
     try {
+      if (!audioUrl) {
+        console.warn('No audio URL available');
+        return;
+      }
+
       if (sound) {
         await sound.unloadAsync();
       }
@@ -121,12 +226,29 @@ const InteractiveIllustrations: React.FC = () => {
     }
   };
 
-  const handleItemPress = (item: IllustrationItem) => {
-    setSelectedItem(item);
+  const handleItemPress = async (orig: IllustrationItem) => {
     setSelectedOption(null);
     setIsCorrect(null);
+
+    // Show modal ngay với data hiện tại
+    setSelectedItem(orig);
     modalScale.value = withSpring(1);
     modalOpacity.value = withTiming(1);
+
+    // Thử lấy audio URL mới nếu chưa có
+    if (!orig.audioUrl) {
+      try {
+        const audioUrl = await getAudioUrlWithCache(orig.word);
+        if (audioUrl) {
+          setSelectedItem(prev => prev ? {
+            ...prev,
+            audioUrl
+          } : null);
+        }
+      } catch (error) {
+        console.warn(`Failed to get audio for ${orig.word}:`, error);
+      }
+    }
   };
 
   const handleOptionSelect = (index: number) => {
