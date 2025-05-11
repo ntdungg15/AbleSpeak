@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
+import Animated, { FadeIn, FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { grammarQuestions, grammarQuestions1, grammarQuestions2, grammarQuestions3, grammarQuestions4, Question } from '../../../../constants/examination/grammarQuestions';
 
 const getQuestionSet = (id: number) => {
@@ -40,15 +41,18 @@ const AnswerScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Đáp án chi tiết</Text>
+      <Animated.View 
+        entering={FadeInDown.duration(1000).springify()}
+        style={styles.header}
+      >
+        <Text style={styles.title}>Detailed Answers</Text>
         <TouchableOpacity 
           style={styles.backButton}
           onPress={() => router.back()}
         >
-          <Text style={styles.backButtonText}>Quay lại</Text>
+          <Text style={styles.backButtonText}>Back</Text>
         </TouchableOpacity>
-      </View>
+      </Animated.View>
 
       <ScrollView style={styles.scrollView}>
         {questionSet.map((question, index) => {
@@ -56,34 +60,44 @@ const AnswerScreen = () => {
           const isCorrect = isAnswerCorrect(question, userAnswer);
 
           return (
-            <View key={index} style={[
-              styles.questionContainer,
-              !isCorrect && styles.incorrectQuestion
-            ]}>
-              <Text style={styles.questionNumber}>Câu {index + 1}:</Text>
+            <Animated.View 
+              key={index} 
+              entering={FadeInUp.delay(index * 100).duration(500).springify()}
+              style={[
+                styles.questionContainer,
+                !isCorrect && styles.incorrectQuestion
+              ]}
+            >
+              <Text style={styles.questionNumber}>Question {index + 1}:</Text>
               <Text style={styles.questionText}>{question.question}</Text>
               
-              <View style={styles.answerContainer}>
-                <Text style={styles.answerLabel}>Đáp án của bạn:</Text>
+              <Animated.View 
+                entering={FadeIn.delay(200).duration(500)}
+                style={styles.answerContainer}
+              >
+                <Text style={styles.answerLabel}>Your answer:</Text>
                 <Text style={[
                   styles.userAnswer,
                   !isCorrect && styles.incorrectAnswer
                 ]}>
                   {Array.isArray(userAnswer) ? userAnswer.join(', ') : userAnswer}
                 </Text>
-              </View>
+              </Animated.View>
 
               {!isCorrect && (
-                <View style={styles.answerContainer}>
-                  <Text style={styles.answerLabel}>Đáp án đúng:</Text>
+                <Animated.View 
+                  entering={FadeIn.delay(300).duration(500)}
+                  style={styles.answerContainer}
+                >
+                  <Text style={styles.answerLabel}>Correct answer:</Text>
                   <Text style={styles.correctAnswer}>
                     {question.type === 'multiple-choice' 
                       ? question.correctAnswer 
                       : question.correctAnswers.join(', ')}
                   </Text>
-                </View>
+                </Animated.View>
               )}
-            </View>
+            </Animated.View>
           );
         })}
       </ScrollView>

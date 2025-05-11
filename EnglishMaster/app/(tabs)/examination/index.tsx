@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from 'expo-router';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 
 import grammarBasicImage from '../../../assets/images/grammar.png';
 import vocabularyPracticeImage from '../../../assets/images/vocabulary.png';
@@ -11,29 +12,29 @@ import mixedTopicsImage from '../../../assets/images/examination.png';
 const examSets = [
   {
     id: 'grammar-1',
-    title: 'Bộ đề 1: Ngữ pháp & Từ vựng cơ bản',
-    description: 'Kiểm tra tổng hợp ngữ pháp và từ vựng cơ bản.',
+    title: 'Set 1: Basic Grammar & Vocabulary',
+    description: 'Test your basic grammar and vocabulary knowledge.',
     questions: 10,
     image: grammarBasicImage
   },
   {
     id: 'grammar-2',
-    title: 'Bộ đề 2: Từ vựng & Câu hỏi thực tế',
-    description: 'Kiểm tra từ vựng, ngữ pháp và kiến thức thực tế.',
+    title: 'Set 2: Vocabulary & Practical Questions',
+    description: 'Test vocabulary, grammar and practical knowledge.',
     questions: 10,
     image: vocabularyPracticeImage,
   },
   {
     id: 'grammar-3',
-    title: 'Bộ đề 3: Đọc hiểu & Từ vựng mở rộng',
-    description: 'Luyện tập đọc hiểu, từ vựng và kiến thức tổng hợp.',
+    title: 'Set 3: Reading Comprehension & Extended Vocabulary',
+    description: 'Practice reading comprehension, vocabulary and comprehensive knowledge.',
     questions: 10,
     image: readingComprehensionImage,
   },
   {
     id: 'grammar-4',
-    title: 'Bộ đề 4: Chủ đề đa dạng',
-    description: 'Kiểm tra kiến thức tổng hợp nhiều chủ đề khác nhau.',
+    title: 'Set 4: Various Topics',
+    description: 'Test your knowledge across different topics.',
     questions: 10,
     image: mixedTopicsImage,
   },
@@ -49,33 +50,40 @@ const ExaminationScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Kiểm tra kiến thức</Text>
+      <Animated.View 
+        entering={FadeInDown.duration(1000).springify()}
+        style={styles.header}
+      >
+        <Text style={styles.title}>Knowledge Test</Text>
         <Text style={styles.subtitle}>
-          Chọn bộ đề để bắt đầu kiểm tra trình độ tiếng Anh của bạn
+          Choose a test set to start checking your English proficiency
         </Text>
-      </View>
+      </Animated.View>
 
       <ScrollView style={styles.scrollView}>
-        {examSets.map((exam) => (
-          <TouchableOpacity
+        {examSets.map((exam, index) => (
+          <Animated.View
             key={exam.id}
-            style={styles.examCard}
-            onPress={() => handleStartExamination(exam.id)}
+            entering={FadeInUp.delay(index * 200).duration(1000).springify()}
           >
-            <Image 
-              source={exam.image}
-              style={styles.examImage}
-              resizeMode="contain"
-            />
-            <View style={styles.examInfo}>
-              <Text style={styles.examTitle}>{exam.title}</Text>
-              <Text style={styles.examDescription}>{exam.description}</Text>
-              <View style={styles.examDetails}>
-                <Text style={styles.examDetail}>• {exam.questions} câu hỏi</Text>
+            <TouchableOpacity
+              style={styles.examCard}
+              onPress={() => handleStartExamination(exam.id)}
+            >
+              <Image 
+                source={exam.image}
+                style={styles.examImage}
+                resizeMode="contain"
+              />
+              <View style={styles.examInfo}>
+                <Text style={styles.examTitle}>{exam.title}</Text>
+                <Text style={styles.examDescription}>{exam.description}</Text>
+                <View style={styles.examDetails}>
+                  <Text style={styles.examDetail}>• {exam.questions} questions</Text>
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </Animated.View>
         ))}
       </ScrollView>
     </SafeAreaView>
