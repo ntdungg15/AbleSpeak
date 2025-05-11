@@ -20,7 +20,8 @@ import Animated, {
   interpolate,
   Extrapolate,
 } from "react-native-reanimated";
-
+import { illustrationData } from "@/api/NewLesson/illustrations";
+import { fetchIllustrations } from "@/api/NewLesson/illustrations";
 // Types
 type IllustrationType = "dictionary" | "vocabulary";
 type IllustrationCategory = "animals" | "food" | "travel" | "nature" | "sports";
@@ -48,6 +49,7 @@ const InteractiveIllustrations: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [sound, setSound] = useState<Audio.Sound | null>(null);
+  const [illustrations, setIllustrations] = useState<IllustrationItem[]>([]);
 
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
@@ -92,130 +94,15 @@ const InteractiveIllustrations: React.FC = () => {
     transform: [{ translateY: headerY.value }],
     opacity: headerOpacity.value,
   }));
-  const illustrations: IllustrationItem[] = [
-    {
-      id: "animal1",
-      word: "Lion",
-      definition:
-        "A large wild cat with a mane around its face, living in Africa.",
-      pronunciation: "/ˈlaɪən/",
-      audioUrl: "https://example.com/audio/lion.mp3",
-      image: {
-        uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896761/lion_hnocf8.jpg",
-      },
-      category: "animals",
 
-      type: "dictionary",
-    },
-    {
-      id: "animal2",
-      word: "Elephant",
-      definition:
-        "A very large animal with a long, flexible nose and two tusks.",
-      pronunciation: "/ˈelɪfənt/",
-      audioUrl: "https://example.com/audio/elephant.mp3",
-      image: {
-        uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896762/elephant_xytl1e.jpg",
-      },
-      category: "animals",
-
-      type: "dictionary",
-    },
-    {
-      id: "food1",
-      word: "Pizza",
-      definition:
-        "A flat, round bread covered with tomato sauce, cheese, and other toppings.",
-      pronunciation: "/ˈpiːtsə/",
-      audioUrl: "https://example.com/audio/pizza.mp3",
-      image: {
-        uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896823/Pizza_q7neo1.jpg",
-      },
-      category: "food",
-
-      type: "dictionary",
-    },
-    {
-      id: "food2",
-      word: "Sushi",
-      definition:
-        "A Japanese dish of prepared rice with fish, vegetables, or eggs.",
-      pronunciation: "/ˈsuːʃi/",
-      audioUrl: "https://example.com/audio/sushi.mp3",
-      image: {
-        uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896823/Sushi_ayqydt.jpg",
-      },
-      category: "food",
-
-      type: "dictionary",
-    },
-
-    {
-      id: "voc-animal1",
-      word: "Lion",
-      definition:
-        "A large wild cat with a mane around its face, living in Africa.",
-      pronunciation: "/ˈlaɪən/",
-      audioUrl: "https://example.com/audio/lion.mp3",
-      image: {
-        uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896761/lion_hnocf8.jpg",
-      },
-      category: "animals",
-
-      type: "vocabulary",
-      options: ["Tiger", "Lion", "Leopard", "Cheetah"],
-      correctAnswer: 1,
-    },
-    {
-      id: "voc-animal2",
-      word: "Elephant",
-      definition:
-        "A very large animal with a long, flexible nose and two tusks.",
-      pronunciation: "/ˈelɪfənt/",
-      audioUrl: "https://example.com/audio/elephant.mp3",
-      image: {
-        uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896762/elephant_xytl1e.jpg",
-      },
-      category: "animals",
-
-      type: "vocabulary",
-      options: ["Rhinoceros", "Hippopotamus", "Elephant", "Giraffe"],
-      correctAnswer: 2,
-    },
-    {
-      id: "voc-food1",
-      word: "Pizza",
-      definition:
-        "A flat, round bread covered with tomato sauce, cheese, and other toppings.",
-      pronunciation: "/ˈpiːtsə/",
-      audioUrl: "https://example.com/audio/pizza.mp3",
-      image: {
-        uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896823/Pizza_q7neo1.jpg",
-      },
-      category: "food",
-      type: "vocabulary",
-      options: ["Pasta", "Pizza", "Burger", "Sandwich"],
-      correctAnswer: 1,
-    },
-    {
-      id: "voc-food2",
-      word: "Sushi",
-      definition:
-        "A Japanese dish of prepared rice with fish, vegetables, or eggs.",
-      pronunciation: "/ˈsuːʃi/",
-      audioUrl: "https://example.com/audio/sushi.mp3",
-      image: {
-        uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896823/Sushi_ayqydt.jpg",
-      },
-      category: "food",
-      type: "vocabulary",
-      options: ["Sushi", "Ramen", "Tempura", "Sashimi"],
-      correctAnswer: 0,
-    },
-  ];
+  useEffect(() => {
+    fetchIllustrations().then((data) => {
+      setIllustrations(data as IllustrationItem[]);
+    });
+  }, []);
 
   const filteredItems = illustrations.filter(
-    (item) => item.type === activeType && item.category === activeCategory
+    (item: IllustrationItem) => item.type === activeType && item.category === activeCategory
   );
 
   const playSound = async (audioUrl: string) => {
@@ -393,7 +280,7 @@ const InteractiveIllustrations: React.FC = () => {
 
       <ScrollView style={styles.itemsContainer}>
         <View style={styles.itemsGrid}>
-          {filteredItems.map((item, index) =>
+          {filteredItems.map((item: IllustrationItem, index: number) =>
             renderIllustrationItem({ item, index })
           )}
         </View>
@@ -593,6 +480,7 @@ const styles = StyleSheet.create({
   },
   categoriesContainer: {
     paddingVertical: 8,
+    
   },
   categoryButton: {
     alignItems: "center",
@@ -601,6 +489,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 20,
     backgroundColor: "#e9ecef",
+    height: 120,
   },
   activeCategoryButton: {
     backgroundColor: "#0066cc",

@@ -116,7 +116,7 @@ const Grammar = () => {
     const renderRuleCard = (rule: GrammarRule) => (
         <Animatable.View
             key={rule.id}
-            animation={showAnimation ? "fadeInUp" : undefined} // Chỉ chạy animation nếu showAnimation = true
+            animation={showAnimation ? "fadeInUp" : undefined}
             duration={500}
             style={styles.ruleCard}
         >
