@@ -22,6 +22,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { illustrationData } from "@/api/NewLesson/illustrations";
 import { fetchIllustrations } from "@/api/NewLesson/illustrations";
+import { styles } from "@/constants/newlesson/Video/Intereactive";
 // Types
 type IllustrationType = "dictionary" | "vocabulary";
 type IllustrationCategory = "animals" | "food" | "travel" | "nature" | "sports";
@@ -137,11 +138,14 @@ const InteractiveIllustrations: React.FC = () => {
 
   const closeModal = () => {
     modalScale.value = withSpring(0.8);
-    modalOpacity.value = withTiming(0, {}, () => {
+    modalOpacity.value = withTiming(0);
+    setTimeout(() => {
       setSelectedItem(null);
       setSelectedOption(null);
       setIsCorrect(null);
-    });
+      modalScale.value = 0.8;
+      modalOpacity.value = 0;
+    }, 300);
   };
 
   const categories: {
@@ -167,7 +171,7 @@ const InteractiveIllustrations: React.FC = () => {
       key={item.id}
       style={[
         styles.illustrationItem,
-        { transform: [{ translateY: index * 20 }] },
+        { transform: [{ translateY: index * 10 }] }, // Giảm giá trị translateY từ 20 xuống 10
         touchStyle,
       ]}
     >
@@ -254,7 +258,6 @@ const InteractiveIllustrations: React.FC = () => {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.categoriesContainer}
       >
         {categories.map((category) => (
           <TouchableOpacity
@@ -278,7 +281,7 @@ const InteractiveIllustrations: React.FC = () => {
         ))}
       </ScrollView>
 
-      <ScrollView style={styles.itemsContainer}>
+      <ScrollView >
         <View style={styles.itemsGrid}>
           {filteredItems.map((item: IllustrationItem, index: number) =>
             renderIllustrationItem({ item, index })
@@ -439,277 +442,5 @@ const InteractiveIllustrations: React.FC = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f8f9fa",
-    padding: 16,
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-    color: "#333",
-  },
-  typeTabs: {
-    flexDirection: "row",
-    marginBottom: 16,
-  },
-  typeTab: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 12,
-    borderBottomWidth: 2,
-    borderBottomColor: "#e0e0e0",
-  },
-  activeTypeTab: {
-    borderBottomColor: "#0066cc",
-  },
-  typeTabText: {
-    marginLeft: 8,
-    fontSize: 14,
-    fontWeight: "500",
-    color: "#666",
-  },
-  activeTypeTabText: {
-    color: "#0066cc",
-    fontWeight: "bold",
-  },
-  categoriesContainer: {
-    paddingVertical: 8,
-    
-  },
-  categoryButton: {
-    alignItems: "center",
-    marginRight: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: "#e9ecef",
-    height: 120,
-  },
-  activeCategoryButton: {
-    backgroundColor: "#0066cc",
-  },
-  categoryIcon: {
-    fontSize: 24,
-    marginBottom: 4,
-  },
-  categoryLabel: {
-    fontSize: 12,
-    color: "#666",
-  },
-  activeCategoryLabel: {
-    color: "white",
-    fontWeight: "bold",
-  },
-  itemsContainer: {
-    flex: 1,
-    marginTop: 16,
-  },
-  itemsGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-  },
-  illustrationItem: {
-    width: "48%",
-    backgroundColor: "white",
-    borderRadius: 12,
-    marginBottom: 16,
-    overflow: "hidden",
-    elevation: 2,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  itemImage: {
-    width: "100%",
-    height: 120,
-    resizeMode: "cover",
-  },
-  itemInfo: {
-    padding: 12,
-    alignItems: "center",
-  },
-  itemWord: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  itemPronunciation: {
-    fontSize: 12,
-    color: "#666",
-    marginTop: 2,
-  },
-  itemQuestion: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: "#333",
-    marginBottom: 4,
-  },
-  modalContainer: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 16,
-  },
-  modalContent: {
-    backgroundColor: "white",
-    borderRadius: 12,
-    padding: 20,
-    width: "90%",
-    maxWidth: 400,
-    elevation: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-  },
-  closeButton: {
-    position: "absolute",
-    top: 10,
-    right: 10,
-    zIndex: 10,
-    padding: 5,
-  },
-  modalImage: {
-    width: "100%",
-    height: 180,
-    resizeMode: "cover",
-    borderRadius: 8,
-    marginBottom: 16,
-  },
-  modalHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 12,
-  },
-  modalWord: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  modalPronunciation: {
-    fontSize: 16,
-    color: "#666",
-  },
-  audioButton: {
-    backgroundColor: "#0066cc",
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalDefinition: {
-    fontSize: 16,
-    color: "#333",
-    lineHeight: 24,
-    marginBottom: 20,
-  },
-  saveButton: {
-    backgroundColor: "#f0f0f0",
-    padding: 12,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  saveButtonText: {
-    color: "#333",
-    fontWeight: "500",
-  },
-  quizQuestion: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: 16,
-    textAlign: "center",
-  },
-  optionsContainer: {
-    marginBottom: 16,
-  },
-  optionButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: "#f0f0f0",
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  selectedOption: {
-    borderWidth: 2,
-  },
-  correctOption: {
-    backgroundColor: "rgba(76, 175, 80, 0.2)",
-    borderColor: "#4CAF50",
-  },
-  incorrectOption: {
-    backgroundColor: "rgba(244, 67, 54, 0.2)",
-    borderColor: "#F44336",
-  },
-  optionText: {
-    fontSize: 16,
-    color: "#333",
-  },
-  correctOptionText: {
-    color: "#4CAF50",
-    fontWeight: "bold",
-  },
-  incorrectOptionText: {
-    color: "#F44336",
-    fontWeight: "bold",
-  },
-  resultContainer: {
-    marginBottom: 16,
-    alignItems: "center",
-  },
-  correctText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#4CAF50",
-    marginBottom: 8,
-  },
-  incorrectText: {
-    fontSize: 16,
-    color: "#F44336",
-    textAlign: "center",
-    marginBottom: 4,
-  },
-  correctAnswerText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#333",
-    textAlign: "center",
-    marginBottom: 8,
-  },
-  hearPronunciationButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 8,
-  },
-  hearPronunciationText: {
-    color: "#0066cc",
-    marginRight: 4,
-    fontWeight: "500",
-  },
-  nextButton: {
-    backgroundColor: "#0066cc",
-    padding: 12,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  nextButtonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-});
 
 export default InteractiveIllustrations;

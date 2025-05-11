@@ -93,7 +93,7 @@ export const illustrationData: IllustrationItem[] = [
         "pronunciation": "/ˈtaɪɡər/",
         "audioUrl": "https://example.com/audio/tiger.mp3",
         "image": {
-            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896763/tiger_xyz.jpg"
+            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960131/tiger_w61ylz.jpg"
         },
         "category": "animals",
         "type": "dictionary"
@@ -105,7 +105,7 @@ export const illustrationData: IllustrationItem[] = [
         "pronunciation": "/ˈtaɪɡər/",
         "audioUrl": "https://example.com/audio/tiger.mp3",
         "image": {
-            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896763/tiger_xyz.jpg"
+            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960131/tiger_w61ylz.jpg"
         },
         "category": "animals",
         "type": "vocabulary",
@@ -119,7 +119,7 @@ export const illustrationData: IllustrationItem[] = [
         "pronunciation": "/dʒəˈræf/",
         "audioUrl": "https://example.com/audio/giraffe.mp3",
         "image": {
-            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896764/giraffe_abc.jpg"
+            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960672/habitat_giraffe_bpny9x.jpg"
         },
         "category": "animals",
         "type": "dictionary"
@@ -131,7 +131,7 @@ export const illustrationData: IllustrationItem[] = [
         "pronunciation": "/dʒəˈræf/",
         "audioUrl": "https://example.com/audio/giraffe.mp3",
         "image": {
-            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896764/giraffe_abc.jpg"
+            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960672/habitat_giraffe_bpny9x.jpg"
         },
         "category": "animals",
         "type": "vocabulary",
@@ -145,7 +145,7 @@ export const illustrationData: IllustrationItem[] = [
         "pronunciation": "/ˈziːbrə/",
         "audioUrl": "https://example.com/audio/zebra.mp3",
         "image": {
-            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896765/zebra_def.jpg"
+            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960555/zebra_ga1jt8.jpg"
         },
         "category": "animals",
         "type": "dictionary"
@@ -157,7 +157,7 @@ export const illustrationData: IllustrationItem[] = [
         "pronunciation": "/ˈziːbrə/",
         "audioUrl": "https://example.com/audio/zebra.mp3",
         "image": {
-            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896765/zebra_def.jpg"
+            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960555/zebra_ga1jt8.jpg"
         },
         "category": "animals",
         "type": "vocabulary",
@@ -171,7 +171,7 @@ export const illustrationData: IllustrationItem[] = [
         "pronunciation": "/ˈmʌŋki/",
         "audioUrl": "https://example.com/audio/monkey.mp3",
         "image": {
-            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896766/monkey_ghi.jpg"
+            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960130/monkey_cm0lne.jpg"
         },
         "category": "animals",
         "type": "dictionary"
@@ -183,7 +183,7 @@ export const illustrationData: IllustrationItem[] = [
         "pronunciation": "/ˈmʌŋki/",
         "audioUrl": "https://example.com/audio/monkey.mp3",
         "image": {
-            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896766/monkey_ghi.jpg"
+            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960130/monkey_cm0lne.jpg"
         },
         "category": "animals",
         "type": "vocabulary",
@@ -258,7 +258,7 @@ export const illustrationData: IllustrationItem[] = [
         "pronunciation": "/ˈbɜːrɡər/",
         "audioUrl": "https://example.com/audio/burger.mp3",
         "image": {
-          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896824/Burger_kjhlmn.jpg"
+          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960130/burger_jy8stw.jpg"
         },
         "category": "food",
         "type": "dictionary"
@@ -270,7 +270,7 @@ export const illustrationData: IllustrationItem[] = [
         "pronunciation": "/ˈsænwɪdʒ/",
         "audioUrl": "https://example.com/audio/sandwich.mp3",
         "image": {
-          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896824/Sandwich_opytre.jpg"
+          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960131/sandwich_a1efen.jpg"
         },
         "category": "food",
         "type": "dictionary"
@@ -282,7 +282,7 @@ export const illustrationData: IllustrationItem[] = [
         "pronunciation": "/ˈpæstə/",
         "audioUrl": "https://example.com/audio/pasta.mp3",
         "image": {
-          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896825/Pasta_uvbnmx.jpg"
+          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746963268/pasta_zyo7rx.jpg"
         },
         "category": "food",
         "type": "dictionary"
@@ -294,7 +294,7 @@ export const illustrationData: IllustrationItem[] = [
         "pronunciation": "/ˈaɪs ˌkriːm/",
         "audioUrl": "https://example.com/audio/icecream.mp3",
         "image": {
-          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896825/IceCream_plokmj.jpg"
+          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960131/cream_h9zaob.jpg"
         },
         "category": "food",
         "type": "dictionary"
@@ -306,7 +306,7 @@ export const illustrationData: IllustrationItem[] = [
         "pronunciation": "/ˈbɜːrɡər/",
         "audioUrl": "https://example.com/audio/burger.mp3",
         "image": {
-          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896824/Burger_kjhlmn.jpg"
+          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960130/burger_jy8stw.jpg"
         },
         "category": "food",
         "type": "vocabulary",
@@ -320,7 +320,7 @@ export const illustrationData: IllustrationItem[] = [
         "pronunciation": "/ˈsænwɪdʒ/",
         "audioUrl": "https://example.com/audio/sandwich.mp3",
         "image": {
-          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896824/Sandwich_opytre.jpg"
+          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960131/sandwich_a1efen.jpg"
         },
         "category": "food",
         "type": "vocabulary",
@@ -334,7 +334,7 @@ export const illustrationData: IllustrationItem[] = [
         "pronunciation": "/ˈpæstə/",
         "audioUrl": "https://example.com/audio/pasta.mp3",
         "image": {
-          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896825/Pasta_uvbnmx.jpg"
+          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746963268/pasta_zyo7rx.jpg"
         },
         "category": "food",
         "type": "vocabulary",
@@ -348,7 +348,7 @@ export const illustrationData: IllustrationItem[] = [
         "pronunciation": "/ˈaɪs ˌkriːm/",
         "audioUrl": "https://example.com/audio/icecream.mp3",
         "image": {
-          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896825/IceCream_plokmj.jpg"
+          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960131/cream_h9zaob.jpg"
         },
         "category": "food",
         "type": "vocabulary",
@@ -363,7 +363,7 @@ export const illustrationData: IllustrationItem[] = [
         definition: "A vehicle that flies in the sky and carries people or goods.",
         pronunciation: "/ˈerpleɪn/",
         audioUrl: "https://example.com/audio/airplane.mp3",
-        image: { uri: "https://images.unsplash.com/photo-1506744038136-46273834b3fb" },
+        image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746963597/Airplane_emhlwq.jpg" },
         category: "travel",
         type: "dictionary",
     },
@@ -373,7 +373,7 @@ export const illustrationData: IllustrationItem[] = [
         definition: "A series of connected vehicles that run on tracks and transport people or goods.",
         pronunciation: "/treɪn/",
         audioUrl: "https://example.com/audio/train.mp3",
-        image: { uri: "https://images.unsplash.com/photo-1465101178521-c1a9136a3b99" },
+        image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746963596/Train_bx6xfy.jpg" },
         category: "travel",
         type: "dictionary",
     },
@@ -383,7 +383,7 @@ export const illustrationData: IllustrationItem[] = [
         definition: "A large vehicle that carries passengers by road.",
         pronunciation: "/bʌs/",
         audioUrl: "https://example.com/audio/bus.mp3",
-        image: { uri: "https://images.unsplash.com/photo-1509228468518-180dd4864904" },
+        image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746963599/b%C3%BA_ee4pgm.jpg" },
         category: "travel",
         type: "dictionary",
     },
@@ -393,7 +393,7 @@ export const illustrationData: IllustrationItem[] = [
         definition: "A vehicle with two wheels that you ride by pushing pedals.",
         pronunciation: "/ˈbaɪsɪkl/",
         audioUrl: "https://example.com/audio/bicycle.mp3",
-        image: { uri: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca" },
+        image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746963597/Bicycle_fs8hrl.jpg" },
         category: "travel",
         type: "dictionary",
     },
@@ -403,7 +403,7 @@ export const illustrationData: IllustrationItem[] = [
         definition: "A car with a driver that you pay to take you somewhere.",
         pronunciation: "/ˈtæksi/",
         audioUrl: "https://example.com/audio/taxi.mp3",
-        image: { uri: "https://images.unsplash.com/photo-1464983953574-0892a716854b" },
+        image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746963598/Taxi_xelywr.jpg" },
         category: "travel",
         type: "dictionary",
     },
@@ -413,7 +413,7 @@ export const illustrationData: IllustrationItem[] = [
         definition: "A large boat that carries people or goods by sea.",
         pronunciation: "/ʃɪp/",
         audioUrl: "https://example.com/audio/ship.mp3",
-        image: { uri: "https://images.unsplash.com/photo-1506744038136-46273834b3fb" },
+        image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746963598/Ship_gtlagm.jpg" },
         category: "travel",
         type: "dictionary",
     },
@@ -425,7 +425,7 @@ export const illustrationData: IllustrationItem[] = [
         definition: "A vehicle that flies in the sky and carries people or goods.",
         pronunciation: "/ˈerpleɪn/",
         audioUrl: "https://example.com/audio/airplane.mp3",
-        image: { uri: "https://images.unsplash.com/photo-1506744038136-46273834b3fb" },
+        image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746963597/Airplane_emhlwq.jpg" },
         category: "travel",
         type: "vocabulary",
         options: ["Airplane", "Helicopter", "Train", "Bus"],
@@ -437,7 +437,7 @@ export const illustrationData: IllustrationItem[] = [
         definition: "A series of connected vehicles that run on tracks and transport people or goods.",
         pronunciation: "/treɪn/",
         audioUrl: "https://example.com/audio/train.mp3",
-        image: { uri: "https://images.unsplash.com/photo-1465101178521-c1a9136a3b99" },
+        image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746963596/Train_bx6xfy.jpg" },
         category: "travel",
         type: "vocabulary",
         options: ["Bus", "Train", "Car", "Bicycle"],
@@ -449,7 +449,7 @@ export const illustrationData: IllustrationItem[] = [
         definition: "A large vehicle that carries passengers by road.",
         pronunciation: "/bʌs/",
         audioUrl: "https://example.com/audio/bus.mp3",
-        image: { uri: "https://images.unsplash.com/photo-1509228468518-180dd4864904" },
+        image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746963599/b%C3%BA_ee4pgm.jpg" },
         category: "travel",
         type: "vocabulary",
         options: ["Bus", "Car", "Truck", "Taxi"],
@@ -461,7 +461,7 @@ export const illustrationData: IllustrationItem[] = [
         definition: "A vehicle with two wheels that you ride by pushing pedals.",
         pronunciation: "/ˈbaɪsɪkl/",
         audioUrl: "https://example.com/audio/bicycle.mp3",
-        image: { uri: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca" },
+        image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746963597/Bicycle_fs8hrl.jpg" },
         category: "travel",
         type: "vocabulary",
         options: ["Bicycle", "Motorcycle", "Scooter", "Car"],
@@ -473,7 +473,7 @@ export const illustrationData: IllustrationItem[] = [
         definition: "A car with a driver that you pay to take you somewhere.",
         pronunciation: "/ˈtæksi/",
         audioUrl: "https://example.com/audio/taxi.mp3",
-        image: { uri: "https://images.unsplash.com/photo-1464983953574-0892a716854b" },
+        image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746963598/Taxi_xelywr.jpg" },
         category: "travel",
         type: "vocabulary",
         options: ["Taxi", "Bus", "Car", "Train"],
@@ -485,7 +485,7 @@ export const illustrationData: IllustrationItem[] = [
         definition: "A large boat that carries people or goods by sea.",
         pronunciation: "/ʃɪp/",
         audioUrl: "https://example.com/audio/ship.mp3",
-        image: { uri: "https://images.unsplash.com/photo-1506744038136-46273834b3fb" },
+        image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746963598/Ship_gtlagm.jpg" },
         category: "travel",
         type: "vocabulary",
         options: ["Boat", "Ship", "Submarine", "Yacht"],
