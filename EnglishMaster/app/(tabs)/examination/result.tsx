@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
+import Animated, { FadeIn, FadeInDown, FadeInUp } from 'react-native-reanimated';
 
 import excellentImage from '../../../assets/images/excellent.png';
 import goodImage from '../../../assets/images/good.png';
@@ -17,9 +18,9 @@ const ResultScreen = () => {
   const percentage = totalQuestionsNum > 0 ? (scoreNum / totalQuestionsNum) * 100 : 0;
   
   const getMessage = () => {
-    if (percentage >= 80) return "Xuất sắc! Bạn đã làm rất tốt!";
-    if (percentage >= 60) return "Tốt! Hãy tiếp tục cố gắng!";
-    return "Hãy ôn tập thêm để cải thiện kết quả!";
+    if (percentage >= 80) return "Excellent! You did very well!";
+    if (percentage >= 60) return "Good! Keep up the good work!";
+    return "Keep practicing to improve your results!";
   };
 
   const getResultImage = () => {
@@ -30,30 +31,48 @@ const ResultScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Kết quả bài kiểm tra</Text>
+      <Animated.View 
+        entering={FadeInDown.duration(1000).springify()}
+        style={styles.content}
+      >
+        <Animated.Text 
+          entering={FadeIn.delay(200).duration(500)}
+          style={styles.title}
+        >
+          Test Results
+        </Animated.Text>
         
-        <View style={styles.scoreContainer}>
+        <Animated.View 
+          entering={FadeIn.delay(400).duration(500)}
+          style={styles.scoreContainer}
+        >
           <Text style={styles.scoreText}>{scoreNum}/{totalQuestionsNum}</Text>
           <Text style={styles.percentageText}>{percentage.toFixed(1)}%</Text>
-        </View>
+        </Animated.View>
 
-        <Image 
+        <Animated.Image 
+          entering={FadeIn.delay(600).duration(500)}
           source={getResultImage()}
           style={styles.resultImage}
           resizeMode="contain"
         />
 
-        <View style={styles.detailsContainer}>
+        <Animated.View 
+          entering={FadeIn.delay(800).duration(500)}
+          style={styles.detailsContainer}
+        >
           <Text style={styles.message}>{getMessage()}</Text>
-        </View>
+        </Animated.View>
 
-        <View style={styles.buttonContainer}>
+        <Animated.View 
+          entering={FadeInUp.delay(1000).duration(500).springify()}
+          style={styles.buttonContainer}
+        >
           <TouchableOpacity 
             style={[styles.button, styles.retryButton]}
             onPress={() => router.replace(`/examination/${id}`)}
           >
-            <Text style={styles.buttonText}>Làm lại</Text>
+            <Text style={styles.buttonText}>Retry</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
@@ -63,10 +82,10 @@ const ResultScreen = () => {
               params: { id, userAnswers }
             })}
           >
-            <Text style={styles.buttonText}>Xem đáp án</Text>
+            <Text style={styles.buttonText}>View Answers</Text>
           </TouchableOpacity>
-        </View>
-      </View>
+        </Animated.View>
+      </Animated.View>
     </SafeAreaView>
   );
 };
