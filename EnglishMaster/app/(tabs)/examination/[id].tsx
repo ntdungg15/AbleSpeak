@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Pressable, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
+import Animated, { FadeIn, SlideInRight, SlideOutLeft } from 'react-native-reanimated';
 import {
   grammarQuestions1,
   grammarQuestions2,
@@ -9,7 +10,6 @@ import {
   grammarQuestions4,
   Question
 } from '../../../constants/examination/grammarQuestions';
-import { Ionicons } from '@expo/vector-icons';
 
 interface Answer {
   type: 'multiple-choice' | 'fill-in-blank';
@@ -20,7 +20,7 @@ interface Answer {
 const ExaminationScreen = () => {
   const { id } = useLocalSearchParams();
 
-  // Lấy đúng bộ đề theo id
+  // Get the correct question set based on id
   let questions: Question[] = grammarQuestions1;
   if (id === 'grammar-2') questions = grammarQuestions2;
   else if (id === 'grammar-3') questions = grammarQuestions3;
@@ -110,12 +110,16 @@ const ExaminationScreen = () => {
       const words = currentQuestionData.question.split(/\s+/);
       let blankIndex = 0;
 
-      // Chia options thành 2 cột
+      // Split options into 2 columns
       const leftColumnOptions = currentQuestionData.options.filter((_, index) => index % 2 === 0);
       const rightColumnOptions = currentQuestionData.options.filter((_, index) => index % 2 === 1);
 
       return (
-        <>
+        <Animated.View 
+          entering={SlideInRight.duration(500)}
+          exiting={SlideOutLeft.duration(500)}
+          style={{ flex: 1 }}
+        >
           <View style={styles.questionContainer}>
             <Text style={styles.question}>
               {words.map((word, index) => {
@@ -151,95 +155,111 @@ const ExaminationScreen = () => {
 
           <View style={styles.optionsContainer}>
             <View style={styles.optionsColumns}>
-              {/* Cột trái */}
+              {/* Left column */}
               <View style={styles.optionColumn}>
                 {leftColumnOptions.map((option, index) => (
-                  <TouchableOpacity
+                  <Animated.View
                     key={index * 2}
-                    style={[
-                      styles.optionButton,
-                      selectedAnswers.includes(option) && styles.selectedOption,
-                      !isWordSelectable(option) && !selectedAnswers.includes(option) && styles.disabledOption
-                    ]}
-                    onPress={() => handleSelectAnswer(option)}
-                    disabled={!isWordSelectable(option)}
+                    entering={FadeIn.delay(index * 100)}
                   >
-                    <Text style={[
-                      styles.optionText,
-                      selectedAnswers.includes(option) ? styles.selectedOptionText : null,
-                      !isWordSelectable(option) && !selectedAnswers.includes(option) ? styles.disabledOptionText : null
-                    ]}>
-                      {option}
-                    </Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[
+                        styles.optionButton,
+                        selectedAnswers.includes(option) && styles.selectedOption,
+                        !isWordSelectable(option) && !selectedAnswers.includes(option) && styles.disabledOption
+                      ]}
+                      onPress={() => handleSelectAnswer(option)}
+                      disabled={!isWordSelectable(option)}
+                    >
+                      <Text style={[
+                        styles.optionText,
+                        selectedAnswers.includes(option) ? styles.selectedOptionText : null,
+                        !isWordSelectable(option) && !selectedAnswers.includes(option) ? styles.disabledOptionText : null
+                      ]}>
+                        {option}
+                      </Text>
+                    </TouchableOpacity>
+                  </Animated.View>
                 ))}
               </View>
 
-              {/* Cột phải */}
+              {/* Right column */}
               <View style={styles.optionColumn}>
                 {rightColumnOptions.map((option, index) => (
-                  <TouchableOpacity
+                  <Animated.View
                     key={index * 2 + 1}
-                    style={[
-                      styles.optionButton,
-                      selectedAnswers.includes(option) && styles.selectedOption,
-                      !isWordSelectable(option) && !selectedAnswers.includes(option) && styles.disabledOption
-                    ]}
-                    onPress={() => handleSelectAnswer(option)}
-                    disabled={!isWordSelectable(option)}
+                    entering={FadeIn.delay(index * 100)}
                   >
-                    <Text style={[
-                      styles.optionText,
-                      selectedAnswers.includes(option) ? styles.selectedOptionText : null,
-                      !isWordSelectable(option) && !selectedAnswers.includes(option) ? styles.disabledOptionText : null
-                    ]}>
-                      {option}
-                    </Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[
+                        styles.optionButton,
+                        selectedAnswers.includes(option) && styles.selectedOption,
+                        !isWordSelectable(option) && !selectedAnswers.includes(option) && styles.disabledOption
+                      ]}
+                      onPress={() => handleSelectAnswer(option)}
+                      disabled={!isWordSelectable(option)}
+                    >
+                      <Text style={[
+                        styles.optionText,
+                        selectedAnswers.includes(option) ? styles.selectedOptionText : null,
+                        !isWordSelectable(option) && !selectedAnswers.includes(option) ? styles.disabledOptionText : null
+                      ]}>
+                        {option}
+                      </Text>
+                    </TouchableOpacity>
+                  </Animated.View>
                 ))}
               </View>
             </View>
           </View>
-        </>
+        </Animated.View>
       );
     } else if (currentQuestionData.type === 'multiple-choice') {
       return (
-        <>
+        <Animated.View 
+          entering={SlideInRight.duration(500)}
+          exiting={SlideOutLeft.duration(500)}
+          style={{ flex: 1 }}
+        >
           <View style={styles.questionContainer}>
             <Text style={styles.question}>{currentQuestionData.question}</Text>
           </View>
 
           <View style={styles.optionsContainer}>
             {currentQuestionData.options.map((option, index) => (
-              <TouchableOpacity
+              <Animated.View
                 key={index}
-                style={[
-                  styles.optionButton,
-                  styles.multipleChoiceButton,
-                  selectedChoice === option && styles.selectedOption
-                ]}
-                onPress={() => handleSelectAnswer(option)}
+                entering={FadeIn.delay(index * 100)}
               >
-                <View style={styles.choiceContainer}>
-                  <View style={styles.radioButton}>
-                    {selectedChoice === option && (
-                      <View style={styles.radioButtonInner} />
-                    )}
+                <TouchableOpacity
+                  style={[
+                    styles.optionButton,
+                    styles.multipleChoiceButton,
+                    selectedChoice === option && styles.selectedOption
+                  ]}
+                  onPress={() => handleSelectAnswer(option)}
+                >
+                  <View style={styles.choiceContainer}>
+                    <View style={styles.radioButton}>
+                      {selectedChoice === option && (
+                        <View style={styles.radioButtonInner} />
+                      )}
+                    </View>
+                    <Text 
+                      style={[
+                        styles.optionText,
+                        styles.multipleChoiceText,
+                        selectedChoice === option && styles.selectedOptionText
+                      ]}
+                    >
+                      {option}
+                    </Text>
                   </View>
-                  <Text 
-                    style={[
-                      styles.optionText,
-                      styles.multipleChoiceText,
-                      selectedChoice === option && styles.selectedOptionText
-                    ]}
-                  >
-                    {option}
-                  </Text>
-                </View>
-              </TouchableOpacity>
+                </TouchableOpacity>
+              </Animated.View>
             ))}
           </View>
-        </>
+        </Animated.View>
       );
     }
     return null;
@@ -280,12 +300,11 @@ const ExaminationScreen = () => {
 
   const handleSubmit = () => {
     const endTime = Date.now();
-    const timeSpent = Math.floor((endTime - startTime) / 1000);
     
-    // Tính điểm
+    // Calculate score
     const score = calculateScore();
     
-    // Chuyển đổi allAnswers thành mảng đáp án đơn giản
+    // Convert allAnswers to simple answer array
     const userAnswers = allAnswers.map(answer => {
       if (answer.type === 'multiple-choice') {
         return answer.selectedChoice;
@@ -294,7 +313,7 @@ const ExaminationScreen = () => {
       }
     });
 
-    // Chuyển đến màn hình kết quả
+    // Navigate to result screen
     router.push({
       pathname: '/examination/result',
       params: {
@@ -308,35 +327,45 @@ const ExaminationScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={[styles.headerTitle, { marginLeft: 0 }]}>Kiểm tra</Text>
-      </View>
+      <Animated.View 
+        entering={FadeIn.duration(500)}
+        style={styles.header}
+      >
+        <Text style={[styles.headerTitle, { marginLeft: 0 }]}>Test</Text>
+      </Animated.View>
 
-      <View style={styles.progressContainer}>
+      <Animated.View 
+        entering={FadeIn.delay(200).duration(500)}
+        style={styles.progressContainer}
+      >
         <Text style={styles.questionNumber}>
-          Câu {currentQuestion + 1}/{questions.length}
+          Question {currentQuestion + 1}/{questions.length}
         </Text>
         <View style={styles.progressBar}>
-          <View 
+          <Animated.View 
+            entering={FadeIn.duration(500)}
             style={[
               styles.progressFill, 
               { width: `${((currentQuestion + 1) / questions.length) * 100}%` }
             ]} 
           />
         </View>
-      </View>
+      </Animated.View>
 
       <ScrollView style={styles.content}>
         {renderQuestion()}
       </ScrollView>
 
-      <View style={styles.footer}>
+      <Animated.View 
+        entering={FadeIn.delay(400).duration(500)}
+        style={styles.footer}
+      >
         <TouchableOpacity
           style={[styles.navButton, currentQuestion === 0 && styles.disabledButton]}
           onPress={handlePrevious}
           disabled={currentQuestion === 0}
         >
-          <Text style={styles.navButtonText}>Trước</Text>
+          <Text style={styles.navButtonText}>Previous</Text>
         </TouchableOpacity>
 
         {currentQuestion === questions.length - 1 ? (
@@ -344,17 +373,17 @@ const ExaminationScreen = () => {
             style={[styles.navButton, styles.submitButton]}
             onPress={handleSubmit}
           >
-            <Text style={styles.navButtonText}>Nộp bài</Text>
+            <Text style={styles.navButtonText}>Submit</Text>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
             style={styles.navButton}
             onPress={handleNext}
           >
-            <Text style={styles.navButtonText}>Tiếp</Text>
+            <Text style={styles.navButtonText}>Next</Text>
           </TouchableOpacity>
         )}
-      </View>
+      </Animated.View>
     </SafeAreaView>
   );
 };
