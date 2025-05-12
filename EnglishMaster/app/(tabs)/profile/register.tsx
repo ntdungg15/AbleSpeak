@@ -16,10 +16,15 @@ import {
 } from "react-native";
 import { Link, router } from "expo-router";
 import { register } from "@/api/auth";
+import { useSelector } from "react-redux";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Register = () => {
+  const user = useSelector((state) => state.user);
+  if (user.isLoggedIn) {
+    router.push("/(tabs)/profile");
+  }
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
@@ -252,6 +257,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexGrow: 1,
     justifyContent: "center",
+    paddingBottom: 40,
   },
   contentContainer: {
     alignItems: "center",
@@ -354,4 +360,3 @@ const styles = StyleSheet.create({
 });
 
 export default Register;
-   

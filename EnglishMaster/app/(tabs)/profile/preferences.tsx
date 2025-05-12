@@ -41,7 +41,7 @@ const PreferenceScreen = () => {
         </View>
 
         <View style={styles.preferenceItem}>
-          <Text style={styles.preferenceText}>Cảm biến rung</Text>
+          <Text style={styles.preferenceText}>VibrationSensor</Text>
           <Switch
             value={vibrationSensor}
             onValueChange={(value) => dispatch(setVibrationSensor(value))}
