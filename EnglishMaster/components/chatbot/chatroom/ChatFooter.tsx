@@ -67,11 +67,16 @@ export const ChatFooter: React.FC<ChatFooterProps> = ({ onSendTextMessage }) => 
                 style={styles.chatInput} // Ensure proper styling
                 placeholder="Type a message..."
                 onChangeText={(text) => setChatTextInput(text)} // Update state
-                value={chatTextInput}                 
+                value={chatTextInput}
+                onSubmitEditing={handleSendTextChat} // Handle send on enter            
             />
             
             {chatTextInput.length > 0 && (
-              <Feather name="send" size={24} color="black" style={styles.iconButton} onPress={handleSendTextChat}/>
+              <Feather 
+                name="send" 
+                size={24} color="black" 
+                style={styles.iconButton} 
+                onPress={handleSendTextChat}/>
             )}
 
             {chatTextInput.length === 0 && (

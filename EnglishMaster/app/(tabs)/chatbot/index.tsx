@@ -31,7 +31,10 @@ const ChatBot = () => {
 
   const handlePressStart = () => {
     // speak("Starting a classic conversation.");
-    router.push("/chatroom/ChatRoom");
+    router.push({
+      pathname: "/chatroom/ChatRoom",
+      params: { topic: "classic"},
+    });
   };
 
   const handlePressRolePlay = () => {

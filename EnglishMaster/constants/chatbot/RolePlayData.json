@@ -1,27 +1,27 @@
 [
     {
         "id": 1,
-        "title": "hotel-checkin1",
-        "image": "../../assets/images/logo-dog.png"
+        "title": "Meeting new People"
+        
     },
     {
         "id": 2,
-        "title": "hotel-checkin2",
-        "image": "../../assets/images/logo-dog.png"
+        "title": "hotel-checkin"
+        
     },
     {
         "id": 3,
-        "title": "hotel-checkin3",
-        "image": "../../assets/images/logo-dog.png"
+        "title": "Restaurant order"
+        
     },
     {
         "id": 4,
-        "title": "hotel-checkin4",
-        "image": "../../assets/images/logo-dog.png"
+        "title": "Family dinner"
+        
     },
     {
         "id": 5,
-        "title": "hotel-checkin5",
-        "image": "../../assets/images/logo-dog.png"
+        "title": "Job interview"
+        
     }
 ]
