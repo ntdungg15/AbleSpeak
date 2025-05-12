@@ -55,7 +55,11 @@ export  const styles = StyleSheet.create({
         backgroundColor: "white",
         // borderColor: "#e0e0e0",
         // borderWidth: 1,
-        borderRadius: 12,
+
+        borderTopLeftRadius: 24,
+        borderTopRightRadius: 24,
+        borderBottomLeftRadius: 24,
+        borderBottomRightRadius: 4,
 
         paddingHorizontal: 20,
         paddingVertical: 4,
@@ -72,10 +76,13 @@ export  const styles = StyleSheet.create({
         height: 'auto',
         minHeight: 28,                  
         
-        backgroundColor: "#4098F7FF",
+        backgroundColor: "#77B5F7FF",
         // borderColor: "#e0e0e0",
         // borderWidth: 1,
-        borderRadius: 12,
+        borderTopLeftRadius: 4,
+        borderTopRightRadius: 24,
+        borderBottomLeftRadius: 24,
+        borderBottomRightRadius: 24,
         
         paddingHorizontal: 20,
         paddingVertical: 4,
