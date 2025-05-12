@@ -254,7 +254,7 @@ const Dashboard = () => {
         </View>
 
         {/* Learning Categories */}
-        <View style={styles.sectionContainer}>
+        {/* <View style={styles.sectionContainer}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>New lesson</Text>
           </View>
@@ -283,7 +283,7 @@ const Dashboard = () => {
               </TouchableOpacity>
             ))}
           </View>
-        </View>
+        </View> */}
 
         {/* Achievement Section */}
         <TouchableOpacity style={styles.achievementContainer}>
