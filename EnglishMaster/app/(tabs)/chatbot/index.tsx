@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+import React, { 
+  // seEffect
+} from "react";
 import {
   View,
   Text,
@@ -6,12 +8,12 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  AccessibilityInfo,
-  Platform,
+  
+  // AccessibilityInfo,
+  // Platform,
 } from "react-native";
 import { useRouter } from "expo-router";
-import * as Speech from "expo-speech";
-import { Ionicons } from "@expo/vector-icons";
+// import * as Speech from "expo-speech";
 import { styles } from "@/constants/chatbot/ChatBot";
 import logoDogImage from "@/assets/images/logo-dog.png";
 import RolePlayCard from "@/components/chatbot/RolePlayCard";
@@ -19,31 +21,36 @@ import RolePlayCard from "@/components/chatbot/RolePlayCard";
 const ChatBot = () => {
   const router = useRouter();
 
-  const speak = (text: string) => {
-    Speech.speak(text, {
-      language: "en",
-      rate: 0.9,
-      pitch: 1.0,
+  // const speak = (text: string) => {
+  //   Speech.speak(text, {
+  //     language: "en",
+  //     rate: 0.9,
+  //     pitch: 1.0,
+  //   });
+  // };
+
+  const handlePressStart = () => {
+    // speak("Starting a classic conversation.");
+    router.push({
+      pathname: "/chatroom/ChatRoom",
+      params: { topic: "classic"},
     });
   };
 
-  const handlePressStart = () => {
-    speak("Starting a classic conversation.");
-    router.push("/chatroom/ChatRoom");
-  };
-
   const handlePressRolePlay = () => {
-    speak("Navigating to Role Play topics.");
+    // speak("Navigating to Role Play topics.");
     router.push("/(tabs)/chatbot/Roleplay");
   };
 
-  useEffect(() => {
-    if (Platform.OS === "ios" || Platform.OS === "android") {
-      AccessibilityInfo.announceForAccessibility(
-        "Welcome to AbleSpeak ChatBot screen"
-      );
-    }
-  }, []);
+  
+
+  // useEffect(() => {
+  //   if (Platform.OS === "ios" || Platform.OS === "android") {
+  //     AccessibilityInfo.announceForAccessibility(
+  //       "Welcome to AbleSpeak ChatBot screen"
+  //     );
+  //   }
+  // }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -101,6 +108,7 @@ const ChatBot = () => {
           </View>
           <RolePlayCard />
         </View>
+        
       </ScrollView>
     </SafeAreaView>
   );
