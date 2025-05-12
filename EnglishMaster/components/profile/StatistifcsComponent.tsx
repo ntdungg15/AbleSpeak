@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { View , Text, StyleSheet} from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 
 const StatistifcsComponent = () => {
   return (
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexWrap: "wrap",
     marginBottom: 20,
+    paddingHorizontal: 16,
   },
   statItem: {
     width: "47%",
