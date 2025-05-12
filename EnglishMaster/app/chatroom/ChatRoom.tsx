@@ -23,7 +23,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Feather from '@expo/vector-icons/Feather';
 
-// import { getGroqResponse } from "@/service/gropService"
+import { getGroqResponse } from "@/service/gropService"
 import Markdown from 'react-native-markdown-display';
 import { ChatFooter } from "@/components/chatbot/chatroom/ChatFooter";
 
@@ -36,27 +36,23 @@ type Message = {
 const ChatRoom = () => {
   const router = useRouter();
   const [messList, setMessList] = useState<Message[]>([]);
-  const [message, setMessage] = useState("");
+  
   
 
   const handleBackPress = () => {
     router.back();
   };
 
-  // const handleSendChat = async () => {
-  //   if (message.trim() === "") return;
-  //   setMessList(prev => [...prev, { text: message, isUser: true }]);
+  const handleSendChat = async (message: string) => {
+    if (message.trim() === "") return;
+    setMessList(prev => [...prev, { text: message, isUser: true }]);
 
-  //   const response = await getGroqResponse(message);
-
-  //   const responseText = response || "No response";
+    // const response = await getGroqResponse(message);
+    const response = "Chờ t fix xong đã, nu pa ga chi";
+    const responseText = response || "No response";
     
-  //   setMessList(prev => [...prev, { text: responseText, isUser: false }]);
-    
-
-
-  //   setMessage("");
-  // }
+    setMessList(prev => [...prev, { text: responseText, isUser: false }]);
+  }
 
   // useEffect(() => {
   //   const handleResponeAnswer = () => {
@@ -76,7 +72,7 @@ const ChatRoom = () => {
       style={{ flex: 1, }}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0} // thử chỉnh offset này nếu header bị che
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}> */}
         
     <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0 }}>
         {/* Header  */}
@@ -162,12 +158,12 @@ const ChatRoom = () => {
         
         {/* Inputfield */}
         <View>
-          <ChatFooter></ChatFooter>
+          <ChatFooter onSendTextMessage={handleSendChat}></ChatFooter>
         </View>
         
       </View>
     </SafeAreaView>
-      </TouchableWithoutFeedback>
+      {/* </TouchableWithoutFeedback> */}
     </KeyboardAvoidingView>
     </>
   );

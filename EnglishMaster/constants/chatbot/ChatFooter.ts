@@ -36,4 +36,16 @@ export  const styles = StyleSheet.create({
         borderRadius: 40,
         padding: 18,
       },
+
+      chatInput: {
+        height: 54,
+        width: 320,
+
+        borderColor: '#4A90E2',
+        borderWidth: 1,
+        paddingHorizontal: 10,
+        borderRadius: 8,
+        backgroundColor: '#fff',
+        
+      },
 });
