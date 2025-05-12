@@ -24,7 +24,7 @@ export  const styles = StyleSheet.create({
     chatContainer: {
         width: "100%",
         flex: 1,
-        backgroundColor: "#D7F1F9FF",
+        backgroundColor: "#D6EFF7FF",
         
         
     },

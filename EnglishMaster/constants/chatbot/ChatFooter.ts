@@ -7,7 +7,7 @@ export  const styles = StyleSheet.create({
 
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'flex-end',
+        alignItems: 'center',
         padding: 16,
         paddingBottom: 30,
         borderTopLeftRadius: 20,
@@ -21,7 +21,7 @@ export  const styles = StyleSheet.create({
       micButton: {
         position: 'absolute',
         top: -30,
-        left: '45%',
+        left: 90,
         backgroundColor: '#fff',
         alignSelf: 'center',
         // Shadow for iOS
@@ -47,5 +47,18 @@ export  const styles = StyleSheet.create({
         borderRadius: 8,
         backgroundColor: '#fff',
         
+      },
+
+      micRingAnimmation: {
+        position: 'absolute',
+        // top: -40,
+        // left: 80,
+        // width: 84,
+        // height: 84,
+
+        borderRadius: 9999,
+        borderWidth: 2,
+        borderColor: '#4A90E2',
+
       },
 });
