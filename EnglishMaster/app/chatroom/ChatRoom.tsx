@@ -8,16 +8,17 @@ import {
   // TextInput, 
   ScrollView,
   KeyboardAvoidingView,
-  Keyboard,
-  TouchableWithoutFeedback,
+  // Keyboard,
+  // TouchableWithoutFeedback,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { styles } from "@/constants/chatbot/ChatRoom";
 // import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { 
   useState, 
-  // useEffect,
+  useEffect,
 } from "react";
+import { useLocalSearchParams } from "expo-router";
 
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
@@ -35,28 +36,25 @@ type Message = {
 
 const ChatRoom = () => {
   const router = useRouter();
+  const { topic } = useLocalSearchParams();
   const [messList, setMessList] = useState<Message[]>([]);
-  const [message, setMessage] = useState("");
+  
   
 
   const handleBackPress = () => {
     router.back();
   };
 
-  // const handleSendChat = async () => {
-  //   if (message.trim() === "") return;
-  //   setMessList(prev => [...prev, { text: message, isUser: true }]);
+  const handleSendChat = async (message: string) => {
+    if (message.trim() === "") return;
+    setMessList(prev => [...prev, { text: message, isUser: true }]);
 
-  //   const response = await getGroqResponse(message);
-
-  //   const responseText = response || "No response";
+    // const response = await getGroqResponse(message);
+    const response = "Fix xong t xu m, nu pa ga chi";
+    const responseText = response || "No response";
     
-  //   setMessList(prev => [...prev, { text: responseText, isUser: false }]);
-    
-
-
-  //   setMessage("");
-  // }
+    setMessList(prev => [...prev, { text: responseText, isUser: false }]);
+  }
 
   // useEffect(() => {
   //   const handleResponeAnswer = () => {
@@ -68,6 +66,23 @@ const ChatRoom = () => {
 
   //   handleResponeAnswer();
   // }, [messList]);
+   useEffect(() => {
+     let introMessage = "Hello! How can I assist you today?";
+    if (topic == "classic") {
+      introMessage = "Hello! Let's start a classic conversation.";
+    } else if (topic == "Meeting new People") {
+      introMessage = "Hello! Let's practice meeting new people.";
+    } else if (topic == "hotel-checkin") {
+      introMessage = "Hello! Let's practice checking into a hotel.";
+    } else if (topic == "Restaurant order") {
+      introMessage = "Hello! Let's practice ordering food at a restaurant.";
+    } else if (topic == "Family dinner") {
+      introMessage = "Hello! Let's practice having a family dinner.";
+    } else if (topic == "Job interview") {
+      introMessage = "Hello! Let's practice a job interview.";
+    }
+    setMessList([{ text: introMessage, isUser: false }]);
+  }, []);
   return (
     <>
     <StatusBar barStyle="dark-content" backgroundColor="#f8f8f8" />
@@ -76,7 +91,7 @@ const ChatRoom = () => {
       style={{ flex: 1, }}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0} // thử chỉnh offset này nếu header bị che
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}> */}
         
     <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0 }}>
         {/* Header  */}
@@ -162,12 +177,12 @@ const ChatRoom = () => {
         
         {/* Inputfield */}
         <View>
-          <ChatFooter></ChatFooter>
+          <ChatFooter onSendTextMessage={handleSendChat}></ChatFooter>
         </View>
         
       </View>
     </SafeAreaView>
-      </TouchableWithoutFeedback>
+      {/* </TouchableWithoutFeedback> */}
     </KeyboardAvoidingView>
     </>
   );
