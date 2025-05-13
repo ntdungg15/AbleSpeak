@@ -25,7 +25,7 @@ const RolePlayCard = () => {
             onPress={() => handlePressCard(item.id, item.title)}
           >
             {/* Image  */}
-            <Image source={logoDogImage} style={styles.cardImage} />
+            <Image source={{uri: `https://vstatic.vietnam.vn/vietnam/resource/IMAGE/2025/5/3/5d2ec4aacb804ca2883a6ecc321b882a`}} style={styles.cardImage} />
             <Text style={styles.cardTitle}>{item.title}</Text>
           </TouchableOpacity>
         )}
