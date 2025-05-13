@@ -1,7 +1,7 @@
 import React from "react";
 import { 
   View, 
-  // Text, 
+  Text,
   SafeAreaView, 
   StatusBar, 
   Platform, 
@@ -37,9 +37,9 @@ type Message = {
 const ChatRoom = () => {
   const router = useRouter();
   const { topic } = useLocalSearchParams();
-  const [messList, setMessList] = useState<Message[]>([]);
-  
-  
+  const [ messList, setMessList ] = useState<Message[]>([]); 
+  const [ typingIndicator, setTypingIndicator ] = useState(false);
+  let chatRespone: string = "";
 
   const handleBackPress = () => {
     router.back();
@@ -48,12 +48,12 @@ const ChatRoom = () => {
   const handleSendChat = async (message: string) => {
     if (message.trim() === "") return;
     setMessList(prev => [...prev, { text: message, isUser: true }]);
+    setTypingIndicator(true);
 
-    // const response = await getGroqResponse(message);
-    const response = "Fix xong t xu m, nu pa ga chi";
-    const responseText = response || "No response";
-    
-    setMessList(prev => [...prev, { text: responseText, isUser: false }]);
+    // const chatRespone = await getGroqResponse(message);
+    // chatRespone = "Fix xong t xu m, nu pa ga chi";
+    // const responseText = chatRespone || "Xin lỗi, không có phản hồi từ máy chủ.";
+    // setMessList(prev => [...prev, { text: responseText, isUser: false }]);
   }
 
   // useEffect(() => {
@@ -83,6 +83,18 @@ const ChatRoom = () => {
     }
     setMessList([{ text: introMessage, isUser: false }]);
   }, []);
+
+  useEffect(() => {
+    if (typingIndicator) {
+      const timer = setTimeout(() => {
+        setTypingIndicator(false);
+        chatRespone = "Fix xong t xu m, nu pa ga chi";
+        const responseText = chatRespone || "Xin lỗi, không có phản hồi từ máy chủ.";
+        setMessList(prev => [...prev, { text: responseText, isUser: false }]);
+      }, 1500); // 2 seconds delay
+      return () => clearTimeout(timer);
+    }
+  }, [typingIndicator]);
   return (
     <>
     <StatusBar barStyle="dark-content" backgroundColor="#f8f8f8" />
@@ -139,7 +151,6 @@ const ChatRoom = () => {
         >
           {messList.map((mess, index) => (
             mess.isUser ? (
-            
                 <View
                   key={`user-${index}`}
                   style={styles.userMessContainer}
@@ -171,8 +182,20 @@ const ChatRoom = () => {
                   >{mess.text.trim()}</Markdown>
                 </View>
               
-            )
+            )   
           ))}
+
+          {/* TypingIndicator  */}
+          {typingIndicator ? (
+            <>
+              <View style={styles.botMessContainer}>
+                <Text>Cho ti di</Text>
+              </View>
+            </>
+          ) : (
+            <>
+            </>
+          )}
         </ScrollView>
         
         {/* Inputfield */}
