@@ -25,8 +25,7 @@ export  const styles = StyleSheet.create({
 
     mainContainer: {
         marginTop: 120,
-        width: "100%",
-        height: "100%",
+        flex: 1,
 
         paddingHorizontal: 14,
         paddingVertical: 14,
@@ -36,7 +35,17 @@ export  const styles = StyleSheet.create({
 
     cardContainer: {
         margin: 4,
+        width: 160,
+        height: "100%",
 
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        position: "relative",
+
+        paddingHorizontal: 4,
+        borderWidth: 1,
       },
       cardImage: {
         width: 160,
@@ -44,6 +53,7 @@ export  const styles = StyleSheet.create({
         
       },
       cardTitle: {
+        
         marginTop: 8,
         fontSize: 16,
         fontWeight: 'bold',

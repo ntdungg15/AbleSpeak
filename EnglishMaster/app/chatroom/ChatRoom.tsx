@@ -25,6 +25,7 @@ import { getGroqResponse } from "@/api/gropService";
 import Markdown from "react-native-markdown-display";
 import { ChatFooter } from "@/components/chatbot/chatroom/ChatFooter";
 import LottieView from "lottie-react-native";
+import * as Speech from "expo-speech";
 
 import VoiceLottieAnimation from "@/assets/animations/ChatRoom/voiceAnimation.json";
 
@@ -92,10 +93,29 @@ const ChatRoom = () => {
       // introMessage = "Hello! Let's practice a job interview.";
       firstPromt =
         "Imagine you are an interviewer. I am a candidate. Let's have a conversation.";
+    } else if (topic == "Mindfulness and Social Media") {
+      firstPromt =
+        "Write a short science paragraph about the impact of social media on mental health. Ask me questions to help me understand the topic better.";
+    } else if (topic == "An Introducetion to Architecture Drawing") {
+      firstPromt =
+        "Write a short science paragraph about how Architecture Drawing. Ask me questions to help me understand the topic better.";
+    } else if (topic == "Breaking up and the relationship with ecommerce") {
+      firstPromt =
+        "Write a short science paragraph about how Breaking up and sadness affect people shoping routine. Ask me questions to help me understand the topic better.";
+    } else if (
+      topic == "Food tour and unseen perserpectives of local villages"
+    ) {
+      firstPromt =
+        "Write a short science paragraph about how Food tour and unseen perserpectives of local villages. Ask me questions to help me understand the topic better.";
+    } else if (topic == "IT Job Interview after pandemic") {
+      firstPromt =
+        "Write a short science paragraph about how IT Job Interview after pandemic. Ask me questions to help me understand the topic better.";
     }
     const fetchIntroMessage = async () => {
       const introMessage = await getGroqResponse(firstPromt);
       setMessList([{ text: introMessage, isUser: false }]);
+      // Speak the intro message
+      speak(introMessage);
     };
     fetchIntroMessage();
   }, []);
@@ -110,6 +130,8 @@ const ChatRoom = () => {
         const responseText =
           chatRespone || "Xin lỗi, không có phản hồi từ máy chủ.";
         setMessList((prev) => [...prev, { text: responseText, isUser: false }]);
+        // Speak the response
+        speak(responseText);
       }, 1500); // 2 seconds delay
       return () => clearTimeout(timer);
     }
@@ -134,6 +156,10 @@ const ChatRoom = () => {
         </View>
       </>
     );
+  };
+
+  const speak = (text: string) => {
+    Speech.speak(text);
   };
 
   return (
