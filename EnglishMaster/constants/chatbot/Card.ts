@@ -16,6 +16,8 @@ export const styles = StyleSheet.create({
         justifyContent: "flex-start",
         alignItems: "center",
         position: "relative",
+
+        paddingHorizontal: 4,
     },
 
     cardImage: {
@@ -27,13 +29,11 @@ export const styles = StyleSheet.create({
     },
 
     cardTitle: {
-        position: "absolute",
-        bottom: "6%",
-        left: "6%",
+        
 
         fontSize: 14,
         fontWeight: "bold",
 
-
+        borderWidth: 1,
     },
 })
