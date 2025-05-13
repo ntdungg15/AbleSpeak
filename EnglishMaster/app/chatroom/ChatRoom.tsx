@@ -14,7 +14,11 @@ import {
 import { useRouter } from "expo-router";
 import { styles } from "@/constants/chatbot/ChatRoom";
 // import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { useState, useEffect, useRef } from "react";
+import { 
+  useState, 
+  useEffect,
+  useRef,
+} from "react";
 import { useLocalSearchParams } from "expo-router";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
