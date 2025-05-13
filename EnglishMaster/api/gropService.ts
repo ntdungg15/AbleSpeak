@@ -3,7 +3,7 @@ import Groq from "groq-sdk";
 
 const groq = new Groq({ apiKey: GROP_API_KEY });
 
-export const getGroqResponse = async (query: string): Promise<String> => {
+export const getGroqResponse = async (query: string): Promise<string> => {
   try {
     const chatCompletion = await getGroqChatCompletion(query);
     console.log(chatCompletion.choices[0]?.message?.content || "");

@@ -1,6 +1,4 @@
-import React, { 
-  // seEffect
-} from "react";
+import React from "react"; // seEffect
 import {
   View,
   Text,
@@ -8,7 +6,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  
+
   // AccessibilityInfo,
   // Platform,
 } from "react-native";
@@ -17,6 +15,7 @@ import { useRouter } from "expo-router";
 import { styles } from "@/constants/chatbot/ChatBot";
 import logoDogImage from "@/assets/images/logo-dog.png";
 import RolePlayCard from "@/components/chatbot/RolePlayCard";
+import ReadTalkCard from "@/components/chatbot/ReadTalkCard";
 
 const ChatBot = () => {
   const router = useRouter();
@@ -33,7 +32,7 @@ const ChatBot = () => {
     // speak("Starting a classic conversation.");
     router.push({
       pathname: "/chatroom/ChatRoom",
-      params: { topic: "classic"},
+      params: { topic: "classic" },
     });
   };
 
@@ -42,7 +41,10 @@ const ChatBot = () => {
     router.push("/(tabs)/chatbot/Roleplay");
   };
 
-  
+  const handlePressReadTalk = () => {
+    // speak("Navigating to Role Play topics.");
+    router.push("/(tabs)/chatbot/ReadTalk");
+  };
 
   // useEffect(() => {
   //   if (Platform.OS === "ios" || Platform.OS === "android") {
@@ -108,7 +110,24 @@ const ChatBot = () => {
           </View>
           <RolePlayCard />
         </View>
-        
+
+        {/* Role-Play Section */}
+        <View style={styles.topicContainer}>
+          <View style={styles.roleplayHeader}>
+            <Text style={styles.textcardheader} accessibilityRole="header">
+              Read-and-Talk
+            </Text>
+            <Text
+              style={{ marginRight: 12 }}
+              onPress={handlePressReadTalk}
+              accessibilityRole="link"
+              accessibilityLabel="See more role play topics"
+            >
+              See more
+            </Text>
+          </View>
+          <ReadTalkCard />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

@@ -11,7 +11,7 @@ import {
 import { useRouter } from "expo-router";
 import { styles } from "@/constants/chatbot/RolePlay";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import RolePlayData from "@/constants/chatbot/RolePlayData.json";
+import RolePlayData from "@/constants/chatbot/ReadTalk.json";
 import logoDogImage from "@/assets/images/logo-dog.png";
 
 const roleplay = () => {
