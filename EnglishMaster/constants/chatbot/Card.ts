@@ -34,6 +34,6 @@ export const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: "bold",
 
-        borderWidth: 1,
+        // borderWidth: 1,
     },
 })
