@@ -1,27 +1,32 @@
 [
     {
         "id": 1,
-        "title": "Mindfulness and Social Media"
+        "title": "Mindfulness and Social Media",
+        "imageLink": "@/assets/images/chatbot/classic.jpg"
         
     },
     {
         "id": 2,
-        "title": "An Introducetion to Architecture Drawing"
+        "title": "An Introducetion to Architecture Drawing",
+        "imageLink": "@/assets/images/chatbot/classic.jpg"
         
     },
     {
         "id": 3,
-        "title": "Breaking up and the relationship with ecommerce"
+        "title": "Breaking up and the relationship with ecommerce",
+        "imageLink": "@/assets/images/chatbot/classic.jpg"
         
     },
     {
         "id": 4,
-        "title": "Food tour and unseen perserpectives of local villages"
+        "title": "Food tour and unseen perserpectives of local villages",
+        "imageLink": "@/assets/images/chatbot/classic.jpg"
         
     },
     {
         "id": 5,
-        "title": "IT Job Interview after pandemic"
+        "title": "IT Job Interview after pandemic",
+        "imageLink": "@/assets/images/chatbot/classic.jpg"
         
     }
 ]

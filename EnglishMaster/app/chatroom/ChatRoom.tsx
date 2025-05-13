@@ -116,6 +116,7 @@ const ChatRoom = () => {
         "Write a short science paragraph about how IT Job Interview after pandemic. Ask me questions to help me understand the topic better.";
     }
     const fetchIntroMessage = async () => {
+
       const introMessage = await getGroqResponse(firstPromt);
       setMessList([{ text: introMessage, isUser: false }]);
       // Speak the intro message
