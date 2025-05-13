@@ -14,6 +14,7 @@ import { useRouter } from "expo-router";
 // import * as Speech from "expo-speech";
 import { styles } from "@/constants/chatbot/ChatBot";
 import logoDogImage from "@/assets/images/logo-dog.png";
+import classicImage from "@/assets/images/chatbot/classic.jpg";
 import RolePlayCard from "@/components/chatbot/RolePlayCard";
 import ReadTalkCard from "@/components/chatbot/ReadTalkCard";
 
@@ -70,7 +71,7 @@ const ChatBot = () => {
           </Text>
           <View style={styles.classicContent}>
             <Image
-              source={logoDogImage}
+              source={classicImage}
               style={styles.classicImage}
               accessibilityLabel="AbleSpeak logo with a friendly dog illustration"
             />
