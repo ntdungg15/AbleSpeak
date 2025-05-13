@@ -28,6 +28,7 @@ const VideoPlayer: React.FC = () => {
   const router = useRouter();
   const params = useLocalSearchParams();
   const videoRef = useRef<Video>(null);
+  const [progressBarWidth, setProgressBarWidth] = useState(0);
 
   // Playback state
   const [isPlaying, setIsPlaying] = useState(false);
@@ -41,18 +42,45 @@ const VideoPlayer: React.FC = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
 
+  let hideControlsTimeout: NodeJS.Timeout | null = null;
+
+  const resetHideControlsTimer = () => {
+    if (hideControlsTimeout) clearTimeout(hideControlsTimeout);
+    hideControlsTimeout = setTimeout(() => {
+      controlsOpacity.value = withTiming(0, { duration: 300 });
+      controlsScale.value = withTiming(0.95, { duration: 300 });
+      setShowControls(false);
+    }, 3000); // 3 giây không tương tác sẽ ẩn nút
+  };
+
+  const handleVideoPress = () => {
+    setShowControls(true);
+    controlsOpacity.value = withTiming(1);
+    controlsScale.value = withTiming(1);
+    resetHideControlsTimer();
+  };
+
+  useEffect(() => {
+    resetHideControlsTimer();
+    return () => {
+      if (hideControlsTimeout) clearTimeout(hideControlsTimeout);
+    };
+  }, []);
+
   // Vocabulary and quiz data
   const vocabulary: VocabularyItem[] = params.vocabulary ? JSON.parse(params.vocabulary as string) : [];
-  const quizQuestions: QuizQuestion[] = [{
-    question: "What is the main topic of this video?",
-    options: [
-      "Sports and exercise",
-      params.title as string,
-      "Weather patterns",
-      "Technology trends",
-    ],
-    correctAnswer: 1,
-  }];
+  const quizQuestions: QuizQuestion[] = [
+    {
+      question: "What is the main topic of this video?",
+      options: [
+        "Sports and exercise",
+        params.title as string,
+        "Weather patterns",
+        "Technology trends",
+      ],
+      correctAnswer: 1,
+    },
+  ];
   const [currentQuizQuestion] = useState(0);
 
   // Animation values
@@ -71,15 +99,6 @@ const VideoPlayer: React.FC = () => {
     opacity: quizOpacity.value,
     transform: [{ scale: quizScale.value }],
   }));
-
-  // Auto-hide controls
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      controlsOpacity.value = withTiming(0, { duration: 300 });
-      controlsScale.value = withTiming(0.95, { duration: 300 });
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, [showControls]);
 
   const handlePlaybackStatusUpdate = (status: AVPlaybackStatus) => {
     if (!status.isLoaded) return;
@@ -126,9 +145,7 @@ const VideoPlayer: React.FC = () => {
 
   const handleAnswerSelect = (index: number) => {
     setSelectedAnswer(index);
-    setIsAnswerCorrect(
-      index === quizQuestions[currentQuizQuestion].correctAnswer
-    );
+    setIsAnswerCorrect(index === quizQuestions[currentQuizQuestion].correctAnswer);
   };
 
   const showQuizModal = () => {
@@ -145,6 +162,18 @@ const VideoPlayer: React.FC = () => {
     });
   };
 
+  const toggleFullscreen = () => {
+    if (videoRef.current) {
+      videoRef.current.presentFullscreenPlayer();
+    }
+  };
+
+  const seekVideo = async (positionMillis: number) => {
+    if (videoRef.current) {
+      await videoRef.current.setPositionAsync(positionMillis);
+    }
+  };
+
   useEffect(() => {
     if (showQuiz) showQuizModal();
   }, [showQuiz]);
@@ -154,7 +183,7 @@ const VideoPlayer: React.FC = () => {
       <StatusBar hidden />
       <TouchableOpacity
         style={styles.backButton}
-        onPress={() => router.back()}
+        onPress={() => router.push('/(tabs)/NewLesson/Video/ShortStoryClips')}
       >
         <Ionicons name="arrow-back" size={24} color="white" />
       </TouchableOpacity>
@@ -164,7 +193,7 @@ const VideoPlayer: React.FC = () => {
         <TouchableOpacity
           style={styles.videoWrapper}
           activeOpacity={1}
-          onPress={() => setShowControls(true)}
+          onPress={handleVideoPress}
         >
           <Video
             ref={videoRef}
@@ -191,31 +220,32 @@ const VideoPlayer: React.FC = () => {
                 </TouchableOpacity>
               </View>
               <View style={styles.bottomControls}>
-                <Text style={styles.timeText}>
-                  {formatTime(currentTime)}
-                </Text>
-                <View style={styles.progressBarContainer}>
-                  <View
-                    style={[
-                      styles.progressBar,
-                      { width: `${progress * 100}%` },
-                    ]}
-                  />
-                  <View
-                    style={[
-                      styles.progressThumb,
-                      { left: `${progress * 100}%` },
-                    ]}
-                  />
-                </View>
-                <Text style={styles.timeText}>
-                  {formatTime(duration)}
-                </Text>
-                <TouchableOpacity
-                  onPress={handleReplay}
-                  style={styles.replayButton}
+                <Text style={styles.timeText}>{formatTime(currentTime)}</Text>
+                <View
+                  style={styles.progressBarContainer}
+                  onLayout={(e) => setProgressBarWidth(e.nativeEvent.layout.width)}
                 >
-                  <Ionicons name="refresh" size={24} color="white" />
+                  <TouchableOpacity
+                    style={styles.progressBar}
+                    onPress={(e) => {
+                      if (progressBarWidth > 0) {
+                        const touchX = e.nativeEvent.locationX;
+                        const newPosition = (touchX / progressBarWidth) * duration;
+                        seekVideo(newPosition);
+                      }
+                    }}
+                  >
+                    <View
+                      style={[
+
+                        { width: `${progress * 100}%` },
+                      ]}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.timeText}>{formatTime(duration)}</Text>
+                <TouchableOpacity onPress={toggleFullscreen}>
+                  <Ionicons name="expand" size={24} color="white" />
                 </TouchableOpacity>
               </View>
             </Animated.View>
@@ -225,12 +255,8 @@ const VideoPlayer: React.FC = () => {
 
       {/* Content Section */}
       <ScrollView style={styles.contentContainer}>
-        <Text style={styles.description}>
-          {params.description}
-        </Text>
-        <Text style={styles.sectionTitle}>
-          Vocabulary & Notes
-        </Text>
+        <Text style={styles.description}>{params.description}</Text>
+        <Text style={styles.sectionTitle}>Vocabulary & Notes</Text>
         {vocabulary.map((item, idx) => {
           const translateY = useSharedValue(20);
           const itemOpacity = useSharedValue(0);
@@ -239,27 +265,14 @@ const VideoPlayer: React.FC = () => {
             opacity: itemOpacity.value,
           }));
           useEffect(() => {
-            translateY.value = withDelay(
-              idx * 100,
-              withTiming(0, { duration: 300 })
-            );
-            itemOpacity.value = withDelay(
-              idx * 100,
-              withTiming(1, { duration: 300 })
-            );
+            translateY.value = withDelay(idx * 100, withTiming(0, { duration: 300 }));
+            itemOpacity.value = withDelay(idx * 100, withTiming(1, { duration: 300 }));
           }, []);
 
           return (
-            <Animated.View
-              key={idx}
-              style={[styles.vocabularyItem, itemStyle]}
-            >
-              <Text style={styles.vocabularyWord}>
-                {item.word}
-              </Text>
-              <Text style={styles.vocabularyDefinition}>
-                {item.definition}
-              </Text>
+            <Animated.View key={idx} style={[styles.vocabularyItem, itemStyle]}>
+              <Text style={styles.vocabularyWord}>{item.word}</Text>
+              <Text style={styles.vocabularyDefinition}>{item.definition}</Text>
             </Animated.View>
           );
         })}
@@ -267,9 +280,7 @@ const VideoPlayer: React.FC = () => {
 
       {/* Quiz Modal */}
       <Modal visible={showQuiz} transparent animationType="none">
-        <Animated.View
-          style={[styles.quizModalContainer, quizStyle]}
-        >
+        <Animated.View style={[styles.quizModalContainer, quizStyle]}>
           <View style={styles.quizCard}>
             <Text style={styles.quizTitle}>Quick Quiz</Text>
             <Text style={styles.quizQuestion}>
@@ -283,21 +294,12 @@ const VideoPlayer: React.FC = () => {
                 opacity: optOpacity.value,
               }));
               useEffect(() => {
-                translateX.value = withDelay(
-                  i * 100,
-                  withSpring(0)
-                );
-                optOpacity.value = withDelay(
-                  i * 100,
-                  withTiming(1, { duration: 300 })
-                );
+                translateX.value = withDelay(i * 100, withSpring(0));
+                optOpacity.value = withDelay(i * 100, withTiming(1, { duration: 300 }));
               }, []);
 
               return (
-                <Animated.View
-                  key={i}
-                  style={optStyle}
-                >
+                <Animated.View key={i} style={optStyle}>
                   <TouchableOpacity
                     style={[
                       styles.quizOption,
@@ -308,11 +310,13 @@ const VideoPlayer: React.FC = () => {
                     onPress={() => handleAnswerSelect(i)}
                     disabled={selectedAnswer !== null}
                   >
-                    <Text style={[
-                      styles.quizOptionText,
-                      selectedAnswer === i && isAnswerCorrect && styles.correctOptionText,
-                      selectedAnswer === i && !isAnswerCorrect && styles.incorrectOptionText,
-                    ]}>
+                    <Text
+                      style={[
+                        styles.quizOptionText,
+                        selectedAnswer === i && isAnswerCorrect && styles.correctOptionText,
+                        selectedAnswer === i && !isAnswerCorrect && styles.incorrectOptionText,
+                      ]}
+                    >
                       {opt}
                     </Text>
                     {selectedAnswer === i && isAnswerCorrect && (
@@ -326,13 +330,8 @@ const VideoPlayer: React.FC = () => {
               );
             })}
             {selectedAnswer !== null && (
-              <TouchableOpacity
-                style={styles.continueButton}
-                onPress={hideQuizModal}
-              >
-                <Text style={styles.continueButtonText}>
-                  Continue
-                </Text>
+              <TouchableOpacity style={styles.continueButton} onPress={hideQuizModal}>
+                <Text style={styles.continueButtonText}>Continue</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -342,7 +341,4 @@ const VideoPlayer: React.FC = () => {
   );
 };
 
-
-
 export default VideoPlayer;
-

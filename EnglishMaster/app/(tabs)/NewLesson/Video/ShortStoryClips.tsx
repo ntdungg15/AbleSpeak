@@ -8,8 +8,9 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
+import { Image } from 'react-native';
+import { styles } from '@/constants/newlesson/Video/stories';
 
-// Types
 type StoryType = 'stories' | 'conversations';
 
 interface StoryItem {
@@ -17,6 +18,7 @@ interface StoryItem {
   title: string;
   description: string;
   type: StoryType;
+  thumbnailUrl: any;
   videoUrl: string;
   duration: string;
   level: 'beginner' | 'intermediate' | 'advanced';
@@ -29,11 +31,9 @@ const ShortStoryClips: React.FC = () => {
   const [activeType, setActiveType] = useState<StoryType>('stories');
   const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
 
-  // Global interaction animation values
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
 
-  // Header animation
   const headerScale = useSharedValue(0.8);
   const headerOpacity = useSharedValue(0);
   useEffect(() => {
@@ -41,7 +41,6 @@ const ShortStoryClips: React.FC = () => {
     headerOpacity.value = withTiming(1, { duration: 500 });
   }, []);
 
-  // Animated styles
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
     opacity: opacity.value,
@@ -68,26 +67,26 @@ const ShortStoryClips: React.FC = () => {
       title: 'The Lost Key',
       description: 'A short story about a man who lost his keys and the journey to find them.',
       type: 'stories',
-    //   thumbnailUrl: require('../../../../assets/images/lost-key.png'),
-      videoUrl: 'https://example.com/videos/lost-key.mp4',
+      thumbnailUrl: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1747063607/lost_key_zsnc4v.jpg' },
+      videoUrl: 'https://res.cloudinary.com/dtz1pxv22/video/upload/v1747063620/The_Lost_Key_goh05v.mp4',
       duration: '4:30',
       level: 'beginner',
       hasSubtitles: true,
       vocabulary: [
-        { 
-          word: 'misplace', 
-          definition: 'to put something in the wrong place and be unable to find it', 
-          example: 'I misplaced my keys and couldn\'t find them anywhere.' 
+        {
+          word: 'misplace',
+          definition: 'to put something in the wrong place and be unable to find it',
+          example: 'I misplaced my keys and couldn\'t find them anywhere.'
         },
-        { 
-          word: 'search', 
-          definition: 'to look carefully for something', 
-          example: 'He searched the entire house for his lost wallet.' 
+        {
+          word: 'search',
+          definition: 'to look carefully for something',
+          example: 'He searched the entire house for his lost wallet.'
         },
-        { 
-          word: 'retrace', 
-          definition: 'to go back over the same route or steps', 
-          example: 'I had to retrace my steps to find where I dropped my phone.' 
+        {
+          word: 'retrace',
+          definition: 'to go back over the same route or steps',
+          example: 'I had to retrace my steps to find where I dropped my phone.'
         },
       ],
     },
@@ -96,26 +95,26 @@ const ShortStoryClips: React.FC = () => {
       title: 'The Unexpected Gift',
       description: 'A heartwarming story about receiving an unexpected present from a stranger.',
       type: 'stories',
-    //   thumbnailUrl: require('../../../../assets/images/unexpected-gift.png'),
-      videoUrl: 'https://example.com/videos/unexpected-gift.mp4',
+      thumbnailUrl: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1747063607/gift_qepyzr.jpg' },
+      videoUrl: 'https://res.cloudinary.com/dtz1pxv22/video/upload/v1747063621/The_Unexpected_Gift_lq7wgg.mp4',
       duration: '5:15',
       level: 'intermediate',
       hasSubtitles: true,
       vocabulary: [
-        { 
-          word: 'unexpected', 
-          definition: 'not anticipated or predicted', 
-          example: 'His visit was completely unexpected.' 
+        {
+          word: 'unexpected',
+          definition: 'not anticipated or predicted',
+          example: 'His visit was completely unexpected.'
         },
-        { 
-          word: 'generous', 
-          definition: 'showing a readiness to give more of something than is necessary or expected', 
-          example: 'She was generous with her time and always helped others.' 
+        {
+          word: 'generous',
+          definition: 'showing a readiness to give more of something than is necessary or expected',
+          example: 'She was generous with her time and always helped others.'
         },
-        { 
-          word: 'grateful', 
-          definition: 'feeling or showing appreciation for something done or received', 
-          example: 'I am grateful for your help during this difficult time.' 
+        {
+          word: 'grateful',
+          definition: 'feeling or showing appreciation for something done or received',
+          example: 'I am grateful for your help during this difficult time.'
         },
       ],
     },
@@ -124,26 +123,26 @@ const ShortStoryClips: React.FC = () => {
       title: 'At the Coffee Shop',
       description: 'Learn how to order coffee and have casual conversations at a café.',
       type: 'conversations',
-    //   thumbnailUrl: require('../../../../assets/images/coffee-shop.png'),
-      videoUrl: 'https://example.com/videos/coffee-shop.mp4',
+      thumbnailUrl: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1747064983/At_the_Coffee_Shop_d1v8qp.jpg' },
+      videoUrl: 'https://res.cloudinary.com/dtz1pxv22/video/upload/v1747064986/job_interview_kip8sk.mp4',
       duration: '3:45',
       level: 'beginner',
       hasSubtitles: true,
       vocabulary: [
-        { 
-          word: 'order', 
-          definition: 'to request food or drinks in a restaurant or café', 
-          example: 'I would like to order a cappuccino, please.' 
+        {
+          word: 'order',
+          definition: 'to request food or drinks in a restaurant or café',
+          example: 'I would like to order a cappuccino, please.'
         },
-        { 
-          word: 'menu', 
-          definition: 'a list of food and drinks available in a restaurant', 
-          example: 'Can I see the menu, please?' 
+        {
+          word: 'menu',
+          definition: 'a list of food and drinks available in a restaurant',
+          example: 'Can I see the menu, please?'
         },
-        { 
-          word: 'receipt', 
-          definition: 'a printed document showing that money has been paid', 
-          example: 'Could I have a receipt for my purchase?' 
+        {
+          word: 'receipt',
+          definition: 'a printed document showing that money has been paid',
+          example: 'Could I have a receipt for my purchase?'
         },
       ],
     },
@@ -152,26 +151,26 @@ const ShortStoryClips: React.FC = () => {
       title: 'Job Interview',
       description: 'Learn professional vocabulary and phrases used in job interviews.',
       type: 'conversations',
-    //   thumbnailUrl: require('../../../../assets/images/job-interview.png'),
-      videoUrl: 'https://example.com/videos/job-interview.mp4',
+      thumbnailUrl: { uri: 'https://res.cloudinary.com/dtz1pxv22/image/upload/v1747064984/Job_Interview_gmkjbs.jpg' },
+      videoUrl: 'https://res.cloudinary.com/dtz1pxv22/video/upload/v1747064986/job_interview_kip8sk.mp4',
       duration: '6:20',
       level: 'advanced',
       hasSubtitles: true,
       vocabulary: [
-        { 
-          word: 'qualification', 
-          definition: 'an official record showing that you have finished a training course or have the necessary skills', 
-          example: 'I have several qualifications in marketing and digital media.' 
+        {
+          word: 'qualification',
+          definition: 'an official record showing that you have finished a training course or have the necessary skills',
+          example: 'I have several qualifications in marketing and digital media.'
         },
-        { 
-          word: 'experience', 
-          definition: 'the knowledge or skill that you gain from doing a job or activity', 
-          example: 'I have five years of experience in customer service.' 
+        {
+          word: 'experience',
+          definition: 'the knowledge or skill that you gain from doing a job or activity',
+          example: 'I have five years of experience in customer service.'
         },
-        { 
-          word: 'strength', 
-          definition: 'a good quality or ability that makes someone effective', 
-          example: 'My greatest strength is my ability to work well under pressure.' 
+        {
+          word: 'strength',
+          definition: 'a good quality or ability that makes someone effective',
+          example: 'My greatest strength is my ability to work well under pressure.'
         },
       ],
     },
@@ -219,6 +218,12 @@ const ShortStoryClips: React.FC = () => {
         onPressOut={handlePressOut}
       >
         <View style={styles.thumbnailContainer}>
+
+          <Image
+            source={item.thumbnailUrl}
+            style={styles.thumbnail} 
+          />
+
           <View style={styles.durationBadge}>
             <Text style={styles.durationText}>{item.duration}</Text>
           </View>
@@ -262,8 +267,24 @@ const ShortStoryClips: React.FC = () => {
         🎞 Short Story Clips
       </Animated.Text>
 
-      {/* Type Tabs and Filters ... unchanged ... */}
-
+      <View style={styles.typeTabs}>
+        <TouchableOpacity
+          style={[styles.typeTab, activeType === 'stories' && styles.activeTypeTab]}
+          onPress={() => setActiveType('stories')}
+        >
+          <Text style={[styles.typeTabText, activeType === 'stories' && styles.activeTypeTabText]}>
+            Stories
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.typeTab, activeType === 'conversations' && styles.activeTypeTab]}
+          onPress={() => setActiveType('conversations')}
+        >
+          <Text style={[styles.typeTabText, activeType === 'conversations' && styles.activeTypeTabText]}>
+            Conversations
+          </Text>
+        </TouchableOpacity>
+      </View>
       <FlatList
         data={filteredStories}
         renderItem={renderStoryItem}
@@ -282,180 +303,6 @@ const ShortStoryClips: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f8f9fa',
-    padding: 16,
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    color: '#333',
-  },
-  typeTabs: {
-    flexDirection: 'row',
-    marginBottom: 16,
-  },
-  typeTab: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 2,
-    borderBottomColor: '#e0e0e0',
-  },
-  activeTypeTab: {
-    borderBottomColor: '#0066cc',
-  },
-  typeTabText: {
-    marginLeft: 8,
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#666',
-  },
-  activeTypeTabText: {
-    color: '#0066cc',
-    fontWeight: 'bold',
-  },
-  filtersContainer: {
-    marginBottom: 16,
-  },
-  filterLabel: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    color: '#333',
-  },
-  levelFilters: {
-    flexDirection: 'row',
-  },
-  levelFilter: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 16,
-    marginRight: 8,
-  },
-  levelDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginRight: 6,
-  },
-  levelFilterText: {
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  selectedLevelText: {
-    fontWeight: 'bold',
-  },
-  storiesList: {
-    paddingBottom: 20,
-  },
-  storyCard: {
-    backgroundColor: 'white',
-    borderRadius: 12,
-    marginBottom: 16,
-    overflow: 'hidden',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  thumbnailContainer: {
-    position: 'relative',
-    height: 180,
-  },
-  thumbnail: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-  },
-  durationBadge: {
-    position: 'absolute',
-    bottom: 8,
-    right: 8,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-  },
-  durationText: {
-    color: 'white',
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  playButton: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: [{ translateX: -25 }, { translateY: -25 }],
-  },
-  levelBadge: {
-    position: 'absolute',
-    top: 8,
-    left: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-  },
-  levelText: {
-    color: 'white',
-    fontSize: 10,
-    fontWeight: 'bold',
-  },
-  subtitlesBadge: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  subtitlesText: {
-    color: 'white',
-    fontSize: 10,
-    fontWeight: '500',
-    marginLeft: 4,
-  },
-  storyInfo: {
-    padding: 12,
-  },
-  storyTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 4,
-    color: '#333',
-  },
-  storyDescription: {
-    fontSize: 14,
-    color: '#666',
-    lineHeight: 20,
-  },
-  emptyContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 40,
-  },
-  emptyText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#666',
-    marginTop: 16,
-  },
-  emptySubtext: {
-    fontSize: 14,
-    color: '#999',
-    marginTop: 8,
-  },
-});
+
 
 export default ShortStoryClips; 

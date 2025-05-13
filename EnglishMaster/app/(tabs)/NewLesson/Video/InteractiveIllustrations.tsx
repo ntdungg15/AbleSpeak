@@ -1,366 +1,268 @@
 import React, { useState, useEffect } from "react";
 import {
+  SafeAreaView,
   View,
   Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
+  FlatList,
   Image,
+  TouchableOpacity,
   Modal,
+  StatusBar,
+  Dimensions,
+  StyleSheet,
   ActivityIndicator,
+  Animated,
+  ScrollView,
 } from "react-native";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-  withTiming,
-} from "react-native-reanimated";
-import { fetchIllustrations } from "@/api/NewLesson/illustrations";
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { fetchIllustrations, IllustrationItem, IllustrationCategory } from "@/api/NewLesson/illustrations";
 import { styles } from "@/constants/newlesson/Video/Intereactive";
 
-// Types
-type IllustrationType = "dictionary" | "vocabulary";
-type IllustrationCategory = "animals" | "food" | "travel" | "nature" | "sports";
-
-interface IllustrationItem {
-  id: string;
-  word: string;
-  definition: string;
-  pronunciation: string;
-  image: { uri: string };
-  category: IllustrationCategory;
-  type: IllustrationType;
-  options?: string[];
-  correctAnswer?: number;
+// Extended IllustrationItem type
+interface EnhancedIllustrationItem extends IllustrationItem {
+  examples?: string[];
 }
 
-const InteractiveIllustrations: React.FC = () => {
-  const [activeType, setActiveType] = useState<IllustrationType>("dictionary");
-  const [activeCategory, setActiveCategory] = useState<IllustrationCategory>("animals");
-  const [selectedItem, setSelectedItem] = useState<IllustrationItem | null>(null);
-  const [selectedOption, setSelectedOption] = useState<number | null>(null);
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const [illustrations, setIllustrations] = useState<IllustrationItem[]>([]);
-  const [isImageLoading, setIsImageLoading] = useState(false);
+const { width, height } = Dimensions.get("window");
+const CARD_WIDTH = (width - 48) / 2;
+const CARD_HEIGHT = 160;
 
+const SimpleIllustrations: React.FC = () => {
+  const [items, setItems] = useState<EnhancedIllustrationItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState<EnhancedIllustrationItem | null>(null);
+  const [categories, setCategories] = useState<IllustrationCategory[]>([]);
+  const [activeCategory, setActiveCategory] = useState<IllustrationCategory | null>(null);
+  
   // Animation values
-  const imageOpacity = useSharedValue(0);
-  const modalScale = useSharedValue(0.8);
-  const modalOpacity = useSharedValue(0);
-  const headerY = useSharedValue(-20);
-  const headerOpacity = useSharedValue(0);
+  const fadeAnim = React.useRef(new Animated.Value(0)).current;
+  const scaleAnim = React.useRef(new Animated.Value(0.9)).current;
 
   useEffect(() => {
-    headerY.value = withSpring(0);
-    headerOpacity.value = withTiming(1, { duration: 500 });
+    fetchIllustrations()
+      .then(data => {
+        // Cast to EnhancedIllustrationItem[]
+        const enhancedData = data as EnhancedIllustrationItem[];
+        setItems(enhancedData);
+        // Extract unique categories
+        const uniqueCategories = Array.from(
+          new Set(enhancedData.map(item => item.category))
+        ) as IllustrationCategory[];
+        setCategories(uniqueCategories);
+        if (uniqueCategories.length > 0) {
+          setActiveCategory(uniqueCategories[0]);
+        }
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
-
-  const headerStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: headerY.value }],
-    opacity: headerOpacity.value,
-  }));
 
   useEffect(() => {
-    (async () => {
-      try {
-        const data = await fetchIllustrations();
-        setIllustrations(data);
-      } catch (error) {
-        console.error("Failed to load illustrations:", error);
-      }
-    })();
-  }, []);
-
-  const filteredItems = illustrations.filter(
-    (item) => item.type === activeType && item.category === activeCategory
-  );
-
-  const handleItemPress = (item: IllustrationItem) => {
-    setSelectedItem(item);
-    setSelectedOption(null);
-    setIsCorrect(null);
-    modalScale.value = withSpring(1);
-    modalOpacity.value = withTiming(1);
-  };
-
-  const handleCloseModal = () => {
-    modalScale.value = withTiming(0.8);
-    modalOpacity.value = withTiming(0);
-    setTimeout(() => {
-      setSelectedItem(null);
-      setSelectedOption(null);
-      setIsCorrect(null);
-    }, 300);
-  };
-
-  const handleOptionSelect = (index: number) => {
-    setSelectedOption(index);
-    if (selectedItem?.correctAnswer !== undefined) {
-      setIsCorrect(index === selectedItem.correctAnswer);
+    if (selected) {
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.spring(scaleAnim, {
+          toValue: 1,
+          friction: 7,
+          tension: 40,
+          useNativeDriver: true,
+        })
+      ]).start();
+    } else {
+      fadeAnim.setValue(0);
+      scaleAnim.setValue(0.9);
     }
+  }, [selected]);
+
+  const filteredItems = activeCategory 
+    ? items.filter(item => item.category === activeCategory) 
+    : items;
+
+  const handleSelectItem = (item: EnhancedIllustrationItem) => {
+    setSelected(item);
   };
 
-  const handleImageLoad = () => {
-    setIsImageLoading(false);
-    imageOpacity.value = withTiming(1, { duration: 300 });
+  const closeModal = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start(() => {
+      setSelected(null);
+    });
   };
 
-  const imageAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: imageOpacity.value,
-  }));
-
-  const categories = [
-    { id: "animals", label: "Animals", icon: "🐘" },
-    { id: "food", label: "Food", icon: "🍔" },
-    { id: "travel", label: "Travel", icon: "✈️" },
-    { id: "nature", label: "Nature", icon: "🌲" },
-    { id: "sports", label: "Sports", icon: "⚽" },
-  ];
+  if (loading) {
+    return (
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" color="#6a3093" />
+        <Text style={styles.loaderText}>Đang tải dữ liệu...</Text>
+      </View>
+    );
+  }
 
   return (
-    <View style={styles.container}>
-      <Animated.Text style={[styles.header, headerStyle]}>
-        🖌 Interactive Illustrations
-      </Animated.Text>
-
-      <View style={styles.typeTabs}>
-        <TouchableOpacity
-          style={[
-            styles.typeTab,
-            activeType === "dictionary" && styles.activeTypeTab,
-          ]}
-          onPress={() => setActiveType("dictionary")}
-        >
-          <Ionicons
-            name="book"
-            size={20}
-            color={activeType === "dictionary" ? "#0066cc" : "#666"}
-          />
-          <Text
-            style={[
-              styles.typeTabText,
-              activeType === "dictionary" && styles.activeTypeTabText,
-            ]}
-          >
-            Picture Dictionary
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[
-            styles.typeTab,
-            activeType === "vocabulary" && styles.activeTypeTab,
-          ]}
-          onPress={() => setActiveType("vocabulary")}
-        >
-          <MaterialIcons
-            name="school"
-            size={20}
-            color={activeType === "vocabulary" ? "#0066cc" : "#666"}
-          />
-          <Text
-            style={[
-              styles.typeTabText,
-              activeType === "vocabulary" && styles.activeTypeTabText,
-            ]}
-          >
-            Vocabulary Builder
-          </Text>
-        </TouchableOpacity>
+    <SafeAreaView style={styles.container}>
+      <StatusBar
+        barStyle="light-content"
+        translucent={true}
+        backgroundColor="transparent"
+      />
+      
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>INTEREACTIVE ILLUSTRATIONS</Text>
+        <Text style={styles.headerSubtitle}>Khám phá từ vựng qua hình ảnh</Text>
       </View>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {categories.map((category) => (
-          <TouchableOpacity
-            key={category.id}
-            style={[
-              styles.categoryButton,
-              activeCategory === category.id && styles.activeCategoryButton,
-            ]}
-            onPress={() => setActiveCategory(category.id as IllustrationCategory)}
-          >
-            <Text style={styles.categoryIcon}>{category.icon}</Text>
-            <Text
-              style={[
-                styles.categoryLabel,
-                activeCategory === category.id && styles.activeCategoryLabel,
-              ]}
-            >
-              {category.label}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-
-      <ScrollView>
-        <View style={styles.itemsGrid}>
-          {filteredItems.map((item, index) => (
+      {/* Categories */}
+      <View style={styles.categoriesContainer}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.categoriesScroll}
+        >
+          {categories.map(category => (
             <TouchableOpacity
-              key={item.id}
-              style={styles.illustrationItem}
-              onPress={() => handleItemPress(item)}
+              key={category}
+              style={[
+                styles.categoryButton,
+                activeCategory === category && styles.categoryButtonActive
+              ]}
+              onPress={() => setActiveCategory(category)}
             >
-              <Image source={item.image} style={styles.itemImage} />
-              {activeType === "dictionary" ? (
-                <View style={styles.itemInfo}>
-                  <Text style={styles.itemWord}>{item.word}</Text>
-                  <Text style={styles.itemPronunciation}>{item.pronunciation}</Text>
-                </View>
-              ) : (
-                <View style={styles.itemInfo}>
-                  <Text style={styles.itemQuestion}>What is this?</Text>
-                  <MaterialIcons name="touch-app" size={24} color="#0066cc" />
-                </View>
-              )}
+              <Text
+                style={[
+                  styles.categoryText,
+                  activeCategory === category && styles.categoryTextActive
+                ]}
+              >
+                {category}
+              </Text>
             </TouchableOpacity>
           ))}
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
 
-      {/* Dictionary Modal */}
-      {activeType === "dictionary" && selectedItem && (
-        <Modal
-          visible={!!selectedItem}
-          transparent
-          animationType="none"
-          onRequestClose={handleCloseModal}
-        >
+      <FlatList
+        data={filteredItems}
+        keyExtractor={item => item.id}
+        numColumns={2}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.list}
+        renderItem={({ item }) => (
           <TouchableOpacity
-            style={styles.modalContainer}
-            activeOpacity={1}
-            onPress={handleCloseModal}
-          />
-          <Animated.View
-            style={[
-              styles.modalContent,
-              {
-                transform: [{ scale: modalScale.value }],
-                opacity: modalOpacity.value,
-              },
-            ]}
+            style={styles.card}
+            activeOpacity={0.75}
+            onPress={() => handleSelectItem(item)}
           >
-            <TouchableOpacity style={styles.closeButton} onPress={handleCloseModal}>
-              <Ionicons name="close" size={24} color="#666" />
-            </TouchableOpacity>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalWord}>{selectedItem.word}</Text>
-              <Text style={styles.modalPronunciation}>{selectedItem.pronunciation}</Text>
-            </View>
-            <View style={styles.imageContainer}>
-              {isImageLoading && (
-                <ActivityIndicator style={styles.imageLoader} color="#0066cc" size="large" />
-              )}
-              <Animated.Image
-                source={{ uri: selectedItem.image.uri }}
-                style={[styles.modalImage, imageAnimatedStyle]}
-                onLoadStart={() => {
-                  setIsImageLoading(true);
-                  imageOpacity.value = 0;
-                }}
-                onLoad={handleImageLoad}
+            <View style={styles.cardImageContainer}>
+              <Image source={{ uri: item.image.uri }} style={styles.thumb} />
+              <LinearGradient
+                colors={['transparent', 'rgba(0,0,0,0.7)']}
+                style={styles.cardGradient}
               />
             </View>
-            <Text style={styles.modalDefinition}>{selectedItem.definition}</Text>
-          </Animated.View>
-        </Modal>
-      )}
+            <View style={styles.cardContent}>
+              <Text style={styles.title}>{item.word}</Text>
+              {item.pronunciation && (
+                <Text style={styles.pronunciation}>/{item.pronunciation}/</Text>
+              )}
+            </View>
+          </TouchableOpacity>
+        )}
+      />
 
-      {/* Vocabulary Builder Modal */}
-      {activeType === "vocabulary" && selectedItem && (
-        <Modal
-          visible={!!selectedItem}
-          transparent
-          animationType="none"
-          onRequestClose={handleCloseModal}
-        >
-          <TouchableOpacity
-            style={styles.modalContainer}
-            activeOpacity={1}
-            onPress={handleCloseModal}
-          />
-          <Animated.View
+      {/* Modal */}
+      <Modal
+        visible={!!selected}
+        transparent={true}
+        animationType="none"
+        statusBarTranslucent={true}
+        onRequestClose={closeModal}
+      >
+        <BlurView intensity={90} style={StyleSheet.absoluteFill} tint="dark">
+          <Animated.View 
             style={[
-              styles.modalContent,
+              styles.modalContainer,
               {
-                transform: [{ scale: modalScale.value }],
-                opacity: modalOpacity.value,
-              },
+                opacity: fadeAnim,
+                transform: [{ scale: scaleAnim }]
+              }
             ]}
           >
-            <TouchableOpacity style={styles.closeButton} onPress={handleCloseModal}>
-              <Ionicons name="close" size={24} color="#666" />
+            <TouchableOpacity
+              style={styles.closeButtonContainer}
+              onPress={closeModal}
+            >
+              <Ionicons name="close" size={24} color="#fff" />
             </TouchableOpacity>
-            <Image source={selectedItem.image} style={styles.modalImage} />
-            <Text style={styles.quizQuestion}>What is this?</Text>
-            <View style={styles.optionsContainer}>
-              {selectedItem.options?.map((option, idx) => (
-                <TouchableOpacity
-                  key={idx}
-                  style={[
-                    styles.optionButton,
-                    selectedOption === idx && styles.selectedOption,
-                    selectedOption === idx &&
-                      isCorrect &&
-                      styles.correctOption,
-                    selectedOption === idx &&
-                      isCorrect === false &&
-                      styles.incorrectOption,
-                  ]}
-                  onPress={() => handleOptionSelect(idx)}
-                  disabled={selectedOption !== null}
-                >
-                  <Text
-                    style={[
-                      styles.optionText,
-                      selectedOption === idx &&
-                        isCorrect &&
-                        styles.correctOptionText,
-                      selectedOption === idx &&
-                        isCorrect === false &&
-                        styles.incorrectOptionText,
-                    ]}
-                  >
-                    {option}
-                  </Text>
-                  {selectedOption === idx &&
-                    (isCorrect ? (
-                      <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
-                    ) : (
-                      <Ionicons name="close-circle" size={24} color="#F44336" />
-                    ))}
-                </TouchableOpacity>
-              ))}
-            </View>
-            {selectedOption !== null && (
-              <View style={styles.resultContainer}>
-                {isCorrect ? (
-                  <Text style={styles.correctText}>Correct! 🎉</Text>
-                ) : (
-                  <View>
-                    <Text style={styles.incorrectText}>
-                      Incorrect. The correct answer is:
-                    </Text>
-                    <Text style={styles.correctAnswerText}>
-                      {selectedItem.options?.[
-                        selectedItem.correctAnswer || 0
-                      ]}
-                    </Text>
+
+            {selected && (
+              <View style={styles.modalContent}>
+                <Image
+                  source={{ uri: selected.image.uri }}
+                  style={styles.modalImage}
+                />
+
+                <View style={styles.modalInfoContainer}>
+                  <View style={styles.modalHeader}>
+                    <Text style={styles.modalWord}>{selected.word}</Text>
+                    {selected.pronunciation && (
+                      <Text style={styles.modalPron}>/{selected.pronunciation}/</Text>
+                    )}
                   </View>
-                )}
-                <TouchableOpacity
-                  style={styles.nextButton}
-                  onPress={handleCloseModal}
-                >
-                  <Text style={styles.nextButtonText}>Next</Text>
-                </TouchableOpacity>
+
+                  <LinearGradient
+                    colors={['#6a3093', '#a044ff']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={styles.divider}
+                  />
+
+                  <ScrollView style={styles.modalDefinitionContainer}>
+                    <Text style={styles.modalDef}>{selected.definition}</Text>
+                    
+                    {selected.examples && selected.examples.length > 0 && (
+                      <View style={styles.examplesContainer}>
+                        <Text style={styles.examplesTitle}>Ví dụ:</Text>
+                        {selected.examples.map((example: string, index: number) => (
+                          <View key={index} style={styles.exampleItem}>
+                            <MaterialIcons name="format-quote" size={18} color="#6a3093" />
+                            <Text style={styles.exampleText}>{example}</Text>
+                          </View>
+                        ))}
+                      </View>
+                    )}
+                  </ScrollView>
+
+                  <TouchableOpacity
+                    onPress={closeModal}
+                    style={styles.closeBtn}
+                  >
+                    <LinearGradient
+                      colors={['#6a3093', '#a044ff']}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 0 }}
+                      style={styles.closeBtnGradient}
+                    >
+                      <Text style={styles.closeText}>Đóng</Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                </View>
               </View>
             )}
           </Animated.View>
-        </Modal>
-      )}
-    </View>
+        </BlurView>
+      </Modal>
+    </SafeAreaView>
   );
 };
 
-export default InteractiveIllustrations;
+export default SimpleIllustrations;
+

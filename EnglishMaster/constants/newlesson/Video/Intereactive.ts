@@ -1,271 +1,238 @@
-import { StyleSheet } from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    ScrollView,
+    TouchableOpacity,
+    Image,
+    Modal,
+    ActivityIndicator,
+    Dimensions,
+    SafeAreaView,
+    StatusBar,
+    Platform,
+} from "react-native";
+
+const { width, height } = Dimensions.get("window");
+const CARD_WIDTH = (width - 48) / 2;
+const CARD_HEIGHT = 160;
 
 export const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: "#f8f9fa",
-        padding: 16,
+      flex: 1,
+      backgroundColor: "#f8f9fa",
     },
     header: {
-        fontSize: 24,
-        fontWeight: "bold",
-        marginBottom: 16,
-        color: "#333",
+      paddingHorizontal: 16,
+      paddingTop: 40,
+      paddingBottom: 16,
+      backgroundColor: "#6a3093",
     },
-    typeTabs: {
-        flexDirection: "row",
-        marginBottom: 8,
+    headerTitle: {
+      fontSize: 24,
+      fontWeight: "bold",
+      color: "#fff",
+      marginBottom: 4,
     },
-    typeTab: {
-        flex: 1,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        paddingVertical: 12,
-        borderBottomWidth: 2,
-        borderBottomColor: "#e0e0e0",
+    headerSubtitle: {
+      fontSize: 16,
+      color: "rgba(255,255,255,0.8)",
     },
-    activeTypeTab: {
-        borderBottomColor: "#0066cc",
+    loader: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "#f8f9fa",
     },
-    typeTabText: {
-        marginLeft: 8,
-        fontSize: 14,
-        fontWeight: "500",
-        color: "#666",
-    },
-    activeTypeTabText: {
-        color: "#0066cc",
-        fontWeight: "bold",
+    loaderText: {
+      marginTop: 12,
+      fontSize: 16,
+      color: "#6a3093",
     },
     categoriesContainer: {
-        paddingVertical: 0,
+      paddingVertical: 12,
+      backgroundColor: "#fff",
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.05,
+      shadowRadius: 3,
+      elevation: 2,
+      zIndex: 10,
+    },
+    categoriesScroll: {
+      paddingHorizontal: 16,
     },
     categoryButton: {
-        alignItems: "center",
-        marginRight: 16,
-        paddingHorizontal: 16,
-        paddingVertical: 8,
-        borderRadius: 20,
-        backgroundColor: "#e9ecef",
-        height: 84,
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      marginRight: 8,
+      borderRadius: 20,
+      backgroundColor: "#f0f0f0",
     },
-    activeCategoryButton: {
-        backgroundColor: "#0066cc",
+    categoryButtonActive: {
+      backgroundColor: "#6a3093",
     },
-    categoryIcon: {
-        fontSize: 24,
-        marginBottom: 4,
+    categoryText: {
+      fontSize: 14,
+      fontWeight: "500",
+      color: "#666",
     },
-    categoryLabel: {
-        fontSize: 12,
-        color: "#666",
+    categoryTextActive: {
+      color: "#fff",
     },
-    activeCategoryLabel: {
-        color: "white",
-        fontWeight: "bold",
+    list: {
+      padding: 16,
+      paddingBottom: 32,
     },
-    itemsContainer: {
-        flex: 1,
-        marginTop: -4, 
+    card: {
+      width: CARD_WIDTH,
+      marginHorizontal: 8,
+      marginBottom: 16,
+      borderRadius: 12,
+      backgroundColor: "#fff",
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 3,
+      overflow: "hidden",
     },
-    itemsGrid: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        justifyContent: "space-between",
+    cardImageContainer: {
+      position: "relative",
+      width: CARD_WIDTH,
+      height: CARD_HEIGHT,
     },
-    illustrationItem: {
-        width: "48%",
-        backgroundColor: "white",
-        borderRadius: 12,
-        marginBottom: 16,
-        overflow: "hidden",
-        elevation: 2,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
+    thumb: {
+      width: "100%",
+      height: "100%",
+      resizeMode: "cover",
     },
-    itemImage: {
-        width: "100%",
-        height: 120,
-        resizeMode: "cover",
+    cardGradient: {
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: 60,
     },
-    itemInfo: {
-        padding: 12,
-        alignItems: "center",
+    cardContent: {
+      padding: 12,
     },
-    itemWord: {
-        fontSize: 16,
-        fontWeight: "bold",
-        color: "#333",
+    title: {
+      fontSize: 16,
+      fontWeight: "700",
+      color: "#333",
+      marginBottom: 2,
     },
-    itemPronunciation: {
-        fontSize: 12,
-        color: "#666",
-        marginTop: 2,
+    pronunciation: {
+      fontSize: 12,
+      color: "#888",
     },
-    itemQuestion: {
-        fontSize: 14,
-        fontWeight: "500",
-        color: "#333",
-        marginBottom: 4,
-    },
+    
+    /* Modal */
     modalContainer: {
-        flex: 1,
-        backgroundColor: "rgba(0,0,0,0.5)",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: 16,
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 16,
+    },
+    closeButtonContainer: {
+      position: "absolute",
+      top: 40,
+      right: 20,
+      zIndex: 100,
+      width: 36,
+      height: 36,
+      borderRadius: 18,
+      backgroundColor: "rgba(0,0,0,0.3)",
+      justifyContent: "center",
+      alignItems: "center",
     },
     modalContent: {
-        backgroundColor: "white",
-        borderRadius: 12,
-        padding: 20,
-        width: "90%",
-        maxWidth: 400,
-        elevation: 5,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-    },
-    closeButton: {
-        position: "absolute",
-        top: 10,
-        right: 10,
-        zIndex: 10,
-        padding: 5,
+      width: width * 0.9,
+      maxHeight: height * 0.85,
+      backgroundColor: "#fff",
+      borderRadius: 20,
+      overflow: "hidden",
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 10 },
+      shadowOpacity: 0.3,
+      shadowRadius: 20,
+      elevation: 15,
     },
     modalImage: {
-        width: "100%",
-        height: 180,
-        resizeMode: "cover",
-        borderRadius: 8,
-        marginBottom: 16,
+      width: "100%",
+      height: 220,
+      resizeMode: "cover",
+    },
+    modalInfoContainer: {
+      padding: 20,
     },
     modalHeader: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
+      alignItems: "center",
+      marginBottom: 16,
     },
     modalWord: {
-        fontSize: 24,
-        fontWeight: "bold",
-        color: "#333",
+      fontSize: 28,
+      fontWeight: "bold",
+      color: "#222",
+      marginBottom: 4,
+      textAlign: "center",
     },
-    modalPronunciation: {
-        fontSize: 16,
-        color: "#666",
+    modalPron: {
+      fontSize: 18,
+      color: "#666",
+      textAlign: "center",
     },
-    audioButton: {
-        backgroundColor: "#0066cc",
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        justifyContent: "center",
-        alignItems: "center",
+    divider: {
+      height: 2,
+      borderRadius: 1,
+      marginVertical: 12,
     },
-    modalDefinition: {
-        fontSize: 16,
-        color: "#333",
-        lineHeight: 24,
-        marginBottom: 20,
+    modalDefinitionContainer: {
+      maxHeight: 220,
+      marginBottom: 16,
     },
-    saveButton: {
-        backgroundColor: "#f0f0f0",
-        padding: 12,
-        borderRadius: 8,
-        alignItems: "center",
+    modalDef: {
+      fontSize: 16,
+      lineHeight: 24,
+      color: "#333",
+      marginBottom: 16,
     },
-    saveButtonText: {
-        color: "#333",
-        fontWeight: "500",
+    examplesContainer: {
+      marginTop: 8,
     },
-    quizQuestion: {
-        fontSize: 20,
-        fontWeight: "bold",
-        color: "#333",
-        marginBottom: 16,
-        textAlign: "center",
+    examplesTitle: {
+      fontSize: 18,
+      fontWeight: "600",
+      color: "#333",
+      marginBottom: 8,
     },
-    optionsContainer: {
-        marginBottom: 16,
+    exampleItem: {
+      flexDirection: "row",
+      alignItems: "flex-start",
+      marginBottom: 8,
+      paddingLeft: 8,
     },
-    optionButton: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        backgroundColor: "#f0f0f0",
-        padding: 12,
-        borderRadius: 8,
-        marginBottom: 8,
+    exampleText: {
+      flex: 1,
+      fontSize: 16,
+      color: "#444",
+      marginLeft: 8,
+      lineHeight: 22,
     },
-    selectedOption: {
-        borderWidth: 2,
+    closeBtn: {
+      borderRadius: 12,
+      overflow: "hidden",
     },
-    correctOption: {
-        backgroundColor: "rgba(76, 175, 80, 0.2)",
-        borderColor: "#4CAF50",
+    closeBtnGradient: {
+      paddingVertical: 12,
+      alignItems: "center",
+      justifyContent: "center",
     },
-    incorrectOption: {
-        backgroundColor: "rgba(244, 67, 54, 0.2)",
-        borderColor: "#F44336",
+    closeText: {
+      color: "#fff",
+      fontSize: 16,
+      fontWeight: "600",
     },
-    optionText: {
-        fontSize: 16,
-        color: "#333",
-    },
-    correctOptionText: {
-        color: "#4CAF50",
-        fontWeight: "bold",
-    },
-    incorrectOptionText: {
-        color: "#F44336",
-        fontWeight: "bold",
-    },
-    resultContainer: {
-        marginBottom: 16,
-        alignItems: "center",
-    },
-    correctText: {
-        fontSize: 18,
-        fontWeight: "bold",
-        color: "#4CAF50",
-        marginBottom: 8,
-    },
-    incorrectText: {
-        fontSize: 16,
-        color: "#F44336",
-        textAlign: "center",
-        marginBottom: 4,
-    },
-    correctAnswerText: {
-        fontSize: 18,
-        fontWeight: "bold",
-        color: "#333",
-        textAlign: "center",
-        marginBottom: 8,
-    },
-    hearPronunciationButton: {
-        flexDirection: "row",
-        alignItems: "center",
-        padding: 8,
-    },
-    hearPronunciationText: {
-        color: "#0066cc",
-        marginRight: 4,
-        fontWeight: "500",
-    },
-    nextButton: {
-        backgroundColor: "#0066cc",
-        padding: 12,
-        borderRadius: 8,
-        alignItems: "center",
-    },
-    nextButtonText: {
-        color: "white",
-        fontSize: 16,
-        fontWeight: "bold",
-    },
-});
+  });
+  
