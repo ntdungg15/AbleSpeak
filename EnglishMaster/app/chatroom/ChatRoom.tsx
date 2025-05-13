@@ -1,7 +1,7 @@
 import React from "react";
 import { 
   View, 
-  Text,
+  // Text,
   SafeAreaView, 
   StatusBar, 
   Platform, 
@@ -17,6 +17,7 @@ import { styles } from "@/constants/chatbot/ChatRoom";
 import { 
   useState, 
   useEffect,
+  useRef,
 } from "react";
 import { useLocalSearchParams } from "expo-router";
 
@@ -27,9 +28,12 @@ import Feather from '@expo/vector-icons/Feather';
 // import { getGroqResponse } from "@/service/gropService"
 import Markdown from 'react-native-markdown-display';
 import { ChatFooter } from "@/components/chatbot/chatroom/ChatFooter";
+import LottieView from 'lottie-react-native';
+
+import VoiceAnimation from "@/assets/animations/ChatRoom/botChatTypeIndicator.json";
 
 type Message = {
-  text: String;
+  text: string;
   isUser: boolean;
 };
 
@@ -40,6 +44,7 @@ const ChatRoom = () => {
   const [ messList, setMessList ] = useState<Message[]>([]); 
   const [ typingIndicator, setTypingIndicator ] = useState(false);
   let chatRespone: string = "";
+  const animation = useRef<LottieView>(null);
 
   const handleBackPress = () => {
     router.back();
@@ -91,10 +96,35 @@ const ChatRoom = () => {
         chatRespone = "Fix xong t xu m, nu pa ga chi";
         const responseText = chatRespone || "Xin lỗi, không có phản hồi từ máy chủ.";
         setMessList(prev => [...prev, { text: responseText, isUser: false }]);
-      }, 1500); // 2 seconds delay
+      }, 1500); 
       return () => clearTimeout(timer);
     }
   }, [typingIndicator]);
+
+  useEffect(() => {
+    // You can control the ref programmatically, rather than using autoPlay
+    // animation.current?.play();
+  }, []);
+
+  const VoiceIndicatorAnimation = () => {
+    return (
+      <>
+        <View style={styles.voiceAnimationContainer}>
+          <LottieView
+            autoPlay
+            ref={animation}
+            style={{
+              width: 50,
+              height: 30,
+              // backgroundColor: '#eee',
+            }}
+            // Find more Lottie files at https://lottiefiles.com/featured
+            source={VoiceAnimation}
+          />
+        </View>
+      </>
+    );
+  }
   return (
     <>
     <StatusBar barStyle="dark-content" backgroundColor="#f8f8f8" />
@@ -189,7 +219,7 @@ const ChatRoom = () => {
           {typingIndicator ? (
             <>
               <View style={styles.botMessContainer}>
-                <Text>Cho ti di</Text>
+                <VoiceIndicatorAnimation />
               </View>
             </>
           ) : (

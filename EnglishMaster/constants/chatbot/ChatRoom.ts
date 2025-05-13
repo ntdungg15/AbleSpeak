@@ -89,4 +89,10 @@ export  const styles = StyleSheet.create({
         alignSelf: "flex-start",
         justifyContent: "center",
     },
+
+    voiceAnimationContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
 });
