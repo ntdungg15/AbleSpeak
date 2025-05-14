@@ -135,7 +135,7 @@ const ChatRoom = () => {
         setTypingIndicator(false);
         const message = messList[messList.length - 1].text;
         chatRespone = await getGroqResponse(message);
-        chatRespone = "Fix xong t xu m, nu pa ga chi";
+        // chatRespone = "Fix xong t xu m, nu pa ga chi";
         const responseText =
           chatRespone || "Xin lỗi, không có phản hồi từ máy chủ.";
         setMessList((prev) => [...prev, { text: responseText, isUser: false }]);

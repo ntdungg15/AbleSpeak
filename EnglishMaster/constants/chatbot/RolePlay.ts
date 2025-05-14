@@ -44,8 +44,9 @@ export  const styles = StyleSheet.create({
     },
 
     cardContainer: {
-        margin: 4,
+        
         marginBottom: 20,
+        marginHorizontal: 10,
         width: 160,
         height: "100%",
 
