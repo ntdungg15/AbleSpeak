@@ -15,15 +15,11 @@ import {
 import { useRouter } from "expo-router";
 import { styles } from "@/constants/chatbot/ChatRoom";
 // import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { 
-  useState, 
-  useEffect,
-  useRef,
-} from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocalSearchParams } from "expo-router";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import { getGroqResponse } from "@/api/gropService";
 import Markdown from "react-native-markdown-display";
@@ -43,7 +39,7 @@ const ChatRoom = () => {
   const router = useRouter();
   const { topic } = useLocalSearchParams();
   const [messList, setMessList] = useState<Message[]>([]);
-  const [typingIndicator, setTypingIndicator] = useState(false);
+  const [typingIndicator, setTypingIndicator] = useState(true);
   let chatRespone: string = "";
   const [isSpeaking, setIsSpeaking] = useState(true);
   const animation = useRef<LottieView>(null);
@@ -174,9 +170,7 @@ const ChatRoom = () => {
 
   const speak = (text: string) => {
     Speech.speak(text);
-    
   };
-
 
   return (
     <>
@@ -201,7 +195,6 @@ const ChatRoom = () => {
           >
             <Text style={styles.headerTopicText}>{topic}</Text>
             <TouchableOpacity>
-
               <AntDesign
                 name="close"
                 size={24}
@@ -215,7 +208,6 @@ const ChatRoom = () => {
                 onPress={handleBackPress}
               />
             </TouchableOpacity>
-            
           </View>
 
           <View style={styles.container}>
@@ -228,67 +220,68 @@ const ChatRoom = () => {
               }}
               keyboardShouldPersistTaps="handled"
             >
-              {messList.map((mess, index) => 
-                {
-                  const isLastBotMessage = !mess.isUser && index === messList.length - 1;
+              {messList.map((mess, index) => {
+                const isLastBotMessage =
+                  !mess.isUser && index === messList.length - 1;
 
-                  return mess.isUser ? (
-                    <View key={`user-${index}`} style={styles.userMessContainer}>
-                      <Markdown
-                        style={{
-                          body: {
-                            color: "black",
-                            fontSize: 18,
-                          },
+                return mess.isUser ? (
+                  <View key={`user-${index}`} style={styles.userMessContainer}>
+                    <Markdown
+                      style={{
+                        body: {
+                          color: "black",
+                          fontSize: 18,
+                        },
+                      }}
+                    >
+                      {mess.text.trim()}
+                    </Markdown>
+                  </View>
+                ) : (
+                  <View key={`bot-${index}`} style={styles.botMessContainer}>
+                    <Markdown
+                      style={{
+                        body: {
+                          color: "white",
+                          fontSize: 18,
+                        },
+                      }}
+                    >
+                      {mess.text.trim()}
+                    </Markdown>
+
+                    {/* StopButton  */}
+                    {isLastBotMessage && (
+                      <TouchableOpacity
+                        style={styles.stopButton}
+                        onPress={() => {
+                          if (isSpeaking) {
+                            Speech.stop();
+                            setIsSpeaking(false);
+                          } else {
+                            Speech.speak(mess.text);
+                            setIsSpeaking(true);
+                          }
                         }}
                       >
-                        {mess.text.trim()}
-                      </Markdown>
-                    </View>
-                  ) : (
-                    <View key={`bot-${index}`} style={styles.botMessContainer}>
-                      <Markdown
-                        style={{
-                          body: {
-                            color: "white",
-                            fontSize: 18,
-                          },
-                        }}
-                      >
-                        {mess.text.trim()}
-                      </Markdown>
-                      
-
-                      {/* StopButton  */}
-                      {isLastBotMessage && (
-                        <TouchableOpacity
-                          style={styles.stopButton}
-                          onPress={() => {
-                            if (isSpeaking) {
-                              Speech.stop();
-                              setIsSpeaking(false);
-                            } else {
-                              Speech.speak(mess.text);
-                              setIsSpeaking(true);
-                            }
-                          }}
-                        >
-                          {isSpeaking ? (
-                            <>
-                              <AntDesign name="pause" size={14} color="#A4BEED" />
-                            </>
-                          ) : (
-                            <>
-                              <FontAwesome name="play" size={14} color="#A4BEED" />
-                            </>
-                          )}
-                        </TouchableOpacity>
-                      )}
-                    </View>
-                  )
-
-                }
-              )}
+                        {isSpeaking ? (
+                          <>
+                            <AntDesign name="pause" size={14} color="#A4BEED" />
+                          </>
+                        ) : (
+                          <>
+                            <FontAwesome
+                              name="play"
+                              size={14}
+                              color="#A4BEED"
+                            />
+                          </>
+                        )}
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                );
+              })}
 
               {/* TypingIndicator  */}
               {typingIndicator ? (

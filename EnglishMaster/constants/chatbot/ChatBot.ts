@@ -38,9 +38,7 @@ export  const styles = StyleSheet.create({
         marginHorizontal: 8,
         
         height: 200,
-
-        
-        
+ 
     },
 
     textcardheader: {
@@ -59,6 +57,7 @@ export  const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
 
+        
     },
 
     classicImage: {
@@ -80,6 +79,7 @@ export  const styles = StyleSheet.create({
 
     classicTextContainer: {
         marginLeft: 16,
+        marginTop: 16,
         width: 160,
         height: "auto",
 

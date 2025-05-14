@@ -129,8 +129,8 @@ export  const styles = StyleSheet.create({
     stopButton: {
         marginVertical: 4,
 
-        width: 20,
-        height: 20,
+        width: 26,
+        height: 26,
 
         borderRadius: 9999,
         backgroundColor: "#5375F1",
