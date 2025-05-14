@@ -51,127 +51,125 @@ export const illustrationData: IllustrationItem[] = [
 
     {
         id: "voc-animal1",
-        word: "Lion",
-        definition:
-            "A large wild cat with a mane around its face, living in Africa.",
-        pronunciation: "/ˈlaɪən/",
+        word: "Rabbit",
+        definition: "A small mammal with long ears, soft fur, and a short tail.",
+        pronunciation: "/ˈræbɪt/",
         image: {
-            uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896761/lion_hnocf8.jpg",
+            uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1747213925/th%E1%BB%8F_evcdmr.jpg",
         },
         category: "animals",
         type: "vocabulary",
-        options: ["Tiger", "Lion", "Leopard", "Cheetah"],
-        correctAnswer: 1,
+        options: ["Rabbit", "Hare", "Squirrel", "Mouse"],
+        correctAnswer: 0,
     },
     {
         id: "voc-animal2",
-        word: "Elephant",
-        definition:
-            "A very large animal with a long, flexible nose and two tusks.",
-        pronunciation: "/ˈelɪfənt/",
+        word: "Horse",
+        definition: "A large, strong animal with four legs, used for riding or pulling loads.",
+        pronunciation: "/hɔːrs/",
         image: {
-            uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896823/Sushi_ayqydt.jpg",
+            uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1747213925/ng%E1%BB%B1a_jygqo6.jpg",
         },
         category: "animals",
         type: "vocabulary",
-        options: ["Rhinoceros", "Hippopotamus", "Elephant", "Giraffe"],
-        correctAnswer: 2,
+        options: ["Donkey", "Horse", "Zebra", "Camel"],
+        correctAnswer: 1,
     },
     {
-        "id": "animal3",
-        "word": "Tiger",
-        "definition": "A large wild cat with a pattern of dark vertical stripes on reddish-orange fur.",
-        "pronunciation": "/ˈtaɪɡər/",
-        "image": {
-            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960131/tiger_w61ylz.jpg"
+        id: "animal3",
+        word: "Wolf",
+        definition: "A wild carnivorous mammal that is the largest member of the dog family.",
+        pronunciation: "/wʊlf/",
+        image: {
+            uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1747213925/wolves_vcajkw.jpg",
         },
-        "category": "animals",
-        "type": "dictionary"
+        category: "animals",
+        type: "dictionary",
     },
     {
-        "id": "voc-animal3",
-        "word": "Tiger",
-        "definition": "A large wild cat with a pattern of dark vertical stripes on reddish-orange fur.",
-        "pronunciation": "/ˈtaɪɡər/",
-        "image": {
-            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960131/tiger_w61ylz.jpg"
+        id: "voc-animal3",
+        word: "Tiger",
+        definition: "A large wild cat with a pattern of dark vertical stripes on reddish-orange fur.",
+        pronunciation: "/ˈtaɪɡər/",
+        image: {
+            uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960131/tiger_w61ylz.jpg"
         },
-        "category": "animals",
-        "type": "vocabulary",
-        "options": ["Lion", "Tiger", "Leopard", "Cheetah"],
-        "correctAnswer": 1
+        category: "animals",
+        type: "vocabulary",
+        options: ["Lion", "Tiger", "Leopard", "Cheetah"],
+        correctAnswer: 1
+    },
+    // {
+    //     id: "animal4",
+    //     word: "Giraffe",
+    //     definition: "A very tall African mammal with a long neck and legs, and distinctive spotted coat.",
+    //     pronunciation: "/dʒəˈræf/",
+    //     image: {
+    //         uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960672/habitat_giraffe_bpny9x.jpg"
+    //     },
+    //     category: "animals",
+    //     type: "dictionary"
+    // },
+    {
+        id: "voc-animal4",
+        word: "Giraffe",
+        definition: "A very tall African mammal with a long neck and legs, and distinctive spotted coat.",
+        pronunciation: "/dʒəˈræf/",
+        image: {
+            uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960672/habitat_giraffe_bpny9x.jpg"
+        },
+        category: "animals",
+        type: "vocabulary",
+        options: ["Elephant", "Hippopotamus", "Giraffe", "Zebra"],
+        correctAnswer: 2
     },
     {
-        "id": "animal4",
-        "word": "Giraffe",
-        "definition": "A very tall African mammal with a long neck and legs, and distinctive spotted coat.",
-        "pronunciation": "/dʒəˈræf/",
-        "image": {
-            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960672/habitat_giraffe_bpny9x.jpg"
+        id: "animal5",
+        word: "Zebra",
+        definition: "An African wild horse with black-and-white stripes and an erect mane.",
+        pronunciation: "/ˈziːbrə/",
+        image: {
+            uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960555/zebra_ga1jt8.jpg"
         },
-        "category": "animals",
-        "type": "dictionary"
+        category: "animals",
+        type: "dictionary"
     },
+    // {
+    //     id: "voc-animal5",
+    //     word: "Zebra",
+    //     definition: "An African wild horse with black-and-white stripes and an erect mane.",
+    //     pronunciation: "/ˈziːbrə/",
+    //     image: {
+    //         uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960555/zebra_ga1jt8.jpg"
+    //     },
+    //     category: "animals",
+    //     type: "vocabulary",
+    //     options: ["Zebra", "Giraffe", "Horse", "Donkey"],
+    //     correctAnswer: 0
+    // },
+    // {
+    //     id: "animal6",
+    //     word: "Monkey",
+    //     definition: "A mammal of the primate order, typically with a long tail and agile movements.",
+    //     pronunciation: "/ˈmʌŋki/",
+    //     image: {
+    //         uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960130/monkey_cm0lne.jpg"
+    //     },
+    //     category: "animals",
+    //     type: "dictionary"
+    // },
     {
-        "id": "voc-animal4",
-        "word": "Giraffe",
-        "definition": "A very tall African mammal with a long neck and legs, and distinctive spotted coat.",
-        "pronunciation": "/dʒəˈræf/",
-        "image": {
-            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960672/habitat_giraffe_bpny9x.jpg"
+        id: "voc-animal6",
+        word: "Monkey",
+        definition: "A mammal of the primate order, typically with a long tail and agile movements.",
+        pronunciation: "/ˈmʌŋki/",
+        image: {
+            uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960130/monkey_cm0lne.jpg"
         },
-        "category": "animals",
-        "type": "vocabulary",
-        "options": ["Elephant", "Hippopotamus", "Giraffe", "Zebra"],
-        "correctAnswer": 2
-    },
-    {
-        "id": "animal5",
-        "word": "Zebra",
-        "definition": "An African wild horse with black-and-white stripes and an erect mane.",
-        "pronunciation": "/ˈziːbrə/",
-        "image": {
-            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960555/zebra_ga1jt8.jpg"
-        },
-        "category": "animals",
-        "type": "dictionary"
-    },
-    {
-        "id": "voc-animal5",
-        "word": "Zebra",
-        "definition": "An African wild horse with black-and-white stripes and an erect mane.",
-        "pronunciation": "/ˈziːbrə/",
-        "image": {
-            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960555/zebra_ga1jt8.jpg"
-        },
-        "category": "animals",
-        "type": "vocabulary",
-        "options": ["Zebra", "Giraffe", "Horse", "Donkey"],
-        "correctAnswer": 0
-    },
-    {
-        "id": "animal6",
-        "word": "Monkey",
-        "definition": "A mammal of the primate order, typically with a long tail and agile movements.",
-        "pronunciation": "/ˈmʌŋki/",
-        "image": {
-            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960130/monkey_cm0lne.jpg"
-        },
-        "category": "animals",
-        "type": "dictionary"
-    },
-    {
-        "id": "voc-animal6",
-        "word": "Monkey",
-        "definition": "A mammal of the primate order, typically with a long tail and agile movements.",
-        "pronunciation": "/ˈmʌŋki/",
-        "image": {
-            "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960130/monkey_cm0lne.jpg"
-        },
-        "category": "animals",
-        "type": "vocabulary",
-        "options": ["Monkey", "Baboon", "Gorilla", "Chimpanzee"],
-        "correctAnswer": 0
+        category: "animals",
+        type: "vocabulary",
+        options: ["Monkey", "Baboon", "Gorilla", "Chimpanzee"],
+        correctAnswer: 0
     },
 
     {
@@ -200,131 +198,131 @@ export const illustrationData: IllustrationItem[] = [
     },
 
 
+    // {
+    //     id: "voc-food1",
+    //     word: "Pizza",
+    //     definition:
+    //         "A flat, round bread covered with tomato sauce, cheese, and other toppings.",
+    //     pronunciation: "/ˈpiːtsə/",
+    //     image: {
+    //         uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896823/Pizza_q7neo1.jpg",
+    //     },
+    //     category: "food",
+    //     type: "vocabulary",
+    //     options: ["Pasta", "Pizza", "Burger", "Sandwich"],
+    //     correctAnswer: 1,
+    // },
+    // {
+    //     id: "voc-food2",
+    //     word: "Sushi",
+    //     definition:
+    //         "A Japanese dish of prepared rice with fish, vegetables, or eggs.",
+    //     pronunciation: "/ˈsuːʃi/",
+    //     image: {
+    //         uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896823/Sushi_ayqydt.jpg",
+    //     },
+    //     category: "food",
+    //     type: "vocabulary",
+    //     options: ["Sushi", "Ramen", "Tempura", "Sashimi"],
+    //     correctAnswer: 0,
+    // },
     {
-        id: "voc-food1",
-        word: "Pizza",
-        definition:
-            "A flat, round bread covered with tomato sauce, cheese, and other toppings.",
-        pronunciation: "/ˈpiːtsə/",
+        id: "food3",
+        word: "Burger",
+        definition: "A sandwich consisting of a cooked patty of ground meat placed inside a split bread roll.",
+        pronunciation: "/ˈbɜːrɡər/",
         image: {
-            uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896823/Pizza_q7neo1.jpg",
+            uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960130/burger_jy8stw.jpg"
+        },
+        category: "food",
+        type: "dictionary"
+    },
+    {
+        id: "food4",
+        word: "Sandwich",
+        definition: "Two slices of bread with one or more fillings between them, eaten as a light meal.",
+        pronunciation: "/ˈsænwɪdʒ/",
+        image: {
+            uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960131/sandwich_a1efen.jpg"
+        },
+        category: "food",
+        type: "dictionary"
+    },
+    {
+        id: "food5",
+        word: "Pasta",
+        definition: "An Italian food typically made from an unleavened dough of wheat flour mixed with water or eggs, formed into various shapes.",
+        pronunciation: "/ˈpæstə/",
+        image: {
+            uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746963268/pasta_zyo7rx.jpg"
+        },
+        category: "food",
+        type: "dictionary"
+    },
+    {
+        id: "food6",
+        word: "Ice Cream",
+        definition: "A soft frozen food made with sweetened and flavored milk fat, often eaten as a dessert.",
+        pronunciation: "/ˈaɪs ˌkriːm/",
+        image: {
+            uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960131/cream_h9zaob.jpg"
+        },
+        category: "food",
+        type: "dictionary"
+    },
+    {
+        id: "voc-food3",
+        word: "Burger",
+        definition: "A sandwich consisting of a cooked patty of ground meat placed inside a split bread roll.",
+        pronunciation: "/ˈbɜːrɡər/",
+        image: {
+            uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960130/burger_jy8stw.jpg"
         },
         category: "food",
         type: "vocabulary",
-        options: ["Pasta", "Pizza", "Burger", "Sandwich"],
-        correctAnswer: 1,
+        options: ["Pizza", "Burger", "Hot Dog", "Fries"],
+        correctAnswer: 1
     },
     {
-        id: "voc-food2",
-        word: "Sushi",
-        definition:
-            "A Japanese dish of prepared rice with fish, vegetables, or eggs.",
-        pronunciation: "/ˈsuːʃi/",
+        id: "voc-food4",
+        word: "Sandwich",
+        definition: "Two slices of bread with one or more fillings between them, eaten as a light meal.",
+        pronunciation: "/ˈsænwɪdʒ/",
         image: {
-            uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746896823/Sushi_ayqydt.jpg",
+            uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960131/sandwich_a1efen.jpg"
         },
         category: "food",
         type: "vocabulary",
-        options: ["Sushi", "Ramen", "Tempura", "Sashimi"],
-        correctAnswer: 0,
+        options: ["Salad", "Sandwich", "Wrap", "Toast"],
+        correctAnswer: 1
     },
     {
-        "id": "food3",
-        "word": "Burger",
-        "definition": "A sandwich consisting of a cooked patty of ground meat placed inside a split bread roll.",
-        "pronunciation": "/ˈbɜːrɡər/",
-        "image": {
-          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960130/burger_jy8stw.jpg"
+        id: "voc-food5",
+        word: "Pasta",
+        definition: "An Italian food typically made from an unleavened dough of wheat flour mixed with water or eggs, formed into various shapes.",
+        pronunciation: "/ˈpæstə/",
+        image: {
+            uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746963268/pasta_zyo7rx.jpg"
         },
-        "category": "food",
-        "type": "dictionary"
+        category: "food",
+        type: "vocabulary",
+        options: ["Rice", "Bread", "Pasta", "Noodles"],
+        correctAnswer: 2
     },
     {
-        "id": "food4",
-        "word": "Sandwich",
-        "definition": "Two slices of bread with one or more fillings between them, eaten as a light meal.",
-        "pronunciation": "/ˈsænwɪdʒ/",
-        "image": {
-          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960131/sandwich_a1efen.jpg"
+        id: "voc-food6",
+        word: "Ice Cream",
+        definition: "A soft frozen food made with sweetened and flavored milk fat, often eaten as a dessert.",
+        pronunciation: "/ˈaɪs ˌkriːm/",
+        image: {
+            uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960131/cream_h9zaob.jpg"
         },
-        "category": "food",
-        "type": "dictionary"
+        category: "food",
+        type: "vocabulary",
+        options: ["Yogurt", "Ice Cream", "Popsicle", "Sherbet"],
+        correctAnswer: 1
     },
-    {
-        "id": "food5",
-        "word": "Pasta",
-        "definition": "An Italian food typically made from an unleavened dough of wheat flour mixed with water or eggs, formed into various shapes.",
-        "pronunciation": "/ˈpæstə/",
-        "image": {
-          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746963268/pasta_zyo7rx.jpg"
-        },
-        "category": "food",
-        "type": "dictionary"
-    },
-    {
-        "id": "food6",
-        "word": "Ice Cream",
-        "definition": "A soft frozen food made with sweetened and flavored milk fat, often eaten as a dessert.",
-        "pronunciation": "/ˈaɪs ˌkriːm/",
-        "image": {
-          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960131/cream_h9zaob.jpg"
-        },
-        "category": "food",
-        "type": "dictionary"
-    },
-    {
-        "id": "voc-food3",
-        "word": "Burger",
-        "definition": "A sandwich consisting of a cooked patty of ground meat placed inside a split bread roll.",
-        "pronunciation": "/ˈbɜːrɡər/",
-        "image": {
-          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960130/burger_jy8stw.jpg"
-        },
-        "category": "food",
-        "type": "vocabulary",
-        "options": ["Pizza", "Burger", "Hot Dog", "Fries"],
-        "correctAnswer": 1
-    },
-    {
-        "id": "voc-food4",
-        "word": "Sandwich",
-        "definition": "Two slices of bread with one or more fillings between them, eaten as a light meal.",
-        "pronunciation": "/ˈsænwɪdʒ/",
-        "image": {
-          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960131/sandwich_a1efen.jpg"
-        },
-        "category": "food",
-        "type": "vocabulary",
-        "options": ["Salad", "Sandwich", "Wrap", "Toast"],
-        "correctAnswer": 1
-    },
-    {
-        "id": "voc-food5",
-        "word": "Pasta",
-        "definition": "An Italian food typically made from an unleavened dough of wheat flour mixed with water or eggs, formed into various shapes.",
-        "pronunciation": "/ˈpæstə/",
-        "image": {
-          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746963268/pasta_zyo7rx.jpg"
-        },
-        "category": "food",
-        "type": "vocabulary",
-        "options": ["Rice", "Bread", "Pasta", "Noodles"],
-        "correctAnswer": 2
-    },
-    {
-        "id": "voc-food6",
-        "word": "Ice Cream",
-        "definition": "A soft frozen food made with sweetened and flavored milk fat, often eaten as a dessert.",
-        "pronunciation": "/ˈaɪs ˌkriːm/",
-        "image": {
-          "uri": "https://res.cloudinary.com/dtz1pxv22/image/upload/v1746960131/cream_h9zaob.jpg"
-        },
-        "category": "food",
-        "type": "vocabulary",
-        "options": ["Yogurt", "Ice Cream", "Popsicle", "Sherbet"],
-        "correctAnswer": 1
-    },
-      
+
     // TRAVEL - DICTIONARY
     {
         id: "travel1",
@@ -455,7 +453,7 @@ export const illustrationData: IllustrationItem[] = [
         word: "Tree",
         definition: "A tall plant with a trunk and branches made of wood.",
         pronunciation: "/triː/",
-        image: { uri: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca" },
+        image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1747214156/c%C3%A2y_fm3abh.webp" },
         category: "nature",
         type: "dictionary",
     },
@@ -473,7 +471,7 @@ export const illustrationData: IllustrationItem[] = [
         word: "River",
         definition: "A large, flowing body of water.",
         pronunciation: "/ˈrɪvər/",
-        image: { uri: "https://images.unsplash.com/photo-1465101178521-c1a9136a3b99" },
+        image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1747214263/s%C3%B4ng_kbazuk.jpg" },
         category: "nature",
         type: "dictionary",
     },
@@ -482,7 +480,7 @@ export const illustrationData: IllustrationItem[] = [
         word: "Flower",
         definition: "The colorful part of a plant that makes seeds.",
         pronunciation: "/ˈflaʊər/",
-        image: { uri: "https://images.unsplash.com/photo-1464983953574-0892a716854b" },
+        image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1747214262/hoa_helpku.webp" },
         category: "nature",
         type: "dictionary",
     },
@@ -491,7 +489,7 @@ export const illustrationData: IllustrationItem[] = [
         word: "Lake",
         definition: "A large area of water surrounded by land.",
         pronunciation: "/leɪk/",
-        image: { uri: "https://images.unsplash.com/photo-1509228468518-180dd4864904" },
+        image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1747214263/h%C3%B4g_hsiiry.jpg" },
         category: "nature",
         type: "dictionary",
     },
@@ -500,7 +498,7 @@ export const illustrationData: IllustrationItem[] = [
         word: "Forest",
         definition: "A large area covered chiefly with trees and undergrowth.",
         pronunciation: "/ˈfɔːrɪst/",
-        image: { uri: "https://images.unsplash.com/photo-1464306076886-debca5e8a6b0" },
+        image: { uri: "https://res.cloudinary.com/dtz1pxv22/image/upload/v1747214264/r%E1%BB%ABng_l1wyjo.jpg" },
         category: "nature",
         type: "dictionary",
     },
