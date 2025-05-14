@@ -79,7 +79,7 @@ const ChatRoom = () => {
       // introMessage = "Hello! Let's practice meeting new people.";
       firstPromt =
         "Imagine You are a stranger. I am a English learner. Describe a random situation where I meet you and we start to talk to each other";
-    } else if (topic == "hotel-checkin") {
+    } else if (topic == "Hotel-checkin") {
       // introMessage = "Hello! Let's practice checking into a hotel.";
       firstPromt =
         "Imagine you are a hotel receptionist. I am a guest checking in. Let's have a conversation.";

@@ -24,7 +24,7 @@ const RolePlayData = [
   },
   {
     id: 2,
-    title: "hotel-checkin",
+    title: "Hotel-checkin",
     imageLink: HotelCheckinImage,
   },
   {
@@ -35,15 +35,14 @@ const RolePlayData = [
   {
     id: 4,
     title: "Family dinner",
-    imageLink: FamilyDinnerImage, 
+    imageLink: FamilyDinnerImage,
   },
   {
     id: 5,
     title: "Job interview",
     imageLink: JobInterviewImage,
   },
-]
-
+];
 
 const RolePlayCard = () => {
   const router = useRouter();

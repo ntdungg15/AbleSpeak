@@ -27,7 +27,7 @@ const RolePlayData = [
   },
   {
     id: 2,
-    title: "hotel-checkin",
+    title: "Hotel-checkin",
     imageLink: HotelCheckinImage,
   },
   {
