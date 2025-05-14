@@ -38,9 +38,7 @@ export  const styles = StyleSheet.create({
         marginHorizontal: 8,
         
         height: 200,
-
-        
-        
+ 
     },
 
     textcardheader: {
@@ -59,6 +57,7 @@ export  const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
 
+        
     },
 
     classicImage: {
@@ -75,11 +74,12 @@ export  const styles = StyleSheet.create({
         
         height: 200,
 
-        backgroundColor: "#F0F4F8",
+        // backgroundColor: "#F0F4F8",
     },
 
     classicTextContainer: {
         marginLeft: 16,
+        marginTop: 16,
         width: 160,
         height: "auto",
 
@@ -102,12 +102,18 @@ export  const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 16,
         borderRadius: 24,
+        
+
+        flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
     },
 
     classicStartButtonText: {
+        marginRight: 6,
+
         color: '#FFF',
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: 'bold',
     },
 

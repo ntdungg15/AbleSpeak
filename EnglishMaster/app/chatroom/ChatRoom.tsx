@@ -1,7 +1,7 @@
 import React from "react";
 import {
   View,
-  // Text,
+  Text,
   SafeAreaView,
   StatusBar,
   Platform,
@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   // Keyboard,
   // TouchableWithoutFeedback,
+  TouchableOpacity,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { styles } from "@/constants/chatbot/ChatRoom";
@@ -18,14 +19,14 @@ import { useState, useEffect, useRef } from "react";
 import { useLocalSearchParams } from "expo-router";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-import Feather from "@expo/vector-icons/Feather";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import { getGroqResponse } from "@/api/gropService";
 import Markdown from "react-native-markdown-display";
 import { ChatFooter } from "@/components/chatbot/chatroom/ChatFooter";
 import LottieView from "lottie-react-native";
 import * as Speech from "expo-speech";
+// import LinearGradient from "react-native-linear-gradient";
 
 import VoiceLottieAnimation from "@/assets/animations/ChatRoom/voiceAnimation.json";
 
@@ -38,8 +39,9 @@ const ChatRoom = () => {
   const router = useRouter();
   const { topic } = useLocalSearchParams();
   const [messList, setMessList] = useState<Message[]>([]);
-  const [typingIndicator, setTypingIndicator] = useState(false);
+  const [typingIndicator, setTypingIndicator] = useState(true);
   let chatRespone: string = "";
+  const [isSpeaking, setIsSpeaking] = useState(true);
   const animation = useRef<LottieView>(null);
 
   const handleBackPress = () => {
@@ -69,7 +71,7 @@ const ChatRoom = () => {
   useEffect(() => {
     let firstPromt = "";
 
-    if (topic == "classic") {
+    if (topic == "Classic") {
       // introMessage = "Hello! Let's start a classic conversation.";
       firstPromt =
         "Imagine you are a language teacher. I am a student. Let's have a conversation.";
@@ -77,7 +79,7 @@ const ChatRoom = () => {
       // introMessage = "Hello! Let's practice meeting new people.";
       firstPromt =
         "Imagine You are a stranger. I am a English learner. Describe a random situation where I meet you and we start to talk to each other";
-    } else if (topic == "hotel-checkin") {
+    } else if (topic == "Hotel-checkin") {
       // introMessage = "Hello! Let's practice checking into a hotel.";
       firstPromt =
         "Imagine you are a hotel receptionist. I am a guest checking in. Let's have a conversation.";
@@ -110,8 +112,15 @@ const ChatRoom = () => {
     } else if (topic == "IT Job Interview after pandemic") {
       firstPromt =
         "Write a short science paragraph about how IT Job Interview after pandemic. Ask me questions to help me understand the topic better.";
+    } else if (topic == "Traveling") {
+      firstPromt =
+        "Imagine you are a travel guide. I am a tourist. Let's have a conversation.";
+    } else if (topic == "The polite way to order food in a restaurant") {
+      firstPromt =
+        "Imagine you are a waiter. I am a customer. Let's have a conversation.";
     }
     const fetchIntroMessage = async () => {
+      // const introMessage = "Talk real long shit show that I can test the pause button oke can you do it"
       const introMessage = await getGroqResponse(firstPromt);
       setMessList([{ text: introMessage, isUser: false }]);
       // Speak the intro message
@@ -132,6 +141,7 @@ const ChatRoom = () => {
         setMessList((prev) => [...prev, { text: responseText, isUser: false }]);
         // Speak the response
         speak(responseText);
+        setIsSpeaking(true);
       }, 1500); // 2 seconds delay
       return () => clearTimeout(timer);
     }
@@ -179,45 +189,12 @@ const ChatRoom = () => {
           }}
         >
           {/* Header  */}
-          <View style={styles.header}>
-            <AntDesign
-              name="arrowleft"
-              size={24}
-              color="black"
-              style={{ margin: 20 }}
-              onPress={() => {
-                handleBackPress();
-              }}
-            />
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <FontAwesome5
-                name="history"
-                size={20}
-                color="black"
-                style={{
-                  marginTop: 20,
-                  marginRight: 10,
-                  marginBottom: 20,
-                  marginLeft: 20,
-                }}
-              />
-              <Feather
-                name="more-horizontal"
-                size={24}
-                color="black"
-                style={{
-                  marginTop: 20,
-                  marginRight: 10,
-                  marginBottom: 20,
-                  marginLeft: 10,
-                }}
-              />
+          <View
+            style={styles.header}
+            // colors={["#FFFFFF", "#F4F8F9"]}
+          >
+            <Text style={styles.headerTopicText}>{topic}</Text>
+            <TouchableOpacity>
               <AntDesign
                 name="close"
                 size={24}
@@ -228,8 +205,9 @@ const ChatRoom = () => {
                   marginBottom: 20,
                   marginLeft: 10,
                 }}
+                onPress={handleBackPress}
               />
-            </View>
+            </TouchableOpacity>
           </View>
 
           <View style={styles.container}>
@@ -242,14 +220,17 @@ const ChatRoom = () => {
               }}
               keyboardShouldPersistTaps="handled"
             >
-              {messList.map((mess, index) =>
-                mess.isUser ? (
+              {messList.map((mess, index) => {
+                const isLastBotMessage =
+                  !mess.isUser && index === messList.length - 1;
+
+                return mess.isUser ? (
                   <View key={`user-${index}`} style={styles.userMessContainer}>
                     <Markdown
                       style={{
                         body: {
                           color: "black",
-                          fontSize: 14,
+                          fontSize: 18,
                         },
                       }}
                     >
@@ -261,16 +242,46 @@ const ChatRoom = () => {
                     <Markdown
                       style={{
                         body: {
-                          color: "black",
-                          fontSize: 14,
+                          color: "white",
+                          fontSize: 18,
                         },
                       }}
                     >
                       {mess.text.trim()}
                     </Markdown>
+
+                    {/* StopButton  */}
+                    {isLastBotMessage && (
+                      <TouchableOpacity
+                        style={styles.stopButton}
+                        onPress={() => {
+                          if (isSpeaking) {
+                            Speech.stop();
+                            setIsSpeaking(false);
+                          } else {
+                            Speech.speak(mess.text);
+                            setIsSpeaking(true);
+                          }
+                        }}
+                      >
+                        {isSpeaking ? (
+                          <>
+                            <AntDesign name="pause" size={14} color="#A4BEED" />
+                          </>
+                        ) : (
+                          <>
+                            <FontAwesome
+                              name="play"
+                              size={14}
+                              color="#A4BEED"
+                            />
+                          </>
+                        )}
+                      </TouchableOpacity>
+                    )}
                   </View>
-                )
-              )}
+                );
+              })}
 
               {/* TypingIndicator  */}
               {typingIndicator ? (

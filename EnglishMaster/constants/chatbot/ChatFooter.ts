@@ -20,8 +20,8 @@ export  const styles = StyleSheet.create({
       },
       micButton: {
         position: 'absolute',
-        top: -30,
-        left: 90,
+        top: -34,
+        left: "45%",
         backgroundColor: '#fff',
         alignSelf: 'center',
         // Shadow for iOS
@@ -35,6 +35,7 @@ export  const styles = StyleSheet.create({
 
         borderRadius: 40,
         padding: 18,
+        zIndex: 1,
       },
 
       chatInput: {
@@ -43,22 +44,19 @@ export  const styles = StyleSheet.create({
 
         borderColor: '#4A90E2',
         borderWidth: 1,
-        paddingHorizontal: 10,
         borderRadius: 8,
         backgroundColor: '#fff',
         
+        paddingLeft: 16,
       },
 
       micRingAnimmation: {
         position: 'absolute',
-        // top: -40,
-        // left: 80,
-        // width: 84,
-        // height: 84,
+        top: -90,
+        left: "30%",
 
-        borderRadius: 9999,
-        borderWidth: 2,
-        borderColor: '#4A90E2',
-
+        alignContent: 'center',
+        justifyContent: 'center',
+        zIndex: 2,
       },
 });

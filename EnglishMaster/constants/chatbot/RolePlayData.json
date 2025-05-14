@@ -1,27 +1,31 @@
 [
     {
         "id": 1,
-        "title": "Meeting new People"
-        
+        "title": "Meeting new People",
+        "imageLink": "@/assets/images/chatbot/classic.jpg"
     },
     {
         "id": 2,
-        "title": "hotel-checkin"
+        "title": "Hotel-checkin",
+        "imageLink": "@/assets/images/chatbot/classic.jpg"
         
     },
     {
         "id": 3,
-        "title": "Restaurant order"
+        "title": "Restaurant order",
+        "imageLink": "@/assets/images/chatbot/classic.jpg"
         
     },
     {
         "id": 4,
-        "title": "Family dinner"
+        "title": "Family dinner",
+        "imageLink": "@/assets/images//classic.jpg"
         
     },
     {
         "id": 5,
-        "title": "Job interview"
+        "title": "Job interview",
+        "imageLink": "@/assets/images/chatbot/classic.jpg"
         
     }
 ]

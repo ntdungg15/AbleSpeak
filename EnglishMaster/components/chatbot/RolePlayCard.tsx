@@ -1,38 +1,48 @@
 import { styles } from "@/constants/chatbot/Card";
 import React from "react";
 import { FlatList, Image, View, Text, TouchableOpacity } from "react-native";
-import logoDogImage from "@/assets/images/logo-dog.png";
-import RolePlayData from "@/constants/chatbot/RolePlayData.json";
+// import logoDogImage from "@/assets/images/logo-dog.png";
+// import RolePlayData from "@/constants/chatbot/RolePlayData.json";
+import MeetingNewPeopleImage from "@/assets/images/chatbot/meeting-new-people.jpg";
+import HotelCheckinImage from "@/assets/images/chatbot/hotel-checkin.jpg";
+import RestaurantOrderImage from "@/assets/images/chatbot/restaurant-order.jpg";
+import FamilyDinnerImage from "@/assets/images/chatbot/family-dinner.jpg";
+import JobInterviewImage from "@/assets/images/chatbot/job-interview.jpg";
 import { useRouter } from "expo-router";
 
-// const data = [
-//     {
-//         id: 1,
-//         title: "Meeting new People",
-//         image: logoDogImage,
+// interface IRolePlayData {
+//   id: number;
+//   title: string;
+//   imageLink: string;
+// }
 
-//     },
-//     {
-//         id: 2,
-//         title: "hotel-checkin",
-//         image: logoDogImage,
-//     },
-//     {
-//         id: 3,
-//         title: "Restaurant order",
-//         image: logoDogImage,
-//     },
-//     {
-//         id: 4,
-//         title: "Family dinner",
-//         image: logoDogImage,
-//     },
-//     {
-//         id: 5,
-//         title: "Job interview",
-//         image: logoDogImage,
-//     },
-// ]
+const RolePlayData = [
+  {
+    id: 1,
+    title: "Meeting new People",
+    imageLink: MeetingNewPeopleImage,
+  },
+  {
+    id: 2,
+    title: "Hotel-checkin",
+    imageLink: HotelCheckinImage,
+  },
+  {
+    id: 3,
+    title: "Restaurant order",
+    imageLink: RestaurantOrderImage,
+  },
+  {
+    id: 4,
+    title: "Family dinner",
+    imageLink: FamilyDinnerImage,
+  },
+  {
+    id: 5,
+    title: "Job interview",
+    imageLink: JobInterviewImage,
+  },
+];
 
 const RolePlayCard = () => {
   const router = useRouter();
@@ -54,11 +64,13 @@ const RolePlayCard = () => {
             onPress={() => handlePressCard(item.id, item.title)}
           >
             {/* Image  */}
-            <Image source={logoDogImage} style={styles.cardImage} />
+            <Image source={item.imageLink} style={styles.cardImage} />
             <Text style={styles.cardTitle}>{item.title}</Text>
           </TouchableOpacity>
         )}
         horizontal
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
       />
     </View>
   );

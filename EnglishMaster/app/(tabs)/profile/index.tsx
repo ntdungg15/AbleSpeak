@@ -69,12 +69,18 @@ export default function ProfileScreen() {
               >
                 <View style={{ flex: 1 }}>
                   <View style={styles.header}>
-                    <Image
+                    {/* <Image
                       style={styles.avatar}
                       source={{
                         uri: "https://i.pinimg.com/736x/86/82/12/8682125231a362848c3743c444f1ce98.jpg",
                       }}
-                    />
+                    /> */}
+                    <View style={styles.avatarContainer}>
+                      <Text style={styles.avatarText}>
+                        {user.userInfo.name.charAt(0).toUpperCase()}
+                      </Text>
+                    </View>
+
                     <View style={styles.headerInfo}>
                       <Text style={styles.username}>{user.userInfo.name}!</Text>
                       <Text style={styles.level}>Level 3 · Intermediate</Text>
@@ -273,7 +279,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     top: -20,
   },
-  username: { fontSize: 18, fontWeight: "bold" },
+  username: { fontSize: 18, fontWeight: "bold", marginTop: 20 },
   level: { fontSize: 14, color: "#555" },
   userAppInfo: {
     flexDirection: "row",
@@ -356,5 +362,19 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 8,
+  },
+  avatarContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#4F8EF7",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
+  },
+  avatarText: {
+    color: "#FFF",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
