@@ -23,16 +23,16 @@ import {
 import { useLocalSearchParams } from "expo-router";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-import Feather from "@expo/vector-icons/Feather";
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-// import { getGroqResponse } from "@/api/gropService";
+import { getGroqResponse } from "@/api/gropService";
 import Markdown from "react-native-markdown-display";
 import { ChatFooter } from "@/components/chatbot/chatroom/ChatFooter";
-// import LottieView from "lottie-react-native";
+import LottieView from "lottie-react-native";
 import * as Speech from "expo-speech";
+// import LinearGradient from "react-native-linear-gradient";
 
-// import VoiceLottieAnimation from "@/assets/animations/ChatRoom/voiceAnimation.json";
+import VoiceLottieAnimation from "@/assets/animations/ChatRoom/voiceAnimation.json";
 
 type Message = {
   text: string;
@@ -45,7 +45,8 @@ const ChatRoom = () => {
   const [messList, setMessList] = useState<Message[]>([]);
   const [typingIndicator, setTypingIndicator] = useState(false);
   let chatRespone: string = "";
-  // const animation = useRef<LottieView>(null);
+  const [isSpeaking, setIsSpeaking] = useState(true);
+  const animation = useRef<LottieView>(null);
 
   const handleBackPress = () => {
     router.back();
@@ -74,7 +75,7 @@ const ChatRoom = () => {
   useEffect(() => {
     let firstPromt = "";
 
-    if (topic == "classic") {
+    if (topic == "Classic") {
       // introMessage = "Hello! Let's start a classic conversation.";
       firstPromt =
         "Imagine you are a language teacher. I am a student. Let's have a conversation.";
@@ -115,10 +116,16 @@ const ChatRoom = () => {
     } else if (topic == "IT Job Interview after pandemic") {
       firstPromt =
         "Write a short science paragraph about how IT Job Interview after pandemic. Ask me questions to help me understand the topic better.";
+    } else if (topic == "Traveling") {
+      firstPromt =
+        "Imagine you are a travel guide. I am a tourist. Let's have a conversation.";
+    } else if (topic == "The polite way to order food in a restaurant") {
+      firstPromt =
+        "Imagine you are a waiter. I am a customer. Let's have a conversation.";
     }
     const fetchIntroMessage = async () => {
-      const introMessage = "for run in web"
-      // const introMessage = await getGroqResponse(firstPromt);
+      // const introMessage = "Talk real long shit show that I can test the pause button oke can you do it"
+      const introMessage = await getGroqResponse(firstPromt);
       setMessList([{ text: introMessage, isUser: false }]);
       // Speak the intro message
       speak(introMessage);
@@ -131,13 +138,14 @@ const ChatRoom = () => {
       const timer = setTimeout(async () => {
         setTypingIndicator(false);
         const message = messList[messList.length - 1].text;
-        // chatRespone = await getGroqResponse(message);
+        chatRespone = await getGroqResponse(message);
         chatRespone = "Fix xong t xu m, nu pa ga chi";
         const responseText =
           chatRespone || "Xin lỗi, không có phản hồi từ máy chủ.";
         setMessList((prev) => [...prev, { text: responseText, isUser: false }]);
         // Speak the response
         speak(responseText);
+        setIsSpeaking(true);
       }, 1500); // 2 seconds delay
       return () => clearTimeout(timer);
     }
@@ -152,13 +160,13 @@ const ChatRoom = () => {
     return (
       <>
         <View style={styles.voiceAnimationContainer}>
-          {/* <LottieView
+          <LottieView
             ref={animation}
             source={VoiceLottieAnimation}
             autoPlay
             loop
             style={{ width: 100, height: 50 }}
-          /> */}
+          />
         </View>
       </>
     );
@@ -166,7 +174,9 @@ const ChatRoom = () => {
 
   const speak = (text: string) => {
     Speech.speak(text);
+    
   };
+
 
   return (
     <>
@@ -185,7 +195,10 @@ const ChatRoom = () => {
           }}
         >
           {/* Header  */}
-          <View style={styles.header}>
+          <View
+            style={styles.header}
+            // colors={["#FFFFFF", "#F4F8F9"]}
+          >
             <Text style={styles.headerTopicText}>{topic}</Text>
             <TouchableOpacity>
 
@@ -215,34 +228,66 @@ const ChatRoom = () => {
               }}
               keyboardShouldPersistTaps="handled"
             >
-              {messList.map((mess, index) =>
-                mess.isUser ? (
-                  <View key={`user-${index}`} style={styles.userMessContainer}>
-                    <Markdown
-                      style={{
-                        body: {
-                          color: "black",
-                          fontSize: 18,
-                        },
-                      }}
-                    >
-                      {mess.text.trim()}
-                    </Markdown>
-                  </View>
-                ) : (
-                  <View key={`bot-${index}`} style={styles.botMessContainer}>
-                    <Markdown
-                      style={{
-                        body: {
-                          color: "white",
-                          fontSize: 18,
-                        },
-                      }}
-                    >
-                      {mess.text.trim()}
-                    </Markdown>
-                  </View>
-                )
+              {messList.map((mess, index) => 
+                {
+                  const isLastBotMessage = !mess.isUser && index === messList.length - 1;
+
+                  return mess.isUser ? (
+                    <View key={`user-${index}`} style={styles.userMessContainer}>
+                      <Markdown
+                        style={{
+                          body: {
+                            color: "black",
+                            fontSize: 18,
+                          },
+                        }}
+                      >
+                        {mess.text.trim()}
+                      </Markdown>
+                    </View>
+                  ) : (
+                    <View key={`bot-${index}`} style={styles.botMessContainer}>
+                      <Markdown
+                        style={{
+                          body: {
+                            color: "white",
+                            fontSize: 18,
+                          },
+                        }}
+                      >
+                        {mess.text.trim()}
+                      </Markdown>
+                      
+
+                      {/* StopButton  */}
+                      {isLastBotMessage && (
+                        <TouchableOpacity
+                          style={styles.stopButton}
+                          onPress={() => {
+                            if (isSpeaking) {
+                              Speech.stop();
+                              setIsSpeaking(false);
+                            } else {
+                              Speech.speak(mess.text);
+                              setIsSpeaking(true);
+                            }
+                          }}
+                        >
+                          {isSpeaking ? (
+                            <>
+                              <AntDesign name="pause" size={14} color="#A4BEED" />
+                            </>
+                          ) : (
+                            <>
+                              <FontAwesome name="play" size={14} color="#A4BEED" />
+                            </>
+                          )}
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                  )
+
+                }
               )}
 
               {/* TypingIndicator  */}

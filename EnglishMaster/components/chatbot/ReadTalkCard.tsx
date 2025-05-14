@@ -6,6 +6,7 @@ import ArchitectureImage from "@/assets/images/chatbot/architecture.jpg";
 import EcomerceImage from "@/assets/images/chatbot/ecommerce busines.jpg";
 import FoodTourImage from "@/assets/images/chatbot/foodtour.jpg";
 import ITJobImage from "@/assets/images/chatbot/online-interview.jpg";
+
 // import RolePlayData from "@/constants/chatbot/ReadTalk.json";
 import { useRouter } from "expo-router";
 
@@ -41,6 +42,7 @@ const ReadTalkData = [
     title: "IT Job Interview after pandemic",
     imageLink: ITJobImage,
   },
+
 ]
 
 const RolePlayCard = () => {
@@ -68,6 +70,8 @@ const RolePlayCard = () => {
           </TouchableOpacity>
         )}
         horizontal
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
       />
     </View>
   );

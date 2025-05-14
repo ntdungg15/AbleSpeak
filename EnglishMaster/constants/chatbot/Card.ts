@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
     cardListsContainer: {
         width: "100%",
-        height: 160,
+        height: 162,
 
     },
 
@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
     },
 
     cardTitle: {
-        
+        alignSelf: "flex-start",
 
         fontSize: 14,
         fontWeight: "bold",

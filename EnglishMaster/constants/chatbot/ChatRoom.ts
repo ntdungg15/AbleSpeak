@@ -12,10 +12,11 @@ export  const styles = StyleSheet.create({
 
     header: {
         width: "100%",
-        height: 64,
+        height: 100,
         backgroundColor: "white",
-        // borderColor: "#e0e0e0",
-        // borderWidth: 1,
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
+        
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
@@ -24,10 +25,10 @@ export  const styles = StyleSheet.create({
     headerTopicText: {
         maxWidth: "70%",
 
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: "bold",
         color: "black",
-        marginLeft: 20,
+        marginLeft: 26,
         marginTop: 10,
     },
 
@@ -115,6 +116,7 @@ export  const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 4,
         alignSelf: "flex-start",
+        flexDirection: "column",
         justifyContent: "center",
     },
 
@@ -122,5 +124,18 @@ export  const styles = StyleSheet.create({
         
         justifyContent: "center",  
         alignItems: "center",   
+    },
+
+    stopButton: {
+        marginVertical: 4,
+
+        width: 20,
+        height: 20,
+
+        borderRadius: 9999,
+        backgroundColor: "#5375F1",
+        
+        alignItems: "center",
+        justifyContent: "center",
     },
 });

@@ -70,6 +70,8 @@ const RolePlayCard = () => {
           </TouchableOpacity>
         )}
         horizontal
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
       />
     </View>
   );
