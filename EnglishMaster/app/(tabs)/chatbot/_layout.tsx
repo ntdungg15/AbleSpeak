@@ -16,6 +16,12 @@ export default function TabLayout() {
           headerShown: false, // Tắt tiêu đề
         }}
       />
+      <Stack.Screen
+        name="ReadTalk"
+        options={{
+          headerShown: false, // Tắt tiêu đề
+        }}
+      />
       
     </Stack>
   );
