@@ -1,7 +1,7 @@
 import React from "react";
 import {
   View,
-  // Text,
+  Text,
   SafeAreaView,
   StatusBar,
   Platform,
@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   // Keyboard,
   // TouchableWithoutFeedback,
+  TouchableOpacity,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { styles } from "@/constants/chatbot/ChatRoom";
@@ -25,13 +26,13 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Feather from "@expo/vector-icons/Feather";
 
-import { getGroqResponse } from "@/api/gropService";
+// import { getGroqResponse } from "@/api/gropService";
 import Markdown from "react-native-markdown-display";
 import { ChatFooter } from "@/components/chatbot/chatroom/ChatFooter";
-import LottieView from "lottie-react-native";
+// import LottieView from "lottie-react-native";
 import * as Speech from "expo-speech";
 
-import VoiceLottieAnimation from "@/assets/animations/ChatRoom/voiceAnimation.json";
+// import VoiceLottieAnimation from "@/assets/animations/ChatRoom/voiceAnimation.json";
 
 type Message = {
   text: string;
@@ -44,7 +45,7 @@ const ChatRoom = () => {
   const [messList, setMessList] = useState<Message[]>([]);
   const [typingIndicator, setTypingIndicator] = useState(false);
   let chatRespone: string = "";
-  const animation = useRef<LottieView>(null);
+  // const animation = useRef<LottieView>(null);
 
   const handleBackPress = () => {
     router.back();
@@ -116,8 +117,8 @@ const ChatRoom = () => {
         "Write a short science paragraph about how IT Job Interview after pandemic. Ask me questions to help me understand the topic better.";
     }
     const fetchIntroMessage = async () => {
-
-      const introMessage = await getGroqResponse(firstPromt);
+      const introMessage = "for run in web"
+      // const introMessage = await getGroqResponse(firstPromt);
       setMessList([{ text: introMessage, isUser: false }]);
       // Speak the intro message
       speak(introMessage);
@@ -130,8 +131,8 @@ const ChatRoom = () => {
       const timer = setTimeout(async () => {
         setTypingIndicator(false);
         const message = messList[messList.length - 1].text;
-        chatRespone = await getGroqResponse(message);
-        // chatRespone = "Fix xong t xu m, nu pa ga chi";
+        // chatRespone = await getGroqResponse(message);
+        chatRespone = "Fix xong t xu m, nu pa ga chi";
         const responseText =
           chatRespone || "Xin lỗi, không có phản hồi từ máy chủ.";
         setMessList((prev) => [...prev, { text: responseText, isUser: false }]);
@@ -151,13 +152,13 @@ const ChatRoom = () => {
     return (
       <>
         <View style={styles.voiceAnimationContainer}>
-          <LottieView
+          {/* <LottieView
             ref={animation}
             source={VoiceLottieAnimation}
             autoPlay
             loop
             style={{ width: 100, height: 50 }}
-          />
+          /> */}
         </View>
       </>
     );
@@ -185,44 +186,9 @@ const ChatRoom = () => {
         >
           {/* Header  */}
           <View style={styles.header}>
-            <AntDesign
-              name="arrowleft"
-              size={24}
-              color="black"
-              style={{ margin: 20 }}
-              onPress={() => {
-                handleBackPress();
-              }}
-            />
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <FontAwesome5
-                name="history"
-                size={20}
-                color="black"
-                style={{
-                  marginTop: 20,
-                  marginRight: 10,
-                  marginBottom: 20,
-                  marginLeft: 20,
-                }}
-              />
-              <Feather
-                name="more-horizontal"
-                size={24}
-                color="black"
-                style={{
-                  marginTop: 20,
-                  marginRight: 10,
-                  marginBottom: 20,
-                  marginLeft: 10,
-                }}
-              />
+            <Text style={styles.headerTopicText}>{topic}</Text>
+            <TouchableOpacity>
+
               <AntDesign
                 name="close"
                 size={24}
@@ -233,8 +199,10 @@ const ChatRoom = () => {
                   marginBottom: 20,
                   marginLeft: 10,
                 }}
+                onPress={handleBackPress}
               />
-            </View>
+            </TouchableOpacity>
+            
           </View>
 
           <View style={styles.container}>
@@ -254,7 +222,7 @@ const ChatRoom = () => {
                       style={{
                         body: {
                           color: "black",
-                          fontSize: 14,
+                          fontSize: 18,
                         },
                       }}
                     >
@@ -266,8 +234,8 @@ const ChatRoom = () => {
                     <Markdown
                       style={{
                         body: {
-                          color: "black",
-                          fontSize: 14,
+                          color: "white",
+                          fontSize: 18,
                         },
                       }}
                     >

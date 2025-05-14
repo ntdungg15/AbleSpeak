@@ -16,7 +16,7 @@ import { useRouter } from "expo-router";
 //   imageLink: string;
 // }
 
-const RolePlayData[] = [
+const RolePlayData = [
   {
     id: 1,
     title: "Meeting new People",

@@ -9,8 +9,8 @@ import React from "react";
 import { useState, useRef, useEffect } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Feather from "@expo/vector-icons/Feather";
-import LottieView from "lottie-react-native";
-import MicAnimation from "@/assets/animations/ChatRoom/micRecordAnimateLottie.json";
+// import LottieView from "lottie-react-native";
+// import MicAnimation from "@/assets/animations/ChatRoom/micRecordAnimateLottie.json";
 // import Animated,
 // {
 //     useSharedValue,
@@ -31,7 +31,7 @@ export const ChatFooter: React.FC<ChatFooterProps> = ({
   const [micPressed, setMicPressed] = useState(false);
   const [keyboardView, setKeyboardView] = useState(false);
   const [chatTextInput, setChatTextInput] = useState("");
-  const animation = useRef<LottieView>(null);
+  // const animation = useRef<LottieView>(null);
 
   useEffect(() => {
     // You can control the ref programmatically, rather than using autoPlay
@@ -123,7 +123,7 @@ export const ChatFooter: React.FC<ChatFooterProps> = ({
           {/* Center Mic Button */}
           {micPressed && (
             <View style={styles.micRingAnimmation}>
-              <LottieView
+              {/* <LottieView
                 autoPlay
                 ref={animation}
                 style={{
@@ -132,7 +132,7 @@ export const ChatFooter: React.FC<ChatFooterProps> = ({
                 }}
                 // Find more Lottie files at https://lottiefiles.com/featured
                 source={MicAnimation}
-              />
+              /> */}
             </View>
           )}
           <View

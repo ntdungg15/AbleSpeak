@@ -1,7 +1,6 @@
 import { styles } from "@/constants/chatbot/Card";
 import React from "react";
 import { FlatList, Image, View, Text, TouchableOpacity } from "react-native";
-import logoDogImage from "@/assets/images/logo-dog.png";
 import Mindfullness from "@/assets/images/chatbot/meditation.jpg"
 import ArchitectureImage from "@/assets/images/chatbot/architecture.jpg";
 import EcomerceImage from "@/assets/images/chatbot/ecommerce busines.jpg";
@@ -16,7 +15,7 @@ import { useRouter } from "expo-router";
 //   imageLink: any;
 // }
 
-const ReadTalkData[] = [
+const ReadTalkData = [
     {
     id: 1,
     title: "Mindfulness and Social Media",
